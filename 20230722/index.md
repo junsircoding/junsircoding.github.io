@@ -1,6 +1,11 @@
 # Matplotlib 等值线标签位置
 
 
+
+{{< figure src="/img/20230722/20230722_avatar.png" title="文章封面, 由作者通过 Canva 网站制作" >}}
+
+
+
 在用 Matplotlib 绘制等值线图时，经常要在等值线上打上标签，表示这条线的数值是多少。
 
 
