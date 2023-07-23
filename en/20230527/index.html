@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Use Plotly Python to draw a heatmap and customize a non-uniform colorbar - junsircoding</title><meta name="Description" content="Get busy living, or get busy dying."><meta property="og:title" content="Use Plotly Python to draw a heatmap and customize a non-uniform colorbar" />
+<meta property="og:description" content="This article introduces how to use the Plotly to draw a heatmap chart, customize a non-uniform colorbar, and finally compare the visual effect of the graph with Matplotlib&rsquo;s pcolormesh. The webpage allows direct preview and manipulation of Plotly charts." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://junsircoding.github.io/en/20230527/" /><meta property="og:image" content="https://junsircoding.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-05-26T21:57:16+08:00" />
+<meta property="article:modified_time" content="2023-05-27T15:58:26+08:00" /><meta property="og:site_name" content="junsircoding" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://junsircoding.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Use Plotly Python to draw a heatmap and customize a non-uniform colorbar"/>
+<meta name="twitter:description" content="This article introduces how to use the Plotly to draw a heatmap chart, customize a non-uniform colorbar, and finally compare the visual effect of the graph with Matplotlib&rsquo;s pcolormesh. The webpage allows direct preview and manipulation of Plotly charts."/>
+<meta name="application-name" content="junsircoding">
+<meta name="apple-mobile-web-app-title" content="junsircoding"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://junsircoding.github.io/en/20230527/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Use Plotly Python to draw a heatmap and customize a non-uniform colorbar",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/junsircoding.github.io\/en\/20230527\/"
+        },"genre": "posts","wordcount":  1192 ,
+        "url": "https:\/\/junsircoding.github.io\/en\/20230527\/","datePublished": "2023-05-26T21:57:16+08:00","dateModified": "2023-05-27T15:58:26+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "junsircoding"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/en/" title="junsircoding"><img
+        class="lazyload logo"
+        src="/svg/loading.min.svg"
+        data-src="/img/avatar_circle.png"
+        data-srcset="/img/avatar_circle.png, /img/avatar_circle.png 1.5x, /img/avatar_circle.png 2x"
+        data-sizes="auto"
+        alt="/img/avatar_circle.png"
+        title="/img/avatar_circle.png" /></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/en/posts/"> Posts </a><a class="menu-item" href="/en/tags/"> Tags </a><a class="menu-item" href="/en/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章关键词" id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/20230527/">简体中文</option><option value="/en/20230527/" selected>English</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/en/" title="junsircoding"><img
+        class="lazyload logo"
+        src="/svg/loading.min.svg"
+        data-src="/img/avatar_circle.png"
+        data-srcset="/img/avatar_circle.png, /img/avatar_circle.png 1.5x, /img/avatar_circle.png 2x"
+        data-sizes="auto"
+        alt="/img/avatar_circle.png"
+        title="/img/avatar_circle.png" /></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章关键词" id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/en/posts/" title="">Posts</a><a class="menu-item" href="/en/tags/" title="">Tags</a><a class="menu-item" href="/en/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/20230527/">简体中文</option><option value="/en/20230527/" selected>English</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div>
+<script type="text/javascript">
+    var sc_project=12901538; 
+    var sc_invisible=0; 
+    var sc_security="6f597d59"; 
+    var scJsHost = "https://";
+    document.write("<sc"+"ript type='text/javascript' src='" + scJsHost+
+    "statcounter.com/counter/counter.js'></"+"script>");
+    </script>
+    <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/12901538/0/6f597d59/0/" alt="Web Analytics"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+    
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Use Plotly Python to draw a heatmap and customize a non-uniform colorbar</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://junsircoding.github.io/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>junsircoding</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-05-26">2023-05-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1192 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#use-matplotlib-to-draw-a-filled-color-plot-using-pcolormesh">Use Matplotlib to draw a filled color plot using pcolormesh</a></li>
+        <li><a href="#draw-a-heatmap-filled-color-plot-using-plotly">Draw a heatmap filled color plot using Plotly</a></li>
+        <li><a href="#references">References</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><figure><img src="/img/20230527/20230527_avatar.en.png"/><figcaption>
+            <h4>Article cover, produced by the author through the Canva website</h4>
+        </figcaption>
+</figure>
+
+<h3 id="use-matplotlib-to-draw-a-filled-color-plot-using-pcolormesh">Use Matplotlib to draw a filled color plot using pcolormesh</h3>
+<p>Matplotlib&rsquo;s <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.pcolormesh.html#matplotlib.pyplot.pcolormesh" target="_blank" rel="noopener noreffer "><code>pcolormesh</code></a> can plot two-dimensional data as a filled color plot, providing a clear visualization of the data distribution. The official documentation&rsquo;s <a href="https://matplotlib.org/stable/gallery/images_contours_and_fields/pcolormesh_levels.html#sphx-glr-gallery-images-contours-and-fields-pcolormesh-levels-py" target="_blank" rel="noopener noreffer "><code>Demo</code></a> showcases the simple usage of this function.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span> <span class="c1"># Set a random seed to ensure that the generated Z data is the same every time.</span>
+</span></span><span class="line"><span class="cl"><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># Two-dimensional grid data with a shape of (6x10).</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># x-axis coordinates with a length of 11.</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># y-axis coordinates with a length of 7.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="c1"># Create a figure</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">img</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&#34;jet&#34;</span><span class="p">)</span> <span class="c1"># Add a pcolormesh instance and set the cmap.</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># Set the x-axis coordinates.</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># Set the y-axis coordinates.</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span> <span class="c1"># Add colorbar</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&#34;00_test.png&#34;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># Execute the plot and export it as an image.</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The generated <code>Z</code> data is as follows, with a shape of 6 rows and 10 columns:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right"></th>
+<th style="text-align:right">0</th>
+<th style="text-align:right">1</th>
+<th style="text-align:right">2</th>
+<th style="text-align:right">3</th>
+<th style="text-align:right">4</th>
+<th style="text-align:right">5</th>
+<th style="text-align:right">6</th>
+<th style="text-align:right">7</th>
+<th style="text-align:right">8</th>
+<th style="text-align:right">9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0.700367</td>
+<td style="text-align:right">0.742751</td>
+<td style="text-align:right">0.70928</td>
+<td style="text-align:right">0.566746</td>
+<td style="text-align:right">0.977785</td>
+<td style="text-align:right">0.706335</td>
+<td style="text-align:right">0.247916</td>
+<td style="text-align:right">0.157883</td>
+<td style="text-align:right">0.697699</td>
+<td style="text-align:right">0.719957</td>
+</tr>
+<tr>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0.257744</td>
+<td style="text-align:right">0.341547</td>
+<td style="text-align:right">0.968761</td>
+<td style="text-align:right">0.694507</td>
+<td style="text-align:right">0.466383</td>
+<td style="text-align:right">0.702813</td>
+<td style="text-align:right">0.511786</td>
+<td style="text-align:right">0.928741</td>
+<td style="text-align:right">0.739769</td>
+<td style="text-align:right">0.622439</td>
+</tr>
+<tr>
+<td style="text-align:right">2</td>
+<td style="text-align:right">0.651545</td>
+<td style="text-align:right">0.396808</td>
+<td style="text-align:right">0.543239</td>
+<td style="text-align:right">0.7999</td>
+<td style="text-align:right">0.721545</td>
+<td style="text-align:right">0.295364</td>
+<td style="text-align:right">0.160946</td>
+<td style="text-align:right">0.206126</td>
+<td style="text-align:right">0.134325</td>
+<td style="text-align:right">0.480605</td>
+</tr>
+<tr>
+<td style="text-align:right">3</td>
+<td style="text-align:right">0.342522</td>
+<td style="text-align:right">0.362969</td>
+<td style="text-align:right">0.972918</td>
+<td style="text-align:right">0.110944</td>
+<td style="text-align:right">0.388264</td>
+<td style="text-align:right">0.783066</td>
+<td style="text-align:right">0.972897</td>
+<td style="text-align:right">0.48321</td>
+<td style="text-align:right">0.336421</td>
+<td style="text-align:right">0.567419</td>
+</tr>
+<tr>
+<td style="text-align:right">4</td>
+<td style="text-align:right">0.0479415</td>
+<td style="text-align:right">0.388937</td>
+<td style="text-align:right">0.906304</td>
+<td style="text-align:right">0.161018</td>
+<td style="text-align:right">0.743621</td>
+<td style="text-align:right">0.632974</td>
+<td style="text-align:right">0.32418</td>
+<td style="text-align:right">0.922377</td>
+<td style="text-align:right">0.237226</td>
+<td style="text-align:right">0.823946</td>
+</tr>
+<tr>
+<td style="text-align:right">5</td>
+<td style="text-align:right">0.750607</td>
+<td style="text-align:right">0.113784</td>
+<td style="text-align:right">0.845361</td>
+<td style="text-align:right">0.923932</td>
+<td style="text-align:right">0.220837</td>
+<td style="text-align:right">0.933054</td>
+<td style="text-align:right">0.488999</td>
+<td style="text-align:right">0.474719</td>
+<td style="text-align:right">0.0891675</td>
+<td style="text-align:right">0.229948</td>
+</tr>
+</tbody>
+</table>
+<p>The generated image is as follows:</p>
+<figure><img src="/img/20230527/20230527_00.png"/><figcaption>
+            <h4>matplotlib pcolormesh demo</h4>
+        </figcaption>
+</figure>
+
+<p>From this image, combined with the right-side <code>Colorbar</code>, we can clearly see the distribution of the data.</p>
+<p>The current <code>Colorbar</code> is in a gradient form similar to a rainbow, and the color values are displayed as default continuous numerical values. We can make the following modifications to customize the color intervals and define colors for each interval, making the color bar display in a &ldquo;discrete&rdquo; form, with each interval represented as a separate segment.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">BoundaryNorm</span><span class="p">,</span> <span class="n">ListedColormap</span> <span class="c1"># New</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span> <span class="c1"># Set a random seed to ensure that the generated Z data is the same every time.</span>
+</span></span><span class="line"><span class="cl"><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># Two-dimensional grid data with a shape of (6x10).</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># x-axis coordinates with a length of 11.</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># y-axis coordinates with a length of 7.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="c1"># Create a figure</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># New ---</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Custom LEVEL</span>
+</span></span><span class="line"><span class="cl"><span class="n">LEVEL</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Customize the colors for each interval.</span>
+</span></span><span class="line"><span class="cl"><span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span> <span class="s1">&#39;#01A0F6&#39;</span><span class="p">,</span> <span class="s1">&#39;#00ECEC&#39;</span><span class="p">,</span> <span class="s1">&#39;#00D800&#39;</span><span class="p">,</span> <span class="s1">&#39;#019000&#39;</span><span class="p">,</span> <span class="s1">&#39;#FFFF00&#39;</span><span class="p">,</span> <span class="s1">&#39;#E7C000&#39;</span><span class="p">,</span> <span class="p">])</span>  <span class="c1"># type: ignore</span>
+</span></span><span class="line"><span class="cl"><span class="n">norm</span> <span class="o">=</span> <span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">LEVEL</span><span class="p">,</span> <span class="n">ncolors</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">img</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span> <span class="c1"># Add a pcolormesh instance and set the cmap and the norm.</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># Set the x-axis coordinates.</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># Set the y-axis coordinates.</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span> <span class="c1"># Add colorbar</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ---</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&#34;01_test.png&#34;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># Execute the plot and export it as an image.</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><figure><img src="/img/20230527/20230527_01.png"/><figcaption>
+            <h4>matplotlib pcolormesh custom colorbar</h4>
+        </figcaption>
+</figure>
+
+<p>As we can see, the <code>LEVEL</code> we have set are not continuous numerical values, but each color block has the same length. This flexibility allows us to adjust the <code>Colorbar</code> according to specific business needs and create the desired visualizations.</p>
+<h3 id="draw-a-heatmap-filled-color-plot-using-plotly">Draw a heatmap filled color plot using Plotly</h3>
+<p>The plots generated by Matplotlib are static images. If we want to see the actual values in each square of the plot in real-time, how can we achieve that?</p>
+<p>There are many libraries available for creating interactive charts that can generate HTML webpages or be displayed in real-time within Jupyter Notebook. This article introduces <a href="https://plotly.com/python/" target="_blank" rel="noopener noreffer "><code>Plotly</code></a>.</p>
+<p>The corresponding counterpart to pcolormesh is the Heatmap, and the first demo mentioned earlier in the text achieves this effect：</p>
+
+  
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+
+
+<div id="/plotly/20230527/20230527_02.json" class="plotly" style="height:500px"></div>
+<script>
+Plotly.d3.json("/plotly/20230527/20230527_02.json", function(err, fig) {
+    Plotly.plot('\/plotly\/20230527\/20230527_02.json', fig.data, fig.layout, {responsive: true});
+});
+</script>
+<p>Here are the codes:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span> <span class="c1"># Set a random seed to ensure that the generated Z data is the same every time.</span>
+</span></span><span class="line"><span class="cl"><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># Two-dimensional grid data with a shape of (6x10).</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># x-axis coordinates with a length of 11.</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># y-axis coordinates with a length of 7.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">z</span><span class="o">=</span><span class="n">Z</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">colorscale</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Plotly Heatmap Demo&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickvals</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&#34;X Axis&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickvals</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&#34;Y Axis&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="s2">&#34;02_test.html&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>This is an interactive chart created using Plotly. Hovering over each square reveals the specific numerical value, and you can freely zoom in, zoom out, as well as save the chart as an image for download, and more.</p>
+<p>It is worth noting that the Colorbar in this chart is also continuous and rainbow-like. However, customizing the <code>LEVEL</code> for this chart is not as simple as in Matplotlib, as the implementation approaches of these two libraries are completely different.</p>
+<p>Here are the codes:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">trans_data</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">colors</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;Transform the data
+</span></span></span><span class="line"><span class="cl"><span class="s2">    
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Args:
+</span></span></span><span class="line"><span class="cl"><span class="s2">        level(list): Customize the list of levels
+</span></span></span><span class="line"><span class="cl"><span class="s2">        colors(list): Custom color list, the length should be 1 less than `level`
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Returns:
+</span></span></span><span class="line"><span class="cl"><span class="s2">        (tuple):
+</span></span></span><span class="line"><span class="cl"><span class="s2">            transformed data
+</span></span></span><span class="line"><span class="cl"><span class="s2">            A list of interval values
+</span></span></span><span class="line"><span class="cl"><span class="s2">            A hierarchical list of color scales
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">level</span><span class="p">),</span> <span class="s2">&#34;the length of the `colors` should be 1 less than `level`&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">LEVEL</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ratio_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">color_list</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">colorscale_list</span> <span class="o">=</span> <span class="p">[[</span><span class="n">ratio_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">color_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">colorscale_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">ratio_list</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">color_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">colorscale_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">ratio_list</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">color_list</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">colorscale_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">ratio_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Z_cut</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Z</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">]</span> <span class="o">+</span> <span class="n">LEVEL</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Z_cut</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">colorscale_list</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span> <span class="c1"># Set a random seed to ensure that the generated Z data is the same every time.</span>
+</span></span><span class="line"><span class="cl"><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># Two-dimensional grid data with a shape of (6x10).</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># x-axis coordinates with a length of 11.</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># y-axis coordinates with a length of 7.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">LEVEL</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#01A0F6&#39;</span><span class="p">,</span> <span class="s1">&#39;#00ECEC&#39;</span><span class="p">,</span> <span class="s1">&#39;#00D800&#39;</span><span class="p">,</span> <span class="s1">&#39;#019000&#39;</span><span class="p">,</span> <span class="s1">&#39;#FFFF00&#39;</span><span class="p">,</span> <span class="s1">&#39;#E7C000&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Z_cut</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">colorscale_list</span> <span class="o">=</span> <span class="n">trans_data</span><span class="p">(</span><span class="n">LEVEL</span><span class="p">,</span> <span class="n">color_list</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Z_cut_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Z_cut</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">z</span><span class="o">=</span><span class="n">Z_cut</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">colorbar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tickvals</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Z_cut_values</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">Z_cut_values</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ticktext</span><span class="o">=</span><span class="n">LEVEL</span>
+</span></span><span class="line"><span class="cl">    <span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">colorscale</span><span class="o">=</span><span class="n">colorscale_list</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">customdata</span><span class="o">=</span><span class="n">Z</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;x: %</span><span class="si">{x}</span><span class="s1">&lt;br&gt;y: %</span><span class="si">{y}</span><span class="s1">&lt;br&gt;z:  %</span><span class="si">{customdata}</span><span class="s1">&lt;extra&gt;&lt;/extra&gt;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Plotly Heatmap Demo&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickvals</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&#34;X Axis&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickvals</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&#34;Y Axis&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&#34;03_test.html&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Here&rsquo;s how the chart looks:</p>
+
+
+
+
+<div id="/plotly/20230527/20230527_03.json" class="plotly" style="height:500px"></div>
+<script>
+Plotly.d3.json("/plotly/20230527/20230527_03.json", function(err, fig) {
+    Plotly.plot('\/plotly\/20230527\/20230527_03.json', fig.data, fig.layout, {responsive: true});
+});
+</script>
+<h3 id="references">References</h3>
+<p><a href="https://ig248.gitlab.io/post/2018-11-05-plotly-sample/" target="_blank" rel="noopener noreffer ">Including plotly figures in Hugo posts</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-05-27</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://junsircoding.github.io/en/20230527/" data-title="Use Plotly Python to draw a heatmap and customize a non-uniform colorbar"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/en/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"></div>
+</div>
+<div id="comments"><div id="utterances" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">utterances</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+<!-- Default Statcounter code for blog https://zhjin.eu.org/
+
+-->
+
+<a href="https://statcounter.com/p12800592/?guest=1" target="_blank">网站访问次数</a>
+
+<script type="text/javascript">
+
+var sc_project=12901538;
+
+var sc_invisible=0;
+
+var sc_security="6f597d59";
+
+var scJsHost = "https://";
+
+document.write("<sc"+"ript type='text/javascript' src='" +
+
+scJsHost+
+
+"statcounter.com/counter/counter.js'></"+"script>");
+
+</script>
+
+<noscript><div class="statcounter"><a title="web stats"
+
+href="https://statcounter.com/" target="_blank"><img
+
+referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+
+<!-- End of Statcounter Code -->
+      </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://junsircoding.github.io/" target="_blank">junsircoding</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"junsircoding/blog_comments"}},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/en/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'G-KTSZ2L0J1T', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=G-KTSZ2L0J1T" async></script><script type="text/javascript" src="https://plausible.io/js/plausible.js" async defer data-domain="junsircoding.github.io"></script><script type="text/javascript" >
+           (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+           m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+           (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+           ym("93741441", "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true
+           });
+        </script>
+        <noscript><div><img src="https://mc.yandex.ru/watch/93741441" style="position:absolute; left:-9999px;" alt="" /></div></noscript></body>
+</html>
