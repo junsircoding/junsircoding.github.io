@@ -112,3 +112,9 @@ End manual selection with second mouse button.
 
 
 
+___
+
+### 视频讲解
+
+{{< bilibili BV11P411r78X >}}
+
