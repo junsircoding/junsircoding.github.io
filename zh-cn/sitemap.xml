@@ -2,36 +2,7 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://junsircoding.github.io/20230722/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://junsircoding.github.io/posts/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority><xhtml:link
-                        rel="alternate"
-                        hreflang="en"
-                        href="https://junsircoding.github.io/en/posts/"
-                        /><xhtml:link
-                    rel="alternate"
-                    hreflang="zh-cn"
-                    href="https://junsircoding.github.io/posts/"
-                    /></url><url>
-            <loc>https://junsircoding.github.io/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority><xhtml:link
-                        rel="alternate"
-                        hreflang="en"
-                        href="https://junsircoding.github.io/en/"
-                        /><xhtml:link
-                    rel="alternate"
-                    hreflang="zh-cn"
-                    href="https://junsircoding.github.io/"
-                    /></url><url>
-            <loc>https://junsircoding.github.io/20230529/</loc><lastmod>2023-06-17T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://junsircoding.github.io/20230527/</loc><lastmod>2023-05-27T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
-                        rel="alternate"
-                        hreflang="en"
-                        href="https://junsircoding.github.io/en/20230527/"
-                        /><xhtml:link
-                    rel="alternate"
-                    hreflang="zh-cn"
-                    href="https://junsircoding.github.io/20230527/"
-                    /></url><url>
-            <loc>https://junsircoding.github.io/categories/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
+            <loc>https://junsircoding.github.io/categories/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority><xhtml:link
                         rel="alternate"
                         hreflang="en"
                         href="https://junsircoding.github.io/en/categories/"
@@ -40,7 +11,19 @@
                     hreflang="zh-cn"
                     href="https://junsircoding.github.io/categories/"
                     /></url><url>
-            <loc>https://junsircoding.github.io/tags/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
+            <loc>https://junsircoding.github.io/tags/colorbar/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://junsircoding.github.io/tags/matplotlib/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://junsircoding.github.io/20230722/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://junsircoding.github.io/posts/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority><xhtml:link
+                        rel="alternate"
+                        hreflang="en"
+                        href="https://junsircoding.github.io/en/posts/"
+                        /><xhtml:link
+                    rel="alternate"
+                    hreflang="zh-cn"
+                    href="https://junsircoding.github.io/posts/"
+                    /></url><url>
+            <loc>https://junsircoding.github.io/tags/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority><xhtml:link
                         rel="alternate"
                         hreflang="en"
                         href="https://junsircoding.github.io/en/tags/"
@@ -48,4 +31,30 @@
                     rel="alternate"
                     hreflang="zh-cn"
                     href="https://junsircoding.github.io/tags/"
+                    /></url><url>
+            <loc>https://junsircoding.github.io/categories/%E7%BB%98%E5%9B%BE/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://junsircoding.github.io/</loc><lastmod>2023-07-22T21:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority><xhtml:link
+                        rel="alternate"
+                        hreflang="en"
+                        href="https://junsircoding.github.io/en/"
+                        /><xhtml:link
+                    rel="alternate"
+                    hreflang="zh-cn"
+                    href="https://junsircoding.github.io/"
+                    /></url><url>
+            <loc>https://junsircoding.github.io/tags/numpy/</loc><lastmod>2023-06-17T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://junsircoding.github.io/tags/pandas/</loc><lastmod>2023-06-17T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://junsircoding.github.io/tags/xarray/</loc><lastmod>2023-06-17T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://junsircoding.github.io/tags/%E6%8F%92%E5%80%BC/</loc><lastmod>2023-06-17T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://junsircoding.github.io/20230529/</loc><lastmod>2023-06-17T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://junsircoding.github.io/categories/%E7%AE%97%E6%B3%95/</loc><lastmod>2023-06-17T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://junsircoding.github.io/tags/pcolormesh/</loc><lastmod>2023-05-27T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://junsircoding.github.io/20230527/</loc><lastmod>2023-05-27T15:58:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
+                        rel="alternate"
+                        hreflang="en"
+                        href="https://junsircoding.github.io/en/20230527/"
+                        /><xhtml:link
+                    rel="alternate"
+                    hreflang="zh-cn"
+                    href="https://junsircoding.github.io/20230527/"
                     /></url></urlset>
