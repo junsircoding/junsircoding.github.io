@@ -3,14 +3,14 @@
         <title>junsircoding</title>
         <link>https://junsircoding.github.io/en/</link>
         <description>Get busy living, or get busy dying.</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>junsircoding@outlook.com (junsircoding)</managingEditor>
-            <webMaster>junsircoding@outlook.com (junsircoding)</webMaster><lastBuildDate>Fri, 26 May 2023 21:57:16 &#43;0800</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>junsircoding@outlook.com (小骏)</managingEditor>
+            <webMaster>junsircoding@outlook.com (小骏)</webMaster><lastBuildDate>Fri, 26 May 2023 21:57:16 &#43;0800</lastBuildDate>
             <atom:link href="https://junsircoding.github.io/en/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>Use Plotly Python to draw a heatmap and customize a non-uniform colorbar</title>
     <link>https://junsircoding.github.io/en/20230527/</link>
     <pubDate>Fri, 26 May 2023 21:57:16 &#43;0800</pubDate>
-    <author>junsircoding</author>
+    <author>小骏</author>
     <guid>https://junsircoding.github.io/en/20230527/</guid>
     <description><![CDATA[This article introduces how to use the Plotly to draw a heatmap chart, customize a non-uniform colorbar, and finally compare the visual effect of the graph with Matplotlib&rsquo;s pcolormesh. The webpage allows direct preview and manipulation of Plotly charts.]]></description>
 </item>

@@ -3,12 +3,12 @@
         <title>绘图 - 分类 - 小骏不抬杠</title>
         <link>https://junsircoding.github.io/categories/%E7%BB%98%E5%9B%BE/</link>
         <description>绘图 - 分类 - 小骏不抬杠</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>junsircoding@outlook.com (junsircoding)</managingEditor>
-            <webMaster>junsircoding@outlook.com (junsircoding)</webMaster><lastBuildDate>Sat, 22 Jul 2023 20:24:05 &#43;0800</lastBuildDate><atom:link href="https://junsircoding.github.io/categories/%E7%BB%98%E5%9B%BE/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>junsircoding@outlook.com (小骏)</managingEditor>
+            <webMaster>junsircoding@outlook.com (小骏)</webMaster><lastBuildDate>Sat, 22 Jul 2023 20:24:05 &#43;0800</lastBuildDate><atom:link href="https://junsircoding.github.io/categories/%E7%BB%98%E5%9B%BE/" rel="self" type="application/rss+xml" /><item>
     <title>Matplotlib 等值线图自定义 label 标签位置</title>
     <link>https://junsircoding.github.io/20230722/</link>
     <pubDate>Sat, 22 Jul 2023 20:24:05 &#43;0800</pubDate>
-    <author>junsircoding</author>
+    <author>小骏</author>
     <guid>https://junsircoding.github.io/20230722/</guid>
     <description><![CDATA[在用 Matplotlib 绘制等值线图时，用交互的方式自定义标签的位置。]]></description>
 </item>
@@ -16,7 +16,7 @@
     <title>用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</title>
     <link>https://junsircoding.github.io/20230527/</link>
     <pubDate>Fri, 26 May 2023 21:57:16 &#43;0800</pubDate>
-    <author>junsircoding</author>
+    <author>小骏</author>
     <guid>https://junsircoding.github.io/20230527/</guid>
     <description><![CDATA[这篇文章介绍了如何用 Plotly 库绘制 Heatmap 图，并且自定义不等距的 Colorbar，最后将图的效果与 Matplotlib 的 pcolormesh 做对比。页面中可以直接预览和操作 Plotly 图表。]]></description>
 </item>
