@@ -1,0 +1,516 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar &#8212; 小骏的博客 0.1 文档</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_charts/charts.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script src="../_static/sphinx_charts/plotly/plotly-2.11.1.min.js"></script>
+    <script src="../_static/sphinx_charts/charts.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="气象数据的各种插值问题" href="post_01.html" />
+    <link rel="prev" title="2023 年 5 月" href="../cates/cate_202305.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="post_01.html" title="气象数据的各种插值问题"
+             accesskey="N">下一页</a> |</li>
+        <li class="right" >
+          <a href="../cates/cate_202305.html" title="2023 年 5 月"
+             accesskey="P">上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">小骏的博客 0.1 文档</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../cates/cate_202305.html" accesskey="U">2023 年 5 月</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="plotly-python-heatmap-colorbar">
+<h1>用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar<a class="headerlink" href="#plotly-python-heatmap-colorbar" title="此标题的永久链接">¶</a></h1>
+<section id="matplotlib-pcolormesh">
+<h2>用 Matplotlib 绘制 pcolormesh 填色图<a class="headerlink" href="#matplotlib-pcolormesh" title="此标题的永久链接">¶</a></h2>
+<p>Matplotlib 的 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.pcolormesh.html#matplotlib.pyplot.pcolormesh">pcolormesh</a> 可以将二维数据绘制成填色图，可以一目了然地展示数据的分布情况。官方文档的 <a class="reference external" href="https://matplotlib.org/stable/gallery/images_contours_and_fields/pcolormesh_levels.html#sphx-glr-gallery-images-contours-and-fields-pcolormesh-levels-py">Demo</a> 展示了这个函数的简单使用方式。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span> <span class="c1"># 设置随机数种子, 保证每次生成的 Z 数据都相同</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># 二维网格数据, shape 为 (6x10)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 长度为 11 的 x 轴坐标</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 长度为 7 的 y 轴坐标</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="c1"># 创建画布</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">)</span> <span class="c1"># 添加填色实例, 设置色标</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 设置 x 轴坐标</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># 设置 y 轴坐标</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span> <span class="c1"># 添加色带</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;00_test.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># 执行绘图并导出成图片</span>
+</pre></div>
+</div>
+<p>生成的 <code class="docutils literal notranslate"><span class="pre">Z</span></code> 数据如下，形状为 6 行 10 列：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>4</p></th>
+<th class="head"><p>5</p></th>
+<th class="head"><p>6</p></th>
+<th class="head"><p>7</p></th>
+<th class="head"><p>8</p></th>
+<th class="head"><p>9</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0.70
+0367</p></td>
+<td><p>0.
+742
+751</p></td>
+<td><p>0
+.70
+928</p></td>
+<td><p>0.
+566
+746</p></td>
+<td><p>0.
+977
+785</p></td>
+<td><p>0.
+706
+335</p></td>
+<td><p>0.
+247
+916</p></td>
+<td><p>0.
+157
+883</p></td>
+<td><p>0.69
+7699</p></td>
+<td><p>0.
+719
+957</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0.25
+7744</p></td>
+<td><p>0.
+341
+547</p></td>
+<td><p>0.
+968
+761</p></td>
+<td><p>0.
+694
+507</p></td>
+<td><p>0.
+466
+383</p></td>
+<td><p>0.
+702
+813</p></td>
+<td><p>0.
+511
+786</p></td>
+<td><p>0.
+928
+741</p></td>
+<td><p>0.73
+9769</p></td>
+<td><p>0.
+622
+439</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>0.65
+1545</p></td>
+<td><p>0.
+396
+808</p></td>
+<td><p>0.
+543
+239</p></td>
+<td><p>0.7
+999</p></td>
+<td><p>0.
+721
+545</p></td>
+<td><p>0.
+295
+364</p></td>
+<td><p>0.
+160
+946</p></td>
+<td><p>0.
+206
+126</p></td>
+<td><p>0.13
+4325</p></td>
+<td><p>0.
+480
+605</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>0.34
+2522</p></td>
+<td><p>0.
+362
+969</p></td>
+<td><p>0.
+972
+918</p></td>
+<td><p>0.
+110
+944</p></td>
+<td><p>0.
+388
+264</p></td>
+<td><p>0.
+783
+066</p></td>
+<td><p>0.
+972
+897</p></td>
+<td><p>0
+.48
+321</p></td>
+<td><p>0.33
+6421</p></td>
+<td><p>0.
+567
+419</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>0
+.047
+9415</p></td>
+<td><p>0.
+388
+937</p></td>
+<td><p>0.
+906
+304</p></td>
+<td><p>0.
+161
+018</p></td>
+<td><p>0.
+743
+621</p></td>
+<td><p>0.
+632
+974</p></td>
+<td><p>0
+.32
+418</p></td>
+<td><p>0.
+922
+377</p></td>
+<td><p>0.23
+7226</p></td>
+<td><p>0.
+823
+946</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>0.75
+0607</p></td>
+<td><p>0.
+113
+784</p></td>
+<td><p>0.
+845
+361</p></td>
+<td><p>0.
+923
+932</p></td>
+<td><p>0.
+220
+837</p></td>
+<td><p>0.
+933
+054</p></td>
+<td><p>0.
+488
+999</p></td>
+<td><p>0.
+474
+719</p></td>
+<td><p>0
+.089
+1675</p></td>
+<td><p>0.
+229
+948</p></td>
+</tr>
+</tbody>
+</table>
+<p>绘制出的图片如下：</p>
+<figure class="align-default" id="id1">
+<img alt="Matplotlib pcolormesh Demo" src="../_images/20230527_00.png" />
+<figcaption>
+<p><span class="caption-text">Matplotlib pcolormesh Demo</span><a class="headerlink" href="#id1" title="此图像的永久链接">¶</a></p>
+</figcaption>
+</figure>
+<p>从这张图中，结合右边的 <code class="docutils literal notranslate"><span class="pre">Colorbar</span></code> 我们可以清晰地看到数据的分布情况。</p>
+<p>目前的 <code class="docutils literal notranslate"><span class="pre">Colorbar</span></code> 是像彩虹一样的渐变形式，色值分层也是默认的连续数值。我们可以做下面的修改，自定义色值分层，自定义每个区间的颜色，让 <code class="docutils literal notranslate"><span class="pre">Colorbar</span></code> 显示成「一格一格」的形式。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">BoundaryNorm</span><span class="p">,</span> <span class="n">ListedColormap</span> <span class="c1"># 新增</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span> <span class="c1"># 设置随机数种子, 保证每次生成的 Z 数据都相同</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># 二维网格数据, shape 为 (6x10)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 长度为 11 的 x 轴坐标</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 长度为 7 的 y 轴坐标</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="c1"># 创建画布</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="c1"># 修改---</span>
+<span class="c1"># 自定义色值 LEVEL</span>
+<span class="n">LEVEL</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+<span class="c1"># 自定义每个区间的颜色</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span> <span class="s1">&#39;#01A0F6&#39;</span><span class="p">,</span> <span class="s1">&#39;#00ECEC&#39;</span><span class="p">,</span> <span class="s1">&#39;#00D800&#39;</span><span class="p">,</span> <span class="s1">&#39;#019000&#39;</span><span class="p">,</span> <span class="s1">&#39;#FFFF00&#39;</span><span class="p">,</span> <span class="s1">&#39;#E7C000&#39;</span><span class="p">,</span> <span class="p">])</span>  <span class="c1"># type: ignore</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">LEVEL</span><span class="p">,</span> <span class="n">ncolors</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span> <span class="c1"># 添加填色实例</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 设置 x 轴坐标</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># 设置 y 轴坐标</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="n">LEVEL</span><span class="p">)</span> <span class="c1"># 添加色带</span>
+<span class="c1"># ---</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;01_test.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># 执行绘图并导出成图片</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Matplotlib pcolormesh 自定义 colorbar" src="../_images/20230527_01.png" />
+</figure>
+<p>Matplotlib pcolormesh 自定义 colorbar</p>
+<p>可以看到，我们设置的 <code class="docutils literal notranslate"><span class="pre">LEVEL</span></code>
+并不是连续的数值，但每个色块显示的长度都是相同的。由此我们可以很灵活地根据业务需要去调整
+<code class="docutils literal notranslate"><span class="pre">Colorbar</span></code>，画出我们想要的图。</p>
+</section>
+<section id="plotly-heatmap">
+<h2>用 Plotly 绘制 Heatmap 填色图<a class="headerlink" href="#plotly-heatmap" title="此标题的永久链接">¶</a></h2>
+<p>Matplotlib 画出的图都是静态的图片，如果我们想实时看到图中每个方格里的实际值是多少，该怎么做呢？</p>
+<p>有很多库可以绘制交互式的图表，既可以生成 HTML 网页，也可以实时在 Jupyter Notebook 中展示，本文介绍 <a class="reference external" href="https://plotly.com/python/">Plotly</a> 的使用。</p>
+<p>与 pcolormesh 效果对应的就是 Heatmap，上文中的第一个 Demo
+实现出来是这种效果：</p>
+<div class="sphinx-charts docutils container" id="id2">
+<div class="sphinx-charts-chart sphinx-charts-chart-id-0 sphinx-charts-chart-uri-../_charts/charts/20230527/20230527_02.json sphinx-charts-chart-dn-chart docutils container" id="sphinx-charts-chart-id-0">
+</div>
+<p class="sphinx-charts-hidden"></p>
+<div class="sphinx-charts-placeholder sphinx-charts-placeholder-0 docutils container" id="id3">
+<p><span class="caption-text">Loading…</span></p>
+</div>
+<p><span class="caption-text">连续色块</span></p>
+</div>
+<p>绘图代码如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span> <span class="c1"># 设置随机数种子, 保证每次生成的 Z 数据都相同</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># 二维网格数据, shape 为 (6x10)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 长度为 11 的 x 轴坐标</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 长度为 7 的 y 轴坐标</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">Z</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+        <span class="n">colorscale</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Plotly Heatmap Demo&#39;</span><span class="p">,</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickvals</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;X Axis&quot;</span><span class="p">),</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickvals</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Y Axis&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="s2">&quot;02_test.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这便是 Plotly 画出的交互图，把鼠标放上去可以看到每个方格的具体数值，并且可以自由放大、缩小，以及将图表保存成图片下载等等。</p>
+<p>可以注意到这个图的 Colorbar 也是连续的彩虹状，而这个图要自定义 <code class="docutils literal notranslate"><span class="pre">LEVEL</span></code>
+就不像 Matplotlib 那样简单了，两个库的实现思路完全不同。</p>
+<p>这里给出实现的代码：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="k">def</span> <span class="nf">trans_data</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">colors</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;转换数据</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level(list): 自定义层级列表</span>
+<span class="sd">        colors(list): 自定义颜色列表, 长度应比 level 小 1</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (tuple):</span>
+<span class="sd">            分组转换后的数据</span>
+<span class="sd">            区间值列表</span>
+<span class="sd">            色标分层列表</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">level</span><span class="p">),</span> <span class="s2">&quot;colors 长度应比 level 小 1&quot;</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">LEVEL</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ratio_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">color_list</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="n">colorscale_list</span> <span class="o">=</span> <span class="p">[[</span><span class="n">ratio_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">color_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="n">colorscale_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">ratio_list</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">color_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]])</span>
+        <span class="n">colorscale_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">ratio_list</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">color_list</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">colorscale_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">ratio_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="n">Z_cut</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span>
+        <span class="n">Z</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+        <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">]</span> <span class="o">+</span> <span class="n">LEVEL</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">],</span>
+        <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Z_cut</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">colorscale_list</span>
+
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span>  <span class="c1"># 设置随机数种子, 保证每次生成的 Z 数据都相同</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># 二维网格数据, shape 为 (6x10)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 长度为 11 的 x 轴坐标</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 长度为 7 的 y 轴坐标</span>
+
+<span class="n">LEVEL</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+<span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#01A0F6&#39;</span><span class="p">,</span> <span class="s1">&#39;#00ECEC&#39;</span><span class="p">,</span> <span class="s1">&#39;#00D800&#39;</span><span class="p">,</span> <span class="s1">&#39;#019000&#39;</span><span class="p">,</span> <span class="s1">&#39;#FFFF00&#39;</span><span class="p">,</span> <span class="s1">&#39;#E7C000&#39;</span><span class="p">]</span>
+
+<span class="n">Z_cut</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">colorscale_list</span> <span class="o">=</span> <span class="n">trans_data</span><span class="p">(</span><span class="n">LEVEL</span><span class="p">,</span> <span class="n">color_list</span><span class="p">)</span>
+<span class="n">Z_cut_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Z_cut</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">Z_cut</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">tickvals</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Z_cut_values</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">Z_cut_values</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">ticktext</span><span class="o">=</span><span class="n">LEVEL</span>
+    <span class="p">),</span>
+    <span class="n">colorscale</span><span class="o">=</span><span class="n">colorscale_list</span><span class="p">,</span>
+    <span class="n">customdata</span><span class="o">=</span><span class="n">Z</span><span class="p">,</span>
+    <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;x: %</span><span class="si">{x}</span><span class="s1">&lt;br&gt;y: %</span><span class="si">{y}</span><span class="s1">&lt;br&gt;z:  %</span><span class="si">{customdata}</span><span class="s1">&lt;extra&gt;&lt;/extra&gt;&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Plotly Heatmap Demo&#39;</span><span class="p">,</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickvals</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;X Axis&quot;</span><span class="p">),</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickvals</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Y Axis&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;03_test.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>图表效果是这样：</p>
+<div class="sphinx-charts docutils container" id="id4">
+<div class="sphinx-charts-chart sphinx-charts-chart-id-1 sphinx-charts-chart-uri-../_charts/charts/20230527/20230527_03.json sphinx-charts-chart-dn-chart docutils container" id="sphinx-charts-chart-id-1">
+</div>
+<p class="sphinx-charts-hidden"></p>
+<div class="sphinx-charts-placeholder sphinx-charts-placeholder-1 docutils container" id="id5">
+<p><span class="caption-text">Loading…</span></p>
+</div>
+<p><span class="caption-text">自定义色块分层</span></p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a><ul>
+<li><a class="reference internal" href="#matplotlib-pcolormesh">用 Matplotlib 绘制 pcolormesh 填色图</a></li>
+<li><a class="reference internal" href="#plotly-heatmap">用 Plotly 绘制 Heatmap 填色图</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../cates/cate_202305.html"
+                          title="上一章">2023 年 5 月</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="post_01.html"
+                          title="下一章">气象数据的各种插值问题</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/posts/post_00.rst.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="post_01.html" title="气象数据的各种插值问题"
+             >下一页</a> |</li>
+        <li class="right" >
+          <a href="../cates/cate_202305.html" title="2023 年 5 月"
+             >上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">小骏的博客 0.1 文档</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../cates/cate_202305.html" >2023 年 5 月</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; 版权所有 2023, 小骏.
+      由 <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1创建。
+    </div>
+  </body>
+</html>
