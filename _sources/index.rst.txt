@@ -7,11 +7,11 @@
 ======================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: 文章列表:
-
-   /cates/cate_202305
-   /cates/cate_202307
+   :maxdepth: 1
+   
+   /posts/post_02
+   /posts/post_00
+   /posts/post_01
 
 
 
