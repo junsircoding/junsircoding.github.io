@@ -1,127 +1,199 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="prev" title="用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar" href="post_00.html" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>气象数据的各种插值问题 &mdash; 小骏的博客 0.1 文档</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 6.2.1 and Furo 2023.09.10 -->
+        <title>气象数据的各种插值问题 - 小骏的博客 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=369552022d0b975c8e74270ce6eabe0fb7978f24" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-        <script kind="utterances">
-
-    var commentsRunWhenDOMLoaded = cb => {
-    if (document.readyState != 'loading') {
-        cb()
-    } else if (document.addEventListener) {
-        document.addEventListener('DOMContentLoaded', cb)
-    } else {
-        document.attachEvent('onreadystatechange', function() {
-        if (document.readyState == 'complete') cb()
-        })
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
     }
-}
-
-var addUtterances = () => {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = "https://utteranc.es/client.js";
-    script.async = "async";
-
-    script.setAttribute("repo", "junsircoding/blog_comments");
-    script.setAttribute("issue-term", "pathname");
-    script.setAttribute("theme", "github-light");
-    script.setAttribute("label", "💬 comment");
-    script.setAttribute("crossorigin", "anonymous");
-
-    sections = document.querySelectorAll("div.section");
-    if (sections !== null) {
-        section = sections[sections.length-1];
-        section.appendChild(script);
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
-}
-commentsRunWhenDOMLoaded(addUtterances);
-</script>
-        <script src="../_static/translations.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
-    <link rel="prev" title="用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar" href="post_00.html" /> 
-</head>
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
 
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            小骏的博客
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
-              <ul class="current">
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">小骏的博客 0.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">小骏的博客 0.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="post_02.html">Matplotlib 等值线图自定义 label 标签位置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="post_00.html">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">气象数据的各种插值问题</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id6">将网格数据插值到另一个坐标、分辨率不同的网格数据上</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">将网格数据插值到站点数据上</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id9">将二维的站点数据转为三维的网格数据</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">将网格数据插值到站点数据</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">将三维网格数据转为二维</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#id12">将站点数据插值到网格数据上（反距离权重插值）</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id13">示例数据下载</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id17">视频讲解</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">气象数据的各种插值问题</a></li>
 </ul>
 
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">小骏的博客</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="页面导航">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">气象数据的各种插值问题</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/posts/post_01.rst.txt" rel="nofollow"> 查看页面源码</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="id1">
-<h1>气象数据的各种插值问题<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>气象数据的各种插值问题<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
 <p>到目前为止，我接触到的气象相关数据有 <strong>等经纬度网格数据</strong> 和 <strong>站点数据</strong>。</p>
 <p>注：为叙述简便，<strong>等经纬度网格数据</strong> 以下简称 <strong>网格数据</strong> 。数据下载来源点击这里：<a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">站点数据</a> （搜索 <code class="docutils literal notranslate"><span class="pre">station</span></code>），<a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">网格数据</a>。</p>
 <hr class="docutils" />
@@ -166,7 +238,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <figure class="align-default" id="id18">
 <img alt="站点数据预览" src="../_images/00.png" />
 <figcaption>
-<p><span class="caption-text">站点数据预览</span><a class="headerlink" href="#id18" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">站点数据预览</span><a class="headerlink" href="#id18" title="此图像的永久链接">#</a></p>
 </figcaption>
 </figure>
 <hr class="docutils" />
@@ -204,7 +276,7 @@ Dict。</p>
 <figure class="align-default" id="id19">
 <img alt="格点数据预览" src="../_images/01.png" />
 <figcaption>
-<p><span class="caption-text">格点数据预览</span><a class="headerlink" href="#id19" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">格点数据预览</span><a class="headerlink" href="#id19" title="此图像的永久链接">#</a></p>
 </figcaption>
 </figure>
 <hr class="docutils" />
@@ -218,7 +290,7 @@ Dict。</p>
 <p>下面逐一说明。</p>
 <hr class="docutils" />
 <section id="id6">
-<h2>将网格数据插值到另一个坐标、分辨率不同的网格数据上<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<h2>将网格数据插值到另一个坐标、分辨率不同的网格数据上<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h2>
 <p>我们这里再读取一个与 <em>test_grid.nc</em> 坐标不同的一个 grib2
 格式的网格数据，<em>test_grid.grib2</em> <a class="footnote-reference brackets" href="#id16" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
@@ -269,7 +341,7 @@ Dict。</p>
 <figure class="align-default" id="id20">
 <img alt="grib2 格式的格点数据预览" src="../_images/02.png" />
 <figcaption>
-<p><span class="caption-text">grib2 格式的格点数据预览</span><a class="headerlink" href="#id20" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">grib2 格式的格点数据预览</span><a class="headerlink" href="#id20" title="此图像的永久链接">#</a></p>
 </figcaption>
 </figure>
 <p>可以看到 <em>test_grid.nc</em> 的经纬度坐标为
@@ -337,15 +409,15 @@ Dict。</p>
 <figure class="align-default" id="id21">
 <img alt="nc 插值到 grib2 的格点数据预览" src="../_images/03.png" />
 <figcaption>
-<p><span class="caption-text">nc 插值到 grib2 的格点数据预览</span><a class="headerlink" href="#id21" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">nc 插值到 grib2 的格点数据预览</span><a class="headerlink" href="#id21" title="此图像的永久链接">#</a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
 <section id="id8">
-<h2>将网格数据插值到站点数据上<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<h2>将网格数据插值到站点数据上<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h2>
 <section id="id9">
-<h3>将二维的站点数据转为三维的网格数据<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<h3>将二维的站点数据转为三维的网格数据<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h3>
 <p>这里我写了两种方式，一种是直接 for
 循环填充数据，当数据量较大时速度很慢；一种是用 Pandas
 的内置方法，性能较好。</p>
@@ -452,13 +524,13 @@ Dict。</p>
 <figure class="align-default" id="id22">
 <img alt="站点数据转为三维网格数据预览" src="../_images/04.png" />
 <figcaption>
-<p><span class="caption-text">站点数据转为三维网格数据预览</span><a class="headerlink" href="#id22" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">站点数据转为三维网格数据预览</span><a class="headerlink" href="#id22" title="此图像的永久链接">#</a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
 <section id="id10">
-<h3>将网格数据插值到站点数据<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h3>
+<h3>将网格数据插值到站点数据<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h3>
 <p>完成这个步骤的常规方法是逐行读取站点数据，然后将每个站点插值到 <em>test_nc</em>
 上：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
@@ -486,7 +558,7 @@ Dict。</p>
 <figure class="align-default" id="id23">
 <img alt="格点数据插值到站点，慢速" src="../_images/05.png" />
 <figcaption>
-<p><span class="caption-text">格点数据插值到站点，慢速</span><a class="headerlink" href="#id23" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">格点数据插值到站点，慢速</span><a class="headerlink" href="#id23" title="此图像的永久链接">#</a></p>
 </figcaption>
 </figure>
 <p>可以想见，这种方式性能也比较一般，当站点数据很多是，逐一循环速度很慢。</p>
@@ -573,13 +645,13 @@ Dict。</p>
 <figure class="align-default" id="id24">
 <img alt="格点数据插值到站点，快速" src="../_images/06.png" />
 <figcaption>
-<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id24" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id24" title="此图像的永久链接">#</a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
 <section id="id11">
-<h3>将三维网格数据转为二维<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h3>
+<h3>将三维网格数据转为二维<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h3>
 <p><strong>这个步骤也不是必须的</strong>，仅用于需要的情况。</p>
 <p><code class="docutils literal notranslate"><span class="pre">Xarray</span></code>
 有方便的方法可以将三维的网格数据直接转为类似站点数据格式的二维数据：</p>
@@ -603,7 +675,7 @@ Dict。</p>
 </section>
 <hr class="docutils" />
 <section id="id12">
-<h2>将站点数据插值到网格数据上（反距离权重插值）<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h2>
+<h2>将站点数据插值到网格数据上（反距离权重插值）<a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h2>
 <p>还会有一种需求，是将站点数据插值到指定精度的网格上。 原本为 NAN
 的数据要运用反距离权重插值预测出对应的值，而反距离权重插值简单讲就是要预测的点的值取决于距离它最近的点。
 与它距离越近，对它的影响就越大。</p>
@@ -650,13 +722,13 @@ Dict。</p>
 <figure class="align-default" id="id25">
 <img alt="格点数据插值到站点，快速" src="../_images/07.png" />
 <figcaption>
-<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id25" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id25" title="此图像的永久链接">#</a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
 <section id="id13">
-<h2>示例数据下载<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h2>
+<h2>示例数据下载<a class="headerlink" href="#id13" title="此标题的永久链接">#</a></h2>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id14" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">1</a><span class="fn-bracket">]</span></span>
@@ -674,52 +746,119 @@ Dict。</p>
 </section>
 <hr class="docutils" />
 <section id="id17">
-<h2>视频讲解<a class="headerlink" href="#id17" title="此标题的永久链接"></a></h2>
+<h2>视频讲解<a class="headerlink" href="#id17" title="此标题的永久链接">#</a></h2>
 <p><a class="reference external" href="https://www.bilibili.com/video/BV1iX4y147eT/">Bilibili</a></p>
 </section>
 </section>
 
-
-           </div>
-             <div class="articleComments">
-
-<hr />
-<script src="https://utteranc.es/client.js"
-    repo="junsircoding/blog_comments"
-    issue-term="pathname"
-    label="✨💬✨"
-    theme="github-light"
-    crossorigin="anonymous"
-    async>
-</script>
-
-             </div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          <a class="prev-page" href="post_00.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, 小骏
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="post_00.html" class="btn btn-neutral float-left" title="用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
     </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">气象数据的各种插值问题</a><ul>
+<li><a class="reference internal" href="#id6">将网格数据插值到另一个坐标、分辨率不同的网格数据上</a></li>
+<li><a class="reference internal" href="#id8">将网格数据插值到站点数据上</a><ul>
+<li><a class="reference internal" href="#id9">将二维的站点数据转为三维的网格数据</a></li>
+<li><a class="reference internal" href="#id10">将网格数据插值到站点数据</a></li>
+<li><a class="reference internal" href="#id11">将三维网格数据转为二维</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id12">将站点数据插值到网格数据上（反距离权重插值）</a></li>
+<li><a class="reference internal" href="#id13">示例数据下载</a></li>
+<li><a class="reference internal" href="#id17">视频讲解</a></li>
+</ul>
+</li>
+</ul>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; 版权所有 2023, 小骏.</p>
-  </div>
-
-  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
-    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
-   
-
-</footer>
+          </div>
         </div>
       </div>
-    </section>
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script kind="utterances">
 
-</body>
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "junsircoding/blog_comments");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section");
+    if (sections !== null) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+    <script src="../_static/translations.js"></script>
+    </body>
 </html>
