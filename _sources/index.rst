@@ -7,14 +7,11 @@
 ======================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   
+   /posts/post_02
+   /posts/post_00
+   /posts/post_01
 
 
 
-文章索引
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
