@@ -139,7 +139,18 @@ commentsRunWhenDOMLoaded(addUtterances);
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KTSZ2L0J1T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-KTSZ2L0J1T', {
+          'anonymize_ip': false,
+      });
+    </script> 
 
 </body>
 </html>
