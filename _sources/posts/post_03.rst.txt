@@ -21,7 +21,8 @@
     $ git clone https://github.com/VundleVim/Vundle.vim.git Vundle.vim
 
 然后把这写配置代码添加到 ``~/.vimrc`` 中：
-注意，在 ``.vimrc`` 文件中， ``"`` 开头的是注释。
+
+.. note:: 注意，在 .vimrc 文件中， ``"`` 开头的是注释。 
 
 .. code:: vim
    
