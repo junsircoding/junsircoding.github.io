@@ -137,13 +137,14 @@ commentsRunWhenDOMLoaded(addUtterances);
 <h2>步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <section id="vundle">
 <h3>安装 Vundle 插件，用来管理插件<a class="headerlink" href="#vundle" title="此标题的永久链接"></a></h3>
-<p>我们下面要安装很多插件，而这些插件可以用别的插件来管理，这各管理插件的插件就是 Vundle，以下是命令步骤。</p>
+<p>我们下面要安装很多插件，而这些插件可以用别的插件来管理，这个管理插件的插件就是 Vundle，以下是命令步骤。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.vim/bundle
 $<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/.vim/bundle
 $<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/VundleVim/Vundle.vim.git<span class="w"> </span>Vundle.vim
 </pre></div>
 </div>
-<p>然后把这写配置代码添加到 <code class="docutils literal notranslate"><span class="pre">~/.vimrc</span></code> 中：</p>
+<p>然后把这写配置代码添加到 <code class="docutils literal notranslate"><span class="pre">~/.vimrc</span></code> 中：
+注意，在 <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code> 文件中， <code class="docutils literal notranslate"><span class="pre">&quot;</span></code> 开头的是注释。</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">nocompatible</span>
 <span class="k">filetype</span> off
 <span class="c">&quot; 将运行时路径设置为包含 Vundle 并初始化</span>
