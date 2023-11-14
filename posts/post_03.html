@@ -143,7 +143,7 @@ $<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/.vi
 $<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/VundleVim/Vundle.vim.git<span class="w"> </span>Vundle.vim
 </pre></div>
 </div>
-<p>然后把这写配置代码添加到 ~/.vimrc 中：</p>
+<p>然后把这写配置代码添加到 <code class="docutils literal notranslate"><span class="pre">~/.vimrc</span></code> 中：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">nocompatible</span>
 <span class="k">filetype</span> off
 <span class="c">&quot; 将运行时路径设置为包含 Vundle 并初始化</span>
@@ -156,23 +156,23 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 <span class="k">filetype</span> plugin indent <span class="k">on</span>
 </pre></div>
 </div>
-<p>后面在安装新的插件的时候，就把 Plugin ‘xxx/xxx.vim’ 添加到 call vundle#begin() 和 call vundle#end() 中间即可。
+<p>后面在安装新的插件的时候，就把 Plugin <code class="docutils literal notranslate"><span class="pre">xxx/xxx.vim</span></code> 添加到 <code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">vundle#begin()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">vundle#end()</span></code> 中间即可。
 添加了插件后，需要手动触发安装所有插件。进入 vim 后，输入以下命令即可自动下载安装所有插件：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="p">:</span>PluginInstall
 </pre></div>
 </div>
-<p>输入命令后按 Enter 后，屏幕会从中间分成两边，并且显示安装过程。当在 vim 底部的状态栏中显示 Done 后，插件就全部安装好了，此时按 q 退出。
+<p>输入命令后按 <code class="docutils literal notranslate"><span class="pre">Enter</span></code> 后，屏幕会从中间分成两边，并且显示安装过程。当在 vim 底部的状态栏中显示 <code class="docutils literal notranslate"><span class="pre">Done</span></code> 后，插件就全部安装好了，此时按 <code class="docutils literal notranslate"><span class="pre">q</span></code> 退出。
 如果要卸载某个插件，只要将插件注释掉，然后执行这条命令即可：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="p">:</span>PluginClean
 </pre></div>
 </div>
 <p>这样那个插件的代码就会从插件目录被删除掉。</p>
-<p>编辑 .vimrc 文件，在里面输入一些配置，让 vim 更好用。</p>
+<p>编辑 <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code> 文件，在里面输入一些配置，让 vim 更好用。</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="k">number</span> <span class="c">&quot; 显示行号</span>
 <span class="nb">syntax</span> <span class="k">on</span>  <span class="c">&quot; 开启代码语法高亮</span>
 </pre></div>
 </div>
-<p>当开启语法高亮后，vim 会从 syntax/&lt;language&gt;.vim 中寻找对应后缀文件的高亮文件。比如打开了 main.cpp，vim 会自动寻找 syntax.cpp 文件，并按照里面的规则进行代码文件的渲染。</p>
+<p>当开启语法高亮后，vim 会从 <code class="docutils literal notranslate"><span class="pre">syntax/&lt;language&gt;.vim</span></code> 中寻找对应后缀文件的高亮文件。比如打开了 main.cpp，vim 会自动寻找 syntax.cpp 文件，并按照里面的规则进行代码文件的渲染。</p>
 </section>
 <section id="tab">
 <h3>配置 TAB 键、搜索、内置终端<a class="headerlink" href="#tab" title="此标题的永久链接"></a></h3>
@@ -189,8 +189,8 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 <span class="k">set</span> <span class="nb">hlsearch</span>   <span class="c">&quot; 搜索结果高亮显示</span>
 </pre></div>
 </div>
-<p>在搜索时，关键词会高亮显示，取消高亮输入：<cite>:noh</cite>。</p>
-<p>当输入 <cite>:term</cite> 时，会打开 vim 内置的终端，下面配置这个终端的一些特性：</p>
+<p>在搜索时，关键词会高亮显示，取消高亮输入： <code class="docutils literal notranslate"><span class="pre">:noh</span></code> 。</p>
+<p>当输入 <code class="docutils literal notranslate"><span class="pre">:term</span></code> 时，会打开 vim 内置的终端，下面配置这个终端的一些特性：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> termwinsize<span class="p">=</span><span class="m">12</span>x<span class="m">0</span>   <span class="c">&quot; 设置终端尺寸为 12 行</span>
 <span class="k">set</span> <span class="nb">splitbelow</span>         <span class="c">&quot; 始终在底部拆分</span>
 <span class="k">set</span> <span class="nb">mouse</span><span class="p">=</span><span class="k">a</span>            <span class="c">&quot; 支持鼠标拖动窗口改变终端高度</span>
@@ -199,7 +199,7 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 </section>
 <section id="vim-polyglot">
 <h3>增加各种编程语言语法包和缩进，vim-polyglot 插件<a class="headerlink" href="#vim-polyglot" title="此标题的永久链接"></a></h3>
-<p><cite>vim-polyglot</cite> 插件可以对 50 多种编程语言进行语法高亮。通过下面的命令安装这个插件：</p>
+<p><code class="docutils literal notranslate"><span class="pre">vim-polyglot</span></code> 插件可以对 50 多种编程语言进行语法高亮。通过下面的命令安装这个插件：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 在 .vimrc 中添加这行配置</span>
 Plugin<span class="w"> </span><span class="s1">&#39;sheerun/vim-polyglot&#39;</span>
 <span class="w">  </span><span class="c1"># 通过这条命令在命令行安装插件</span>
@@ -217,8 +217,8 @@ $<span class="w"> </span>vim<span class="w"> </span>+PluginInstall<span class="w
 </section>
 <section id="id3">
 <h3>安装配色主题<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
-<p>虽然 <cite>vim</cite> 的默认主题已经够用了，但我们也可以自己另外安装主题。输入 <cite>:color `，然后按 `&lt;TAB&gt;</cite> 键自动按顺序遍历出所有主题名称。
-<cite>awesome-vim-colorschemes</cite> 这个仓库包含了许多好看的主题，可以从里面找自己喜欢的。添加下面的配置，并且执行安装，就可以安装对应主题了。</p>
+<p>虽然 Vim 的默认主题已经够用了，但我们也可以自己另外安装主题。输入 <code class="docutils literal notranslate"><span class="pre">:color</span> <span class="pre">``</span> <span class="pre">，然后按</span> <span class="pre">``&lt;TAB&gt;</span></code> 键自动按顺序遍历出所有主题名称。
+<code class="docutils literal notranslate"><span class="pre">awesome-vim-colorschemes</span></code> 这个仓库包含了许多好看的主题，可以从里面找自己喜欢的。添加下面的配置，并且执行安装，就可以安装对应主题了。</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;cocopon/iceberg.vim&#39;</span>
 Plugin <span class="s1">&#39;arcticicestudio/nord-vim&#39;</span>
 Plugin <span class="s1">&#39;Badacadabra/vim-archery&#39;</span>
@@ -237,7 +237,7 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 </section>
 <section id="auto-pairs">
 <h3>方括号、圆括号和引号的自动成对补全，auto-pairs 插件<a class="headerlink" href="#auto-pairs" title="此标题的永久链接"></a></h3>
-<p>在输入括号、反引号、单双引号时可以让编辑器自动成对输入，通过安装 <cite>auto-pairs</cite> 插件可以实现：</p>
+<p>在输入括号、反引号、单双引号时可以让编辑器自动成对输入，通过安装 <code class="docutils literal notranslate"><span class="pre">auto-pairs</span></code> 插件可以实现：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;jiangmiao/auto-pairs&#39;</span>
   # Install <span class="k">on</span> command line
 $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="p">+</span><span class="k">qall</span>
@@ -258,8 +258,8 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="p">+</span><span class="k">qall</span>
 </pre></div>
 </div>
-<p>在 <cite>vim</cite> 中，输入 <cite>:NERDTree</cite> 就可以打开这个文件资源管理器，输入 <cite>:help nerdtree</cite> 可以查看他的帮助文档。
-输入 <cite>q</cite> 或者 <cite>:NERDTreeClose</cite> 可以关闭它。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">vim</span></code> 中，输入 <code class="docutils literal notranslate"><span class="pre">:NERDTree</span></code> 就可以打开这个文件资源管理器，输入 <code class="docutils literal notranslate"><span class="pre">:help</span> <span class="pre">nerdtree</span></code> 可以查看他的帮助文档。
+输入 <code class="docutils literal notranslate"><span class="pre">q</span></code> 或者 <code class="docutils literal notranslate"><span class="pre">:NERDTreeClose</span></code> 可以关闭它。</p>
 <p>下面再添加几个 NERDTree 的配置，让它更好用：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> NERDTreeShowBookmarks <span class="p">=</span> <span class="m">1</span>   <span class="c">&quot; 显示书签表格</span>
 <span class="k">let</span> NERDTreeShowHidden <span class="p">=</span> <span class="m">1</span>      <span class="c">&quot; 显示隐藏文件</span>
