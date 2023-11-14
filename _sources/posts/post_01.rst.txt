@@ -273,7 +273,7 @@ Dict。
 
    def d1_to_d2_low(df_ori: pd.DataFrame, nan_val=np.nan):
        """将 flatten 后的二维数据转为三维网格数据, 慢速版本
-       
+
        Args:
            df_ori(pd.DataFrame): 二维数据
            nan_val(any): 缺测值, 默认为 np.nan

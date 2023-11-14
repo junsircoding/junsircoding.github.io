@@ -9,9 +9,8 @@
 .. toctree::
    :maxdepth: 1
    
+   /posts/post_03
    /posts/post_02
    /posts/post_00
    /posts/post_01
-
-
 

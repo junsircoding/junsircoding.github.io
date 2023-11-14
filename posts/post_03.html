@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>将 Vim 打造成轻量级的 IDE &mdash; 小骏的博客  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://junsircoding.github.io/posts/post_03.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+        <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "junsircoding/blog_comments");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section");
+    if (sections !== null) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Matplotlib 等值线图自定义 label 标签位置" href="post_02.html" />
+    <link rel="prev" title="欢迎来到 小骏的博客" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            小骏的博客
+              <img src="../_static/avatar_circle.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">将 Vim 打造成轻量级的 IDE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">步骤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vundle">安装 Vundle 插件，用来管理插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tab">配置 TAB 键、搜索、内置终端</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vim-polyglot">增加各种编程语言语法包和缩进，vim-polyglot 插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">安装配色主题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auto-pairs">方括号、圆括号和引号的自动成对补全，auto-pairs 插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nerdtree">文件管理器，NERDTree 插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tagbar">增加一个面板条，在里面展示源文件的标签，tagbar 插件</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">参考文章</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="post_02.html">Matplotlib 等值线图自定义 label 标签位置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_00.html">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_01.html">气象数据的各种插值问题</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">小骏的博客</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">将 Vim 打造成轻量级的 IDE</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/posts/post_03.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vim-ide">
+<h1>将 Vim 打造成轻量级的 IDE<a class="headerlink" href="#vim-ide" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>介绍<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>在 Linux 系统中，Vim 编辑器常被用来编辑文件。Vim 可以提供缓冲区(buffers)、宏(macros) 和书签(bookmarking)的功能。Vim 还内置了一种自己的脚本语言，以便开发人员编写插件增强它的功能。下面我们就通过安装插件和增加配置的方式，来把基础的 Vim 变成一个轻量级的 IDE。</p>
+</section>
+<section id="id2">
+<h2>步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="vundle">
+<h3>安装 Vundle 插件，用来管理插件<a class="headerlink" href="#vundle" title="此标题的永久链接"></a></h3>
+<p>我们下面要安装很多插件，而这些插件可以用别的插件来管理，这各管理插件的插件就是 Vundle，以下是命令步骤。</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.vim/bundle
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/.vim/bundle
+$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/VundleVim/Vundle.vim.git<span class="w"> </span>Vundle.vim
+</pre></div>
+</div>
+<p>然后把这写配置代码添加到 ~/.vimrc 中：</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">nocompatible</span>
+<span class="k">filetype</span> off
+<span class="c">&quot; 将运行时路径设置为包含 Vundle 并初始化</span>
+<span class="k">set</span> <span class="nb">rtp</span><span class="p">+=~</span><span class="sr">/.vim/</span>bundle/Vundle.<span class="k">vim</span>
+<span class="c">&quot; 设置插件下载目录为 ~/.vim/plugged/</span>
+<span class="k">call</span> vundle#begin<span class="p">(</span><span class="s1">&#39;~/.vim/plugged&#39;</span><span class="p">)</span>
+<span class="c">&quot; 让 Vundle 管理 Vundle</span>
+Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
+<span class="k">call</span> vundle#<span class="k">end</span><span class="p">()</span>
+<span class="k">filetype</span> plugin indent <span class="k">on</span>
+</pre></div>
+</div>
+<p>后面在安装新的插件的时候，就把 Plugin ‘xxx/xxx.vim’ 添加到 call vundle#begin() 和 call vundle#end() 中间即可。
+添加了插件后，需要手动触发安装所有插件。进入 vim 后，输入以下命令即可自动下载安装所有插件：</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="p">:</span>PluginInstall
+</pre></div>
+</div>
+<p>输入命令后按 Enter 后，屏幕会从中间分成两边，并且显示安装过程。当在 vim 底部的状态栏中显示 Done 后，插件就全部安装好了，此时按 q 退出。
+如果要卸载某个插件，只要将插件注释掉，然后执行这条命令即可：</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="p">:</span>PluginClean
+</pre></div>
+</div>
+<p>这样那个插件的代码就会从插件目录被删除掉。</p>
+<p>编辑 .vimrc 文件，在里面输入一些配置，让 vim 更好用。</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="k">number</span> <span class="c">&quot; 显示行号</span>
+<span class="nb">syntax</span> <span class="k">on</span>  <span class="c">&quot; 开启代码语法高亮</span>
+</pre></div>
+</div>
+<p>当开启语法高亮后，vim 会从 syntax/&lt;language&gt;.vim 中寻找对应后缀文件的高亮文件。比如打开了 main.cpp，vim 会自动寻找 syntax.cpp 文件，并按照里面的规则进行代码文件的渲染。</p>
+</section>
+<section id="tab">
+<h3>配置 TAB 键、搜索、内置终端<a class="headerlink" href="#tab" title="此标题的永久链接"></a></h3>
+<p>下面添加几个和 Tab 键有关的配置：</p>
+<blockquote>
+<div><div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 输入 \t 制表符后空 4 个空格</span>
+<span class="k">set</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 按下 Tab 后空 4 个空格</span>
+<span class="k">set</span> <span class="nb">expandtab</span> <span class="c">&quot; 按下 Tab 后使用空格而不是制表符</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>在 Normal 模式下输入正斜杠时，会触发 vim 的搜索功能。下面这俩配置可以使搜索功能更加直观：</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">incsearch</span>  <span class="c">&quot; 启用增量搜索</span>
+<span class="k">set</span> <span class="nb">hlsearch</span>   <span class="c">&quot; 搜索结果高亮显示</span>
+</pre></div>
+</div>
+<p>在搜索时，关键词会高亮显示，取消高亮输入：<cite>:noh</cite>。</p>
+<p>当输入 <cite>:term</cite> 时，会打开 vim 内置的终端，下面配置这个终端的一些特性：</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> termwinsize<span class="p">=</span><span class="m">12</span>x<span class="m">0</span>   <span class="c">&quot; 设置终端尺寸为 12 行</span>
+<span class="k">set</span> <span class="nb">splitbelow</span>         <span class="c">&quot; 始终在底部拆分</span>
+<span class="k">set</span> <span class="nb">mouse</span><span class="p">=</span><span class="k">a</span>            <span class="c">&quot; 支持鼠标拖动窗口改变终端高度</span>
+</pre></div>
+</div>
+</section>
+<section id="vim-polyglot">
+<h3>增加各种编程语言语法包和缩进，vim-polyglot 插件<a class="headerlink" href="#vim-polyglot" title="此标题的永久链接"></a></h3>
+<p><cite>vim-polyglot</cite> 插件可以对 50 多种编程语言进行语法高亮。通过下面的命令安装这个插件：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 在 .vimrc 中添加这行配置</span>
+Plugin<span class="w"> </span><span class="s1">&#39;sheerun/vim-polyglot&#39;</span>
+<span class="w">  </span><span class="c1"># 通过这条命令在命令行安装插件</span>
+$<span class="w"> </span>vim<span class="w"> </span>+PluginInstall<span class="w"> </span>+qall
+</pre></div>
+</div>
+<p>因为语言包是按需加载的，所以不会拖慢 vim 的启动和运行速度。可以用下面的命令查看语言包占用的空间：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>du<span class="w"> </span>-hcs<span class="w"> </span>~/.vim/plugged/vim-polyglot
+
+<span class="c1"># Output</span>
+23M<span class="w"> </span>.vim/plugged/vim-polyglot/
+23M<span class="w"> </span>total
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>安装配色主题<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>虽然 <cite>vim</cite> 的默认主题已经够用了，但我们也可以自己另外安装主题。输入 <cite>:color `，然后按 `&lt;TAB&gt;</cite> 键自动按顺序遍历出所有主题名称。
+<cite>awesome-vim-colorschemes</cite> 这个仓库包含了许多好看的主题，可以从里面找自己喜欢的。添加下面的配置，并且执行安装，就可以安装对应主题了。</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;cocopon/iceberg.vim&#39;</span>
+Plugin <span class="s1">&#39;arcticicestudio/nord-vim&#39;</span>
+Plugin <span class="s1">&#39;Badacadabra/vim-archery&#39;</span>
+Plugin <span class="s1">&#39;kristijanhusak/vim-hybrid-material&#39;</span>
+Plugin <span class="s1">&#39;scheakur/vim-scheakur&#39;</span>
+Plugin <span class="s1">&#39;lifepillar/vim-solarized&#39;</span>
+  # Install <span class="k">on</span> command line
+$ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="p">+</span><span class="k">qall</span>
+</pre></div>
+</div>
+<p>可以随便打开一个文件预览一下这些主题样式，选择好某一个主题后，可以设置默认的主题。</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">background</span><span class="p">=</span><span class="nb">dark</span>   <span class="c">&quot; 设置默认主题为深色主题</span>
+<span class="k">colorscheme</span> scheakur  <span class="c">&quot; 设置默认主题的名称</span>
+</pre></div>
+</div>
+</section>
+<section id="auto-pairs">
+<h3>方括号、圆括号和引号的自动成对补全，auto-pairs 插件<a class="headerlink" href="#auto-pairs" title="此标题的永久链接"></a></h3>
+<p>在输入括号、反引号、单双引号时可以让编辑器自动成对输入，通过安装 <cite>auto-pairs</cite> 插件可以实现：</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;jiangmiao/auto-pairs&#39;</span>
+  # Install <span class="k">on</span> command line
+$ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="p">+</span><span class="k">qall</span>
+</pre></div>
+</div>
+<p>这个自动补全的功能有时需要有时不需要。可以添加一个快捷键开关，让我们临时调节。</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">g</span>:AutoPairsShortcutToggle <span class="p">=</span> <span class="s1">&#39;&lt;C-P&gt;&#39;</span>
+</pre></div>
+</div>
+<p>添加这条配置后，按 <cite>CTRL P</cite> 可以临时调节，编辑器是否自动成对输入那些字符。</p>
+</section>
+<section id="nerdtree">
+<h3>文件管理器，NERDTree 插件<a class="headerlink" href="#nerdtree" title="此标题的永久链接"></a></h3>
+<p><cite>NERDTree</cite> 插件是一个文件资源管理器，可以在左侧打开一个边栏，以选择、浏览、重命名等等的当时管理文件。
+安装配置如下：</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;preservim/nerdtree&#39;</span>
+  # Install <span class="k">on</span> command line
+$ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="p">+</span><span class="k">qall</span>
+</pre></div>
+</div>
+<p>在 <cite>vim</cite> 中，输入 <cite>:NERDTree</cite> 就可以打开这个文件资源管理器，输入 <cite>:help nerdtree</cite> 可以查看他的帮助文档。
+输入 <cite>q</cite> 或者 <cite>:NERDTreeClose</cite> 可以关闭它。</p>
+<p>下面再添加几个 NERDTree 的配置，让它更好用：</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> NERDTreeShowBookmarks <span class="p">=</span> <span class="m">1</span>   <span class="c">&quot; 显示书签表格</span>
+<span class="k">let</span> NERDTreeShowHidden <span class="p">=</span> <span class="m">1</span>      <span class="c">&quot; 显示隐藏文件</span>
+<span class="k">let</span> NERDTreeShowLineNumbers <span class="p">=</span> <span class="m">0</span> <span class="c">&quot; 隐藏行号</span>
+<span class="k">let</span> NERDTreeMinimalMenu <span class="p">=</span> <span class="m">1</span>     <span class="c">&quot; 使用最小菜单(m)</span>
+<span class="k">let</span> NERDTreeWinPos <span class="p">=</span> “<span class="k">left</span>”     <span class="c">&quot; 面板在左侧打开</span>
+<span class="k">let</span> NERDTreeWinSize <span class="p">=</span> <span class="m">31</span>        <span class="c">&quot; 设置面板宽度为31个字符</span>
+</pre></div>
+</div>
+</section>
+<section id="tagbar">
+<h3>增加一个面板条，在里面展示源文件的标签，tagbar 插件<a class="headerlink" href="#tagbar" title="此标题的永久链接"></a></h3>
+<p>这个插件可以在文件管理器里面的当前打开的文件下面显示一横条，方便我们查看。</p>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;preservim/tagbar&#39;</span>
+  # Install <span class="k">on</span> command line
+$ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="p">+</span><span class="k">qall</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id4">
+<h2>参考文章<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p><a class="reference external" href="https://dane-bulat.medium.com/how-to-turn-vim-into-a-lightweight-ide-6185e0f47b79">How to Turn Vim Into a Lightweight IDE</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../index.html" class="btn btn-neutral float-left" title="欢迎来到 小骏的博客" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="post_02.html" class="btn btn-neutral float-right" title="Matplotlib 等值线图自定义 label 标签位置" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, 小骏.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+<hr />
+<script src="https://utteranc.es/client.js"
+    repo="junsircoding/blog_comments"
+    issue-term="pathname"
+    label="✨💬✨"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KTSZ2L0J1T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-KTSZ2L0J1T', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
