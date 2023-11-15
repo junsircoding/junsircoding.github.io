@@ -88,13 +88,13 @@ commentsRunWhenDOMLoaded(addUtterances);
 <li class="toctree-l3"><a class="reference internal" href="#vundle">安装 Vundle 插件，用来管理插件</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tab">配置 TAB 键、搜索、内置终端</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#vim-polyglot">增加各种编程语言语法包和缩进，vim-polyglot 插件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">安装配色主题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">安装配色主题</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#auto-pairs">方括号、圆括号和引号的自动成对补全，auto-pairs 插件</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#nerdtree">文件管理器，NERDTree 插件</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tagbar">增加一个面板条，在里面展示源文件的标签，tagbar 插件</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">参考文章</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">参考文章</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="post_02.html">Matplotlib 等值线图自定义 label 标签位置</a></li>
@@ -137,7 +137,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <h2>步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <section id="vundle">
 <h3>安装 Vundle 插件，用来管理插件<a class="headerlink" href="#vundle" title="此标题的永久链接"></a></h3>
-<p>我们下面要安装很多插件，而这些插件可以用别的插件来管理，这个管理插件的插件就是 Vundle，以下是命令步骤。</p>
+<p>我们下面要安装很多插件，而这些插件可以用别的插件来管理，这个管理插件的插件就是 <a class="reference external" href="https://github.com/VundleVim/Vundle.vim">Vundle</a> ，以下是命令步骤。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.vim/bundle
 $<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/.vim/bundle
 $<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/VundleVim/Vundle.vim.git<span class="w"> </span>Vundle.vim
@@ -201,7 +201,7 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 </section>
 <section id="vim-polyglot">
 <h3>增加各种编程语言语法包和缩进，vim-polyglot 插件<a class="headerlink" href="#vim-polyglot" title="此标题的永久链接"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">vim-polyglot</span></code> 插件可以对 50 多种编程语言进行语法高亮。通过下面的命令安装这个插件：</p>
+<p><a class="reference external" href="https://github.com/sheerun/vim-polyglot">vim-polyglot</a>  插件可以对 50 多种编程语言进行语法高亮。通过下面的命令安装这个插件：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 在 .vimrc 中添加这行配置</span>
 Plugin<span class="w"> </span><span class="s1">&#39;sheerun/vim-polyglot&#39;</span>
 <span class="w">  </span><span class="c1"># 通过这条命令在命令行安装插件</span>
@@ -217,10 +217,10 @@ $<span class="w"> </span>vim<span class="w"> </span>+PluginInstall<span class="w
 </pre></div>
 </div>
 </section>
-<section id="id3">
-<h3>安装配色主题<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
-<p>虽然 Vim 的默认主题已经够用了，但我们也可以自己另外安装主题。输入 <code class="docutils literal notranslate"><span class="pre">:color&lt;space&gt;</span></code> ，然后按 <code class="docutils literal notranslate"><span class="pre">&lt;TAB&gt;</span></code> 键自动按顺序遍历出所有主题名称。
-<code class="docutils literal notranslate"><span class="pre">awesome-vim-colorschemes</span></code> 这个仓库包含了许多好看的主题，可以从里面找自己喜欢的。添加下面的配置，并且执行安装，就可以安装对应主题了。</p>
+<section id="id5">
+<h3>安装配色主题<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>虽然 Vim 的默认主题已经够用了，但我们也可以自己另外安装主题。输入 <code class="docutils literal notranslate"><span class="pre">:color&lt;space&gt;</span></code> ，然后按 <code class="docutils literal notranslate"><span class="pre">&lt;TAB&gt;</span></code> 键自动按顺序遍历出所有主题名称。</p>
+<p><a class="reference external" href="https://github.com/rafi/awesome-vim-colorschemes">awesome-vim-colorschemes</a> 这个仓库包含了许多好看的主题，可以从里面找自己喜欢的。添加下面的配置，并且执行安装，就可以安装对应主题了。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <p><code class="docutils literal notranslate"><span class="pre">:color&lt;space&gt;</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">&lt;space&gt;</span></code> 代表空格。</p>
@@ -286,8 +286,8 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 </div>
 </section>
 </section>
-<section id="id4">
-<h2>参考文章<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<section id="id6">
+<h2>参考文章<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
 <p><a class="reference external" href="https://dane-bulat.medium.com/how-to-turn-vim-into-a-lightweight-ide-6185e0f47b79">How to Turn Vim Into a Lightweight IDE</a></p>
 </section>
 </section>
