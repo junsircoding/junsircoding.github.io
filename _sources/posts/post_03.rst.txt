@@ -123,13 +123,11 @@
 
 虽然 Vim 的默认主题已经够用了，但我们也可以自己另外安装主题。输入 ``:color<space>`` ，然后按 ``<TAB>`` 键自动按顺序遍历出所有主题名称。
 
+.. note:: ``:color<space>`` 中的 ``<space>`` 代表空格。
+
 `awesome-vim-colorschemes`_ 这个仓库包含了许多好看的主题，可以从里面找自己喜欢的。添加下面的配置，并且执行安装，就可以安装对应主题了。
 
 .. _awesome-vim-colorschemes: https://github.com/rafi/awesome-vim-colorschemes
-
-
-.. note:: ``:color<space>`` 中的 ``<space>`` 代表空格。
-
 
 .. code:: vim
 
