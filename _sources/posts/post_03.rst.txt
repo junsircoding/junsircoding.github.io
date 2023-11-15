@@ -67,7 +67,7 @@
 
 下面添加几个和 Tab 键有关的配置：
 
- .. code:: vim
+.. code:: vim
 
    set tabstop=4 " 输入 \t 制表符后空 4 个空格 
    set shiftwidth=4 " 按下 Tab 后空 4 个空格

@@ -181,13 +181,11 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 <section id="tab">
 <h3>配置 TAB 键、搜索、内置终端<a class="headerlink" href="#tab" title="此标题的永久链接"></a></h3>
 <p>下面添加几个和 Tab 键有关的配置：</p>
-<blockquote>
-<div><div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 输入 \t 制表符后空 4 个空格</span>
+<div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 输入 \t 制表符后空 4 个空格</span>
 <span class="k">set</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 按下 Tab 后空 4 个空格</span>
 <span class="k">set</span> <span class="nb">expandtab</span> <span class="c">&quot; 按下 Tab 后使用空格而不是制表符</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>在 Normal 模式下输入正斜杠时，会触发 vim 的搜索功能。下面这俩配置可以使搜索功能更加直观：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">incsearch</span>  <span class="c">&quot; 启用增量搜索</span>
 <span class="k">set</span> <span class="nb">hlsearch</span>   <span class="c">&quot; 搜索结果高亮显示</span>
