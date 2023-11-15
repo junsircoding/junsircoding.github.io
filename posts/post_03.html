@@ -131,7 +131,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <h1>将 Vim 打造成轻量级的 IDE<a class="headerlink" href="#vim-ide" title="此标题的永久链接"></a></h1>
 <section id="id1">
 <h2>介绍<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
-<p>在 Linux 系统中，Vim 编辑器常被用来编辑文件。Vim 可以提供缓冲区(buffers)、宏(macros) 和书签(bookmarking)的功能。Vim 还内置了一种自己的脚本语言，以便开发人员编写插件增强它的功能。下面我们就通过安装插件和增加配置的方式，来把基础的 Vim 变成一个轻量级的 IDE。</p>
+<p>在 Linux 系统中， <a class="reference external" href="https://www.vim.org/">Vim</a> 是我们最常用的编辑器。Vim 可以提供缓冲区(buffers)、宏(macros) 和书签(bookmarking)的功能。Vim 还内置了一种自己的脚本语言，以便开发人员编写插件增强它的功能。下面我们就通过 <strong>安装插件</strong> 和 <strong>增加配置</strong> 的方式，来把基础的 Vim 变成一个轻量级的 IDE。</p>
 </section>
 <section id="id2">
 <h2>步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
@@ -165,12 +165,12 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="p">:</span>PluginInstall
 </pre></div>
 </div>
-<p>输入命令后按 <code class="docutils literal notranslate"><span class="pre">Enter</span></code> 后，屏幕会从中间分成两边，并且显示安装过程。当在 vim 底部的状态栏中显示 <code class="docutils literal notranslate"><span class="pre">Done</span></code> 后，插件就全部安装好了，此时按 <code class="docutils literal notranslate"><span class="pre">q</span></code> 退出。
-如果要卸载某个插件，只要将插件注释掉，然后执行这条命令即可：</p>
+<p>输入命令后按 <code class="docutils literal notranslate"><span class="pre">Enter</span></code> 后，屏幕会从中间分成两边，并且显示安装过程。当在 vim 底部的状态栏中显示 <code class="docutils literal notranslate"><span class="pre">Done</span></code> 后，插件就全部安装好了，此时按 <code class="docutils literal notranslate"><span class="pre">q</span></code> 退出。</p>
+<p>如果要卸载某个插件，只要将插件注释掉，然后执行这条命令即可：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="p">:</span>PluginClean
 </pre></div>
 </div>
-<p>这样那个插件的代码就会从插件目录被删除掉。</p>
+<p>执行之后，程序会把 <strong>未配置</strong> 的插件代码从插件目录中删除。</p>
 <p>编辑 <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code> 文件，在里面输入一些配置，让 vim 更好用。</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="k">number</span> <span class="c">&quot; 显示行号</span>
 <span class="nb">syntax</span> <span class="k">on</span>  <span class="c">&quot; 开启代码语法高亮</span>
