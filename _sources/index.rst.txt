@@ -6,6 +6,19 @@
 欢迎来到 **小骏的博客**
 ======================================
 
+我的社交平台
+^^^^^^^^^^^^^^^^
+
+- |:point_right:| `Github`_ 
+- |:point_right:| `Bilibili`_
+
+.. _Github: https://github.com/junsircoding/
+
+.. _Bilibili: https://space.bilibili.com/39994473/video
+
+我的文章
+^^^^^^^^^^^^^^^^^
+
 .. toctree::
    :maxdepth: 1
    
