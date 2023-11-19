@@ -24,6 +24,6 @@
    
    /posts/post_03
    /posts/post_02
-   /posts/post_00
    /posts/post_01
+   /posts/post_00
 
