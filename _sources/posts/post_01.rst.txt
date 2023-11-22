@@ -95,9 +95,10 @@
 其中， ``lat`` 和 ``lon`` 是这个数据的两个维度，即纬度和经度， ``Coordinates`` 展示了这两个维度对应的坐标信息， 
 ``Attributes`` 是一些属性信息，是个 ``Dict`` 。
 
-这个数据用
-`Panoply <https://www.giss.nasa.gov/tools/panoply/download/>`__
-简单预览是这样：
+这个数据用 `Panoply`_ 简单预览是这样：
+
+.. _Panoply: https://www.giss.nasa.gov/tools/panoply/download/
+
 
 .. figure:: /_images/20230529/01.png
    :alt: 格点数据预览
