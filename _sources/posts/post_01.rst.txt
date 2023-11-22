@@ -11,12 +11,11 @@
 
 --------------
 
-**站点数据**\ 就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用
-*test_station.csv*\  [1]_ 文件。
+**站点数据** 就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用 *test_station.csv* [1]_ 文件。
 
-通常用
-`Pandas <https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html>`__
-读取：
+通常用 `Pandas`_ 读取：
+
+.. _Pandas: https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html
 
 .. code:: python
 
@@ -52,9 +51,11 @@
 
    [9816 rows x 3 columns]
 
-其中 ``lat`` 表示纬度，\ ``lon`` 表示经度，\ ``val`` 表示站点观测值。
+其中 ``lat`` 表示纬度， ``lon`` 表示经度， ``val`` 表示站点观测值。
 
-这个数据用 `VSCode <https://code.visualstudio.com/>`__ 简单预览是这样：
+这个数据用 `VSCode`_ 简单预览是这样：
+
+.. _VSCode: https://code.visualstudio.com/
 
 .. figure:: /_images/20230529/00.png
    :alt: 站点数据预览
@@ -63,9 +64,9 @@
 
 --------------
 
-**网格数据**\ 通常用
-`Xarray <https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html>`__
-读取，这里我使用 *test_grid.nc*\  [2]_：
+**网格数据** 通常用 `Xarray`_ 读取，这里我使用 *test_grid.nc*  [2]_：
+
+.. _Xarray: https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html
 
 .. code:: python
 
@@ -91,10 +92,8 @@
        long_name:      Temperature
        standard_name:  air_temperature
 
-其中，\ ``lat`` 和 ``lon``
-是这个数据的两个维度，即纬度和经度，\ ``Coordinates``
-展示了这两个维度对应的坐标信息，\ ``Attributes`` 是一些属性信息，是个
-Dict。
+其中， ``lat`` 和 ``lon`` 是这个数据的两个维度，即纬度和经度， ``Coordinates`` 展示了这两个维度对应的坐标信息， 
+``Attributes`` 是一些属性信息，是个 ``Dict`` 。
 
 这个数据用
 `Panoply <https://www.giss.nasa.gov/tools/panoply/download/>`__

@@ -132,11 +132,8 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p>到目前为止，我接触到的气象相关数据有 <strong>等经纬度网格数据</strong> 和 <strong>站点数据</strong>。</p>
 <p>注：为叙述简便，<strong>等经纬度网格数据</strong> 以下简称 <strong>网格数据</strong> 。数据下载来源点击这里： <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">站点数据</a> （搜索 <code class="docutils literal notranslate"><span class="pre">station</span></code> ）， <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">网格数据</a> 。</p>
 <hr class="docutils" />
-<p><strong>站点数据</strong>就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用
-<em>test_station.csv</em> <a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> 文件。</p>
-<p>通常用
-<a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Pandas</a>
-读取：</p>
+<p><strong>站点数据</strong> 就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用 <em>test_station.csv</em> <a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> 文件。</p>
+<p>通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Pandas</a> 读取：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;test_station.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
@@ -168,7 +165,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <span class="p">[</span><span class="mi">9816</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">3</span> <span class="n">columns</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>其中 <code class="docutils literal notranslate"><span class="pre">lat</span></code> 表示纬度，<code class="docutils literal notranslate"><span class="pre">lon</span></code> 表示经度，<code class="docutils literal notranslate"><span class="pre">val</span></code> 表示站点观测值。</p>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">lat</span></code> 表示纬度， <code class="docutils literal notranslate"><span class="pre">lon</span></code> 表示经度， <code class="docutils literal notranslate"><span class="pre">val</span></code> 表示站点观测值。</p>
 <p>这个数据用 <a class="reference external" href="https://code.visualstudio.com/">VSCode</a> 简单预览是这样：</p>
 <figure class="align-default" id="id18">
 <img alt="站点数据预览" src="../_images/00.png" />
@@ -177,9 +174,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </figcaption>
 </figure>
 <hr class="docutils" />
-<p><strong>网格数据</strong>通常用
-<a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Xarray</a>
-读取，这里我使用 <em>test_grid.nc</em> <a class="footnote-reference brackets" href="#id15" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>：</p>
+<p><strong>网格数据</strong> 通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Xarray</a> 读取，这里我使用 <em>test_grid.nc</em>  <a class="footnote-reference brackets" href="#id15" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;test_grid.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds_nc</span><span class="p">:</span>
@@ -201,10 +196,8 @@ commentsRunWhenDOMLoaded(addUtterances);
     <span class="n">standard_name</span><span class="p">:</span>  <span class="n">air_temperature</span>
 </pre></div>
 </div>
-<p>其中，<code class="docutils literal notranslate"><span class="pre">lat</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lon</span></code>
-是这个数据的两个维度，即纬度和经度，<code class="docutils literal notranslate"><span class="pre">Coordinates</span></code>
-展示了这两个维度对应的坐标信息，<code class="docutils literal notranslate"><span class="pre">Attributes</span></code> 是一些属性信息，是个
-Dict。</p>
+<p>其中， <code class="docutils literal notranslate"><span class="pre">lat</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lon</span></code> 是这个数据的两个维度，即纬度和经度， <code class="docutils literal notranslate"><span class="pre">Coordinates</span></code> 展示了这两个维度对应的坐标信息，
+<code class="docutils literal notranslate"><span class="pre">Attributes</span></code> 是一些属性信息，是个 <code class="docutils literal notranslate"><span class="pre">Dict</span></code> 。</p>
 <p>这个数据用
 <a class="reference external" href="https://www.giss.nasa.gov/tools/panoply/download/">Panoply</a>
 简单预览是这样：</p>
