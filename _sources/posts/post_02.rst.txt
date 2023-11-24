@@ -5,7 +5,7 @@ Matplotlib 等值线图自定义 label 标签位置
 绘制等值线图时，经常要在等值线上打上标签，表示这条线的数值是多少。
 
 默认打标签
-~~~~~~~~~~
+---------------------
 
 默认情况下，Matplotlib
 会根据实际情况自动标注标签，但是这样的标签位置比较分散。
@@ -50,7 +50,7 @@ Matplotlib 等值线图自定义 label 标签位置
    默认打点
 
 自定义打标签
-~~~~~~~~~~~~
+---------------------
 
 如果我们想自定义标签的位置该怎么做呢？其实 Matplotlib
 自带了交互式的打标签功能。
@@ -96,7 +96,7 @@ Matplotlib 等值线图自定义 label 标签位置
    Select label locations manually using first mouse button.
    End manual selection with second mouse button.
 
-也就是说，\ **鼠标左键可以点标签，鼠标中键保存图片**\ 。
+也就是说， **鼠标左键可以点标签，鼠标中键保存图片** 。
 
    注：
 
@@ -106,7 +106,7 @@ Matplotlib 等值线图自定义 label 标签位置
 
       Remove last label by clicking third mouse button.
 
-   也就是\ **鼠标右键撤销上一步操作**\ 。
+   也就是 **鼠标右键撤销上一步操作** 。
 
 然后会自动弹出一个交互式的图像预览窗口，我们可以自行放大缩小图像，用鼠标在等值线上打标签。当你觉得标签的位置已经很满意时，按鼠标中键，图像就自动保存了。
 
@@ -120,13 +120,10 @@ Matplotlib 等值线图自定义 label 标签位置
 .. figure:: /_images/20230722/01.png
    :alt: 自定义打点
 
-   自定义打点
-
---------------
 
 
 视频讲解
-~~~~~~~~
+---------------------
 
 `Bilibili`_
 
