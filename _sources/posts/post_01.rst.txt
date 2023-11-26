@@ -351,10 +351,9 @@
 执行代码后生成的 *station_grid.nc*
 就是二维的站点数据转为三维的网格数据。
 
-**这一步骤不是必须的**\ ，只是为了能直观的用 Panoply
-快速查看站点数据的分布情况。当然你也可以用
-`Matplotlib <https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py>`__
-绘制站点数据的散点图。
+**这一步骤不是必须的** ，只是为了能直观的用 Panoply 快速查看站点数据的分布情况。当然你也可以用 `Matplotlib`_ 绘制站点数据的散点图。
+
+.. _Matplotlib: https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py
 
 代码最后注释标出的快速版的时间比慢速版的还要慢，这是正常的，这是因为示例数据数据量较少。当数据量很大，数据精度很高时，耗时的区别就非常明显了，可以自行尝试。
 
@@ -405,9 +404,9 @@
 
 可以想见，这种方式性能也比较一般，当站点数据很多是，逐一循环速度很慢。
 
-我们可以用
-`Scipy <https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py>`__
-的插值方法一次性得到所有的插值结果：
+我们可以用 `Scipy`_ 的插值方法一次性得到所有的插值结果：
+
+.. _Scipy: https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py
 
 .. code:: python
 
