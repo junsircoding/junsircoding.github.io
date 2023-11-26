@@ -166,10 +166,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 <p>其中 <code class="docutils literal notranslate"><span class="pre">lat</span></code> 表示纬度， <code class="docutils literal notranslate"><span class="pre">lon</span></code> 表示经度， <code class="docutils literal notranslate"><span class="pre">val</span></code> 表示站点观测值。</p>
 <p>这个数据用 <a class="reference external" href="https://code.visualstudio.com/">VSCode</a> 简单预览是这样：</p>
-<figure class="align-default" id="id18">
+<figure class="align-default" id="id19">
 <img alt="站点数据预览" src="../_images/00.png" />
 <figcaption>
-<p><span class="caption-text">站点数据预览</span><a class="headerlink" href="#id18" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">站点数据预览</span><a class="headerlink" href="#id19" title="此图像的永久链接"></a></p>
 </figcaption>
 </figure>
 <p><strong>网格数据</strong> 通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Xarray</a> 读取，这里我使用 <em>test_grid.nc</em>  <a class="footnote-reference brackets" href="#id15" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>：</p>
@@ -197,10 +197,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p>其中， <code class="docutils literal notranslate"><span class="pre">lat</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lon</span></code> 是这个数据的两个维度，即纬度和经度， <code class="docutils literal notranslate"><span class="pre">Coordinates</span></code> 展示了这两个维度对应的坐标信息，
 <code class="docutils literal notranslate"><span class="pre">Attributes</span></code> 是一些属性信息，是个 <code class="docutils literal notranslate"><span class="pre">Dict</span></code> 。</p>
 <p>这个数据用 <a class="reference external" href="https://www.giss.nasa.gov/tools/panoply/download/">Panoply</a> 简单预览是这样：</p>
-<figure class="align-default" id="id19">
+<figure class="align-default" id="id20">
 <img alt="格点数据预览" src="../_images/01.png" />
 <figcaption>
-<p><span class="caption-text">格点数据预览</span><a class="headerlink" href="#id19" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">格点数据预览</span><a class="headerlink" href="#id20" title="此图像的永久链接"></a></p>
 </figcaption>
 </figure>
 <p>在实际使用过程中，经常会有这样的需求：</p>
@@ -260,10 +260,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 </pre></div>
 </div>
 <p>用 Panoply 预览是这样：</p>
-<figure class="align-default" id="id20">
+<figure class="align-default" id="id21">
 <img alt="grib2 格式的格点数据预览" src="../_images/02.png" />
 <figcaption>
-<p><span class="caption-text">grib2 格式的格点数据预览</span><a class="headerlink" href="#id20" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">grib2 格式的格点数据预览</span><a class="headerlink" href="#id21" title="此图像的永久链接"></a></p>
 </figcaption>
 </figure>
 <p>可以看到 <em>test_grid.nc</em> 的经纬度坐标为
@@ -328,10 +328,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 <p>用 Panoply 查看插值后的数据，可以看到数据分布和 <em>test_grid.nc</em>
 是一样的，但是这两个数据的坐标是不一样的。</p>
-<figure class="align-default" id="id21">
+<figure class="align-default" id="id22">
 <img alt="nc 插值到 grib2 的格点数据预览" src="../_images/03.png" />
 <figcaption>
-<p><span class="caption-text">nc 插值到 grib2 的格点数据预览</span><a class="headerlink" href="#id21" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">nc 插值到 grib2 的格点数据预览</span><a class="headerlink" href="#id22" title="此图像的永久链接"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -439,10 +439,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 <div><p>注：站点数据要保证同一经纬度是唯一的，这里的示例数据因为源数据有其他维度，所以同一经纬度的数据不唯一，我在读取的时候手动去重了。</p>
 </div></blockquote>
 <p>这个数据用 Panoply 预览是这样：</p>
-<figure class="align-default" id="id22">
+<figure class="align-default" id="id23">
 <img alt="站点数据转为三维网格数据预览" src="../_images/04.png" />
 <figcaption>
-<p><span class="caption-text">站点数据转为三维网格数据预览</span><a class="headerlink" href="#id22" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">站点数据转为三维网格数据预览</span><a class="headerlink" href="#id23" title="此图像的永久链接"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -472,10 +472,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 <p>得出的 <em>df_nc_interp</em> 就是插值后的数据，<em>dr_nc_to_station.nc</em>
 是用上面的方法将其转成了三维网格。用 Panoply 预览如下：</p>
-<figure class="align-default" id="id23">
+<figure class="align-default" id="id24">
 <img alt="格点数据插值到站点，慢速" src="../_images/05.png" />
 <figcaption>
-<p><span class="caption-text">格点数据插值到站点，慢速</span><a class="headerlink" href="#id23" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">格点数据插值到站点，慢速</span><a class="headerlink" href="#id24" title="此图像的永久链接"></a></p>
 </figcaption>
 </figure>
 <p>可以想见，这种方式性能也比较一般，当站点数据很多是，逐一循环速度很慢。</p>
@@ -557,10 +557,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p>上面的 <code class="docutils literal notranslate"><span class="pre">grid_to_station_fast</span></code>
 函数就可以一次性得到所有插值后的值。和上面一样，因为示例数据量较少，快速的方法优势体现不明显，可以换用数据量大的实际数据自行尝试。</p>
 <p>这两种方式得到的数据是一样的，画出的图预览效果也一样：</p>
-<figure class="align-default" id="id24">
+<figure class="align-default" id="id25">
 <img alt="格点数据插值到站点，快速" src="../_images/06.png" />
 <figcaption>
-<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id24" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id25" title="此图像的永久链接"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -592,9 +592,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p>还会有一种需求，是将站点数据插值到指定精度的网格上。 原本为 NAN
 的数据要运用反距离权重插值预测出对应的值，而反距离权重插值简单讲就是要预测的点的值取决于距离它最近的点。
 与它距离越近，对它的影响就越大。</p>
-<p>反距离权重插值需要安装
-<a class="reference external" href="https://docs.wradlib.org/en/latest/generated/wradlib.ipol.Idw.html#wradlib.ipol.Idw">wradlib</a>
-库，用 Conda 可以直接安装：</p>
+<p>反距离权重插值需要安装 <a class="reference external" href="https://docs.wradlib.org/en/latest/generated/wradlib.ipol.Idw.html#wradlib.ipol.Idw">wradlib</a> 库，用 Conda 可以直接安装：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>wradlib<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>-y
 </pre></div>
 </div>
@@ -632,10 +630,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 </pre></div>
 </div>
 <p>插值后的 NC 数据预览如下，可以和上面的站点图像做对比：</p>
-<figure class="align-default" id="id25">
+<figure class="align-default" id="id26">
 <img alt="格点数据插值到站点，快速" src="../_images/07.png" />
 <figcaption>
-<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id25" title="此图像的永久链接"></a></p>
+<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id26" title="此图像的永久链接"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -658,7 +656,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </section>
 <section id="id17">
 <h2>视频讲解<a class="headerlink" href="#id17" title="此标题的永久链接"></a></h2>
-<p><a class="reference external" href="https://www.bilibili.com/video/BV1iX4y147eT/">Bilibili</a></p>
+<p><a class="reference external" href="https://www.bilibili.com/video/BV1iX4y147eT/">我在处理气象数据时常用到的插值方法</a></p>
 </section>
 </section>
 

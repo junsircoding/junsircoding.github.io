@@ -527,9 +527,9 @@
 的数据要运用反距离权重插值预测出对应的值，而反距离权重插值简单讲就是要预测的点的值取决于距离它最近的点。
 与它距离越近，对它的影响就越大。
 
-反距离权重插值需要安装
-`wradlib <https://docs.wradlib.org/en/latest/generated/wradlib.ipol.Idw.html#wradlib.ipol.Idw>`__
-库，用 Conda 可以直接安装：
+反距离权重插值需要安装 `wradlib`_ 库，用 Conda 可以直接安装：
+
+.. _wradlib: https://docs.wradlib.org/en/latest/generated/wradlib.ipol.Idw.html#wradlib.ipol.Idw
 
 .. code:: shell
 
@@ -594,7 +594,6 @@
 视频讲解
 ---------------------
 
-`Bilibili`_
+`我在处理气象数据时常用到的插值方法`_
 
-.. _Bilibili: https://www.bilibili.com/video/BV1iX4y147eT/
-
+.. _我在处理气象数据时常用到的插值方法: https://www.bilibili.com/video/BV1iX4y147eT/
