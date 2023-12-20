@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matplotlib Axes 的位置参数到底如何设置？ &mdash; 小骏的博客  文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/twemoji.css?v=2199c511" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://junsircoding.github.io/posts/post_20231220.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=91bfbbb6"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+        <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
+        <script src="../_static/twemoji.js?v=a4381b3f"></script>
+        <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "junsircoding/blog_comments");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section");
+    if (sections !== null) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+        <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="将 Vim 打造成轻量级的 IDE" href="post_03.html" />
+    <link rel="prev" title="欢迎来到 小骏的博客" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Matplotlib Axes 的位置参数到底如何设置？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_03.html">将 Vim 打造成轻量级的 IDE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_02.html">Matplotlib 等值线图自定义 label 标签位置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_01.html">气象数据的各种插值问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_00.html">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">小骏的博客</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Matplotlib Axes 的位置参数到底如何设置？</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="matplotlib-axes">
+<h1>Matplotlib Axes 的位置参数到底如何设置？<a class="headerlink" href="#matplotlib-axes" title="Link to this heading"></a></h1>
+<p>为了引出这篇文章想说明的问题，我们首先使用 Matplotlib 绘制一个简单的 pcolormesh 示例：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos"> 4</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">mpl</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;uname&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>
+<span class="linenos"> 8</span>    <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.sans-serif&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Arial Unicode MS&quot;</span><span class="p">]</span> <span class="c1"># MacOS</span>
+<span class="linenos"> 9</span><span class="k">else</span><span class="p">:</span>
+<span class="linenos">10</span>    <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.sans-serif&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SimHei&quot;</span><span class="p">]</span> <span class="c1"># CentOS, Windows</span>
+<span class="linenos">11</span><span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.unicode_minus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1"># 设置随机数种子, 使每次生成的数据集相同</span>
+<span class="linenos">14</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1"># 构造数据</span>
+<span class="linenos">17</span><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="linenos">18</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># len = 11</span>
+<span class="linenos">19</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">4.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># len = 7</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1"># 创建 Figure 和坐标</span>
+<span class="linenos">22</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="linenos">23</span><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="c1"># 填色</span>
+<span class="linenos">26</span><span class="n">img</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="c1"># 设置标题</span>
+<span class="linenos">29</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Matplotlib pcolormesh 示例&quot;</span><span class="p">)</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="c1"># 绘制 Colorbar</span>
+<span class="linenos">32</span><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span><span class="c1"># 保存图表</span>
+<span class="linenos">35</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;test.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="c1"># 关闭资源</span>
+<span class="linenos">38</span><span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
+<span class="linenos">39</span><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="linenos">40</span><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>画出的图是这样的：</p>
+<img alt="20231220_00" class="align-center" src="../_images/20231220_00.png" />
+<p>现在的 Colorbar 是垂直显示的。如果想要把它改成水平显示的，可以修改第 32 行代码中的 <code class="docutils literal notranslate"><span class="pre">orientation</span></code>
+参数，改为 <code class="docutils literal notranslate"><span class="pre">horizontal</span></code> ，图片就会变成这样：</p>
+<img alt="20231220_01" class="align-center" src="../_images/20231220_01.png" />
+<p>这两种位置都是 Matplotlib 内置的默认位置，但实际情况下，我们更希望能够自定义 Colorbar 的位置。
+为了达到这一点，我们可以使用手动创建 Axes 的方式来设置 Colorbar。</p>
+<p>按照下面的代码修改：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos"> 4</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">mpl</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;uname&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>
+<span class="linenos"> 8</span>    <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.sans-serif&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Arial Unicode MS&quot;</span><span class="p">]</span> <span class="c1"># MacOS</span>
+<span class="linenos"> 9</span><span class="k">else</span><span class="p">:</span>
+<span class="linenos">10</span>    <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.sans-serif&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SimHei&quot;</span><span class="p">]</span> <span class="c1"># CentOS, Windows</span>
+<span class="linenos">11</span><span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.unicode_minus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1"># 设置随机数种子, 使每次生成的数据集相同</span>
+<span class="linenos">14</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1"># 构造数据</span>
+<span class="linenos">17</span><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="linenos">18</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># len = 11</span>
+<span class="linenos">19</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">4.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># len = 7</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1"># 创建 Figure 和 Axes</span>
+<span class="linenos">22</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="linenos">23</span><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="c1"># 填色</span>
+<span class="linenos">26</span><span class="n">img</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="c1"># 设置标题</span>
+<span class="linenos">29</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Matplotlib pcolormesh 示例&quot;</span><span class="p">)</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="c1"># 获取当前 Axes 的位置信息</span>
+<span class="linenos">32</span><span class="n">ax_left</span><span class="p">,</span> <span class="n">ax_bottom</span><span class="p">,</span> <span class="n">ax_width</span><span class="p">,</span> <span class="n">ax_height</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">bounds</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span><span class="c1"># 绘制 Colorbar</span>
+<span class="linenos">35</span><span class="n">cax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="n">ax_left</span><span class="p">,</span> <span class="n">ax_bottom</span> <span class="o">-</span> <span class="n">ax_height</span> <span class="o">*</span> <span class="mf">0.12</span><span class="p">,</span> <span class="n">ax_width</span><span class="p">,</span> <span class="n">ax_height</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+<span class="linenos">36</span><span class="n">cb</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="c1"># 保存图表</span>
+<span class="linenos">39</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;test.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span><span class="c1"># 关闭资源</span>
+<span class="linenos">42</span><span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
+<span class="linenos">43</span><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="linenos">44</span><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>画出的图是这样的：</p>
+<img alt="20231220_02" class="align-center" src="../_images/20231220_02.png" />
+<p>通过这种方式，我们就可以自由设置 Colorbar 的 <strong>位置</strong> 、 <strong>高度</strong> 、 <strong>宽度</strong> 等属性了，下面详细解释一下代码。</p>
+<p>在 Matplotlib 中， <code class="docutils literal notranslate"><span class="pre">Figure</span></code> 表示 <strong>画布</strong> ， <code class="docutils literal notranslate"><span class="pre">Axes</span></code> 表示 <strong>轴</strong> 。
+所有的图，不论包含的内容多么丰富，这两个组件一定是最基本的。</p>
+<p>我们来看这张图：</p>
+<img alt="20231220_03" class="align-center" src="../_images/20231220_03.webp" />
+<p>这张图展示了一张用 Matplotlib 画出的图的基本骨架，如果忽略那些 Marker、Label、Tick 等元素，其实最基本的就是 Figure 和 Axes。</p>
+<p>先来看第 32 行：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">ax_left</span><span class="p">,</span> <span class="n">ax_bottom</span><span class="p">,</span> <span class="n">ax_width</span><span class="p">,</span> <span class="n">ax_height</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">bounds</span>
+</pre></div>
+</div>
+<p>这行代码获取到的四个变量分别为：</p>
+<ul class="simple">
+<li><p>Axes 左侧边缘距离画布边缘的归一化距离：0.125</p></li>
+<li><p>Axes 底部边缘距离画布边缘的归一化距离：0.10999999999999999</p></li>
+<li><p>Axes 的归一化宽度：0.775</p></li>
+<li><p>Axes 的归一化高度：0.77</p></li>
+</ul>
+<p>归一化的数值大致相当于百分比。
+比如 0.125 表示 Axes 是从 Figure 的 12.5% 处开始画的，
+0.109 表示 Axes 底部到 Figure 底部的距离大致是 Figure 的 10.9%，
+0.775 表示 Axes 宽度是 Figure 的 77.5%，
+0.77 表示 Axes 高度是 Figure 的 77%。</p>
+<p>然后再来看代码的第 35 行：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">cax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="n">ax_left</span><span class="p">,</span> <span class="n">ax_bottom</span> <span class="o">-</span> <span class="n">ax_height</span> <span class="o">*</span> <span class="mf">0.12</span><span class="p">,</span> <span class="n">ax_width</span><span class="p">,</span> <span class="n">ax_height</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Matplotlib 官网有 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib-pyplot-axes">plt.axes()</a> 的函数签名。</p>
+<p>其中第一个参数就是 <code class="docutils literal notranslate"><span class="pre">rect=[left,</span> <span class="pre">bottom,</span> <span class="pre">width,</span> <span class="pre">height]</span></code>。通过执行这个函数，我们创建了一个新的 Axes，rect 参数指定了它的位置。</p>
+<p>我们在代码离这样写这四个参数：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">ax_left</span><span class="p">,</span> <span class="n">ax_bottom</span> <span class="o">-</span> <span class="n">ax_height</span> <span class="o">*</span> <span class="mf">0.12</span><span class="p">,</span> <span class="n">ax_width</span><span class="p">,</span> <span class="n">ax_height</span> <span class="o">*</span> <span class="mf">0.05</span>
+</pre></div>
+</div>
+<p>意思是：</p>
+<ul class="simple">
+<li><p>新 Axes 的左边和第一个 Axes 对齐。</p></li>
+<li><p>新 Axes 的底部距离画布的距离，是第一个 Axes 高度的 12%。也就是说在与第一个 Axes 底部对齐的基础上，再向下移动它高度 12% 的距离。</p></li>
+<li><p>新 Axes 的宽度与第一个 Axes 一致。</p></li>
+<li><p>新 Axes 的高度是第一个 Axes 高度的 5%。</p></li>
+</ul>
+<p>当创建好新 Axes 后，将它赋值给 colorbar 的 cax 参数，这样 colorbar 就直接在这个新 Axes 中填充了，它的形状就是我们定义的新 Axes 的形状。
+如代码第 36 行所示：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">cb</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>所以，如果想要调整 colorbar 的位置，只要按照这个思路，把我们的目标位置转换为计算方式就可以了。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>另外还要注意，这四个参数要结合 orientation 来使用，当colorbar 是垂直或水平时，它的宽度和高度也要相应的变换方向。
+如果我们把现在的代码中的方向改为垂直，这样出来的 colorbar 就不对了，如下图：</p>
+<img alt="20231220_04" class="align-center" src="../_images/20231220_04.png" />
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../index.html" class="btn btn-neutral float-left" title="欢迎来到 小骏的博客" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="post_03.html" class="btn btn-neutral float-right" title="将 Vim 打造成轻量级的 IDE" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, 小骏。</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+    <hr />
+    <p>请留下你的评论：</p>
+    <script src="https://utteranc.es/client.js"
+        repo="junsircoding/blog_comments"
+        issue-term="pathname"
+        label="✨💬✨"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KTSZ2L0J1T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-KTSZ2L0J1T', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+<link rel="stylesheet" type="text/css"
+href="_static/css/custom.css">
+
+
+
+</body>
+</html>
