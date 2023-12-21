@@ -1,0 +1,333 @@
+常用的几个 AWK 命令
+==================================================================
+
+.. note:: 声明
+    这篇文章非原创，翻译自文章： `Getting Started With AWK Command`_
+
+.. _Getting Started With AWK Command: https://linuxhandbook.com/awk-command-tutorial/
+
+AWK 可以追溯到 Unix 时代，它是 POSIX 标准的一部分，所以在任意一个类 Unix 系统上都可以使用。
+
+与 Perl 这样的多用途语言相比，AWK 有时会因为年代久远或者缺少功能儿被人诟病，但我依然喜欢它，并且会在日常工作中使用。
+
+它在处理数据文件的时候很有优势，有时后一行代码就能实现相对复杂的功能。
+
+这篇文章就罗列了一些这样有用的 AWK 程序，它们都不超过 80 个词。
+
+即便你没有 AWK 的使用经验，通过练习这几个小程序也可以理解 AWK 的核心功能。
+
+这个是我们的示例数据文件：
+
+::
+
+    CREDITS,EXPDATE,USER,GROUPS
+    99,01 jun 2018,sylvain,team:::admin
+    52,01    dec   2018,sonia,team
+    52,01    dec   2018,sonia,team
+    25,01    jan   2019,sonia,team
+    10,01 jan 2019,sylvain,team:::admin
+    8,12    jun   2018,öle,team:support
+    这里有8个空格
+
+
+    17,05 apr 2019,abhishek,guest
+
+.. note:: 备注
+
+    练习使用时把里面的 ``这里有8个空格`` 替换为8个空格。 
+
+
+了解 AWK 中的 **预定义变量** 和 **自动变量**
+---------------------------------------------------------------------------
+
+在写 AWK 程序的时候，常见的预定义变量和自动变量有：
+
+- ``RS`` ：The record separator，数据分隔符。AWK 一次处理一条记录，这个 RS 就是把输入数据流拆分为记录的分隔符。
+           默认的 RS 是 *换行符* ，所以如果不去指定这个 RS，一行就是一条记录。
+
+- ``NR`` ：The current input record number，也就是记录的编号。如果 RS 是 *换行符* ，那么 NR 就恰好等于数据的行号。
+
+- ``FS/OFS`` ：The character(s) used as the field separator，分隔单个词的字符，默认是 *空格* 。FS 是输入流的词分隔符，OFS 是输出流的词分隔符。
+               比如你的数据是用逗号分开的 CSV 文件，那么用 AWK 读的时候，就要指定 FS 为逗号。
+
+- ``NF`` ：The number of fields in the current record，当前记录中的词的编号，默认是 *空格* 。
+
+其他还有很多变量，可以查 `手册`_ 查看完整的介绍，只是日常使用知道这几个就差不多够了。
+
+.. _手册: https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html?ref=linuxhandbook.com
+
+AWK 基本使用
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+打印所有行
+""""""""""""""""""""""""""""""""""""""""""""""
+
+这个例子可能没啥用，但是可以很好的介绍 AWK 的基本用法。
+
+.. code-block:: shell
+    :linenos:
+
+    awk '1 { print }' file.txt
+
+
+
+    # 输出
+    CREDITS,EXPDATE,USER,GROUPS
+    99,01 jun 2018,sylvain,team:::admin
+    52,01    dec   2018,sonia,team
+    52,01    dec   2018,sonia,team
+    25,01    jan   2019,sonia,team
+    10,01 jan 2019,sylvain,team:::admin
+    8,12    jun   2018,öle,team:support
+    这里有8个空格
+
+
+    17,05 apr 2019,abhishek,guest
+
+
+AWK 程序由一个或多个 ``pattern { action }`` 语句构成。
+如果在处理当前的记录时， ``pattern`` 的计算结果是非零值，也就是 AWK 中的 ``true`` ， 语句块 ``{ }`` 中的 ``action`` 就会被执行。
+上面这个例子中， ``1`` 是一个非零常量，AWK 会对所有的记录执行 ``print`` 动作，这样就把所有数据内容都打印出来了。
+
+另外， ``{ print }`` 是 AWK 默认的 ``action`` ，所以其实这个例子里可以不写：
+
+
+.. code-block:: shell
+    :linenos:
+
+    awk 1 file.txt
+
+
+    # 输出
+    CREDITS,EXPDATE,USER,GROUPS
+    99,01 jun 2018,sylvain,team:::admin
+    52,01    dec   2018,sonia,team
+    52,01    dec   2018,sonia,team
+    25,01    jan   2019,sonia,team
+    10,01 jan 2019,sylvain,team:::admin
+    8,12    jun   2018,öle,team:support
+    这里有8个空格
+
+
+    17,05 apr 2019,abhishek,guest
+
+
+移除前几个记录
+""""""""""""""""""""""""""""""""""""""""""""""
+
+那个数字就是行号，其实可以理解成从第几行开始打印，首行的行号是 0。
+
+.. code-block:: shell
+    :linenos:
+
+    awk 'NR>1' file.txt 
+    # 与这样等效
+    awk 'NR>1 { print }' file.txt
+
+
+    # 输出
+    99,01 jun 2018,sylvain,team:::admin
+    52,01    dec   2018,sonia,team
+    52,01    dec   2018,sonia,team
+    25,01    jan   2019,sonia,team
+    10,01 jan 2019,sylvain,team:::admin
+    8,12    jun   2018,öle,team:support
+    这里有8个空格
+
+
+    17,05 apr 2019,abhishek,guest
+
+记录切片
+""""""""""""""""""""""""""""""""""""""""""""""
+
+有了上个例子，不难推到出行切片的写法：
+
+.. code-block:: shell
+    :linenos:
+
+    awk 'NR>1 && NR<4' file.txt
+
+
+    # 输出
+    99,01 jun 2018,sylvain,team:::admin
+    52,01    dec   2018,sonia,team
+
+可以看到只打印除了第2、3行。
+
+移除仅含空白符的行
+""""""""""""""""""""""""""""""""""""""""""""""
+
+.. code-block:: shell
+    :linenos:
+
+    awk 'NF' file.txt
+
+
+    # 输出
+    CREDITS,EXPDATE,USER,GROUPS
+    99,01 jun 2018,sylvain,team:::admin
+    52,01    dec   2018,sonia,team
+    52,01    dec   2018,sonia,team
+    25,01    jan   2019,sonia,team
+    10,01 jan 2019,sylvain,team:::admin
+    8,12    jun   2018,öle,team:support
+    17,05 apr 2019,abhishek,guest
+
+AWK 根据 ``FS`` 指定的 **字段分隔符** 来将每个记录分隔成字段。默认的 ``FS`` 是一个或多个 *空白符* ，也就是 *空格* 或 *制表符* 。
+而且每条记录至少要包含一个字段，所以原来数据中的空行就这样被过滤掉了。
+
+
+移除无内容的行
+""""""""""""""""""""""""""""""""""""""""""""""
+
+.. code-block:: shell
+    :linenos:
+
+    awk '1' RS='' file.txt
+
+
+    # 输出
+    CREDITS,EXPDATE,USER,GROUPS
+    99,01 jun 2018,sylvain,team:::admin
+    52,01    dec   2018,sonia,team
+    52,01    dec   2018,sonia,team
+    25,01    jan   2019,sonia,team
+    10,01 jan 2019,sylvain,team:::admin
+    8,12    jun   2018,öle,team:support
+    这里有8个空格
+    17,05 apr 2019,abhishek,guest
+
+
+这个单行代码基于一个晦涩难懂的 POSIX 规则，如果将 RS 设置为空字符串，那么记录由 **换行加上及无内容行** 分隔。
+
+提取字段
+""""""""""""""""""""""""""""""""""""""""""""""
+
+这个就比较常用了，我们经常要提取出数据中的一列或几列。
+比如现在我想提取出第一列和第三列，并且输出时指定字段用逗号分隔：
+
+.. code-block:: shell
+    :linenos:
+
+    awk '{ print $1, $3 }' FS=,  OFS=, file.txt
+
+    # 输出
+    CREDITS,USER
+    99,sylvain
+    52,sonia
+    52,sonia
+    25,sonia
+    10,sylvain
+    8,öle
+            ,
+    ,
+    ,
+    17,abhishek
+
+可以看到，这条命令里没有指定 ``pattern`` ，因为 AWK 中的 ``pattern`` 默认为 ``1`` ，所以不指定的话，就默认对所有行生效。
+
+结合前面的例子，如果想要同时把无内容行去掉，可以这样：
+
+.. code-block:: shell
+    :linenos:
+
+    awk 'NF { print $1, $3 }' FS=, OFS=, file.txt
+
+    # 输出
+    CREDITS,USER
+    99,sylvain
+    52,sonia
+    52,sonia
+    25,sonia
+    10,sylvain
+    8,öle
+            ,
+    17,abhishek
+
+这个例子里我们是手动指定的 FS 和 OFS 值，还有一种更具有编程风格的写法，可以把变量赋值写在一个 BEGIN 块中：
+
+.. code-block:: shell
+    :linenos:
+
+    awk 'BEGIN { FS=OFS="," } NF { print $1,$3 }' file.txt
+
+    # 输出
+    CREDITS,USER
+    99,sylvain
+    52,sonia
+    52,sonia
+    25,sonia
+    10,sylvain
+    8,öle
+            ,
+    17,abhishek
+
+现在读出的内容还有个包含空格的空行，这个后面再处理。
+
+
+按列执行计算
+""""""""""""""""""""""""""""""""""""""""""""""
+
+AWK 可以编程，从而实现数学运算。现在我们将第一列中的数字求和：
+
+.. code-block:: shell
+    :linenos:
+
+    awk '{ SUM=SUM+$1 } END { print SUM }' FS=, OFS=, file.txt
+    # 运算符也可以这样写
+    awk '{ SUM+=$1 } END { print SUM }' FS=, OFS=, file.txt
+
+
+    # 输出
+    263
+
+AWK 变量在使用前不需要声明，一个未定义的新变量的默认值是 *空字符串* ，等效于数字 ``0`` 。
+我们可以注意到，数据的第一列其实是包含表头的字符以及后面行的空白符的，但是因为这些都等效于 ``0`` ，所以它们不会干扰求和。
+当然，如果我们是乘法的话就有影响了，他就直接返回 ``0`` 了。
+
+
+计算非空行数
+""""""""""""""""""""""""""""""""""""""""""""""
+
+上面的例子中我们已经使用了 ``END`` 规则，我们还可以哟个这个规则来计算数据中的非空行数。
+
+
+.. code-block:: shell
+    :linenos:
+
+    awk '/./ { COUNT+=1 } END { print COUNT }' file.txt
+
+
+    # 输出
+    9
+
+这个程序中，我们逐记录遍历输入数据流，如果记录能够匹配正则 ``/./`` ，那么变量 COUNT 就加 ``1`` 。
+这个正则的意思是，至少包含一个字符。
+最后，END 块用于在处理完整个数据流后显示最终结果。
+变量 COUNT 的名称可以随便起，但要符合这个 `命名规则`_ 。
+
+.. _命名规则: https://www.gnu.org/software/gawk/manual/html_node/Using-Variables.html?ref=linuxhandbook.com
+
+但是，我们仔细检查下会发现，这个结果是错误的，因为它把那行有8个空格的行也算上了。
+
+我们这样改，就可以把这行也去掉：
+
+
+.. code-block:: shell
+    :linenos:
+
+    awk 'NF { COUNT+=1 } END { print COUNT }' file.txt
+
+
+    # 输出
+    8
+
+如果想把第一行的表头也忽略，可以这样写：
+
+.. code-block:: shell
+    :linenos:
+
+    awk '+$1 { COUNT+=1 } END { print COUNT }' file.txt
+
+
+未完待续
