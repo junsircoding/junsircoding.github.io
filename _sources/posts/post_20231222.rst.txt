@@ -1,0 +1,161 @@
+如何在你的 Sphinx 项目中加入 plotly 图表支持？
+=======================================================================
+
+`Sphinx`_ 是一个用 Python 编写的文档生成工具，Python 官方的文档以及大量的 Python 库（包括 Sphinx 自己）文档都是用它来构建的。
+
+.. _Sphinx: https://www.sphinx-doc.org/en/master/
+
+`Plotly`_ 是一个科学绘图库，不仅支持 Python，也可以用 R 以及其他语言来生成可交互的图表。
+
+.. _Plotly: https://plotly.com/python/
+
+这两个工具有一个共同点，那就是都可以生成 HTML 格式的内容，从而直接用浏览器打开浏览和交互。
+
+这个博客就是用 Sphinx 构建的，主题选用了 `readthedocs`_ 主题。
+
+.. _readthedocs: https://about.readthedocs.com/
+
+有时我在练习 Plotly 画图的时候，会画出一些经常使用的图表，我想在这里把它们都在这里备份下来，使得既可以浏览代码，同时也可以直接查看和操作对应的图表。
+这篇文章就说明了如何实现这件事。
+
+首先需要在项目的 Python 运行环境中安装 ``sphinx-charts`` 库：
+
+.. code-block:: shell
+    :linenos:
+
+    pip install sphinx-charts
+
+接着在 Sphinx 项目中的 ``${project_name}/docs/source/conf.py`` 文件中的插件列表中添加这个插件：
+
+.. note::
+
+    把上面的 ``${project_name}`` 替换为你的实际 Sphinx 项目名称。
+
+.. code-block:: python
+    :linenos:
+
+    extensions = [
+        ...
+        'sphinx_charts.charts'
+    ]
+
+然后创建一个用于存放 plotly 图表文件的目录：
+
+.. code-block:: shell
+    :linenos:
+
+    mkdir ${project_name}/docs/source/charts
+
+.. note::
+
+    这个目录位置一定要在这里，名称也不要改，要不然不生效。
+
+
+下面我们先用 Plotly 画一个图表：
+
+
+确保已经在环境中安装了 ``Plotly`` 库。
+
+.. code-block:: shell
+    :linenos:
+
+    pip install plotly
+
+执行下面的代码，将 Plotly 图表输出成 json 格式的文件。
+
+.. code-block:: python
+    :linenos:
+
+    import plotly.graph_objects as go
+    import numpy as np
+    import pandas as pd
+
+
+    def trans_data(level: list, colors: list):
+        """转换数据
+
+        Args:
+            level(list): 自定义层级列表
+            colors(list): 自定义颜色列表, 长度应比 level 小 1
+
+        Returns:
+            (tuple):
+                分组转换后的数据
+                区间值列表
+                色标分层列表
+        """
+        assert len(colors) + 1 == len(level), "colors 长度应比 level 小 1"
+
+        labels = np.arange(len(LEVEL)+1)
+        ratio_list = np.linspace(0, 1, len(color_list)+1).tolist()
+
+        colorscale_list = [[ratio_list[0], color_list[0]]]
+        for idx, _ in enumerate(color_list[1:]):
+            colorscale_list.append([ratio_list[idx+1], color_list[idx]])
+            colorscale_list.append([ratio_list[idx+1], color_list[idx+1]])
+        colorscale_list.append([ratio_list[-1], color_list[-1]])
+
+        Z_cut = pd.DataFrame(pd.cut(
+            Z.flatten(),
+            bins=[-np.infty] + LEVEL + [np.infty],
+            labels=labels
+        ).reshape(Z.shape))
+        return Z_cut, labels, colorscale_list
+
+
+    np.random.seed(19680801)  # 设置随机数种子, 保证每次生成的 Z 数据都相同
+    Z = np.random.rand(6, 10)  # 二维网格数据, shape 为 (6x10)
+    x = np.arange(0, 11, 1)  # 长度为 11 的 x 轴坐标
+    y = np.arange(0, 7, 1)  # 长度为 7 的 y 轴坐标
+
+    LEVEL = [0., 0.1, 0.3, 0.4, 0.8, 0.85, 0.9]
+    color_list = ['#01A0F6', '#00ECEC', '#00D800', '#019000', '#FFFF00', '#E7C000']
+
+    Z_cut, labels, colorscale_list = trans_data(LEVEL, color_list)
+    Z_cut_values = np.unique(Z_cut.values.flatten())
+
+    fig = go.Figure(data=go.Heatmap(
+        z=Z_cut,
+        x=x,
+        y=y,
+        colorbar=dict(
+            tickvals=np.arange(Z_cut_values.min(), Z_cut_values.max()+1),
+            ticktext=LEVEL
+        ),
+        colorscale=colorscale_list,
+        customdata=Z,
+        hovertemplate='x: %{x}<br>y: %{y}<br>z:  %{customdata}<extra></extra>',
+    )
+    )
+
+    fig.update_layout(
+        title='Plotly Heatmap Demo',
+        xaxis=dict(tickvals=x, ticktext=x, title="X Axis"),
+        yaxis=dict(tickvals=y, ticktext=y, title="Y Axis"),
+    )
+
+    fig.write_json("plotly_demo.json")
+
+
+执行完之后，会生成一个 ``plotly_demo.json`` 的 json 文件。
+
+我们将她放到 ``${project_name}/docs/source/charts/plotly_demo.json`` 下。
+
+然后编写 rst 文件：
+
+.. code-block:: reStructuredText
+    :linenos:
+
+    .. chart:: charts/plotly_demo.json
+
+        Plotly Demo
+
+重新构建文档，后可以看到图表已经可以查看了。
+
+.. chart:: charts/20230527/20230527_03.json
+
+    Plotly Demo
+
+.. note::
+
+    需要注意的是，据我测试，目前只有 readthedocs 主题可以正常显示，其他的主题不生效，应该需要自己去阅读源码去调试。

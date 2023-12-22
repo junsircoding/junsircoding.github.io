@@ -63,7 +63,7 @@ commentsRunWhenDOMLoaded(addUtterances);
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Matplotlib Axes 的位置参数到底如何设置？" href="post_20231220.html" />
-    <link rel="prev" title="欢迎来到 小骏的博客" href="../index.html" /> 
+    <link rel="prev" title="如何在你的 Sphinx 项目中加入 plotly 图表支持？" href="post_20231222.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -87,19 +87,21 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="post_20231222.html">如何在你的 Sphinx 项目中加入 plotly 图表支持？</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">常用的几个 AWK 命令</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">了解 AWK 中的 <strong>预定义变量</strong> 和 <strong>自动变量</strong></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">AWK 基本使用</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id4">打印所有行</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">移除前几个记录</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">记录切片</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">移除仅含空白符的行</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id8">移除无内容的行</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">提取字段</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id10">按列执行计算</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id11">计算非空行数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">了解 AWK 中的 <strong>预定义变量</strong> 和 <strong>自动变量</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">AWK 基本使用</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#record">打印所有 Record</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">移除前几个 Record</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Record 切片</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">移除仅含空白符的 Record</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">移除仅含 <em>换行符</em> 的 Record</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#field">提取 Field</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">按列执行计算</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">计算非空行数</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">在 AWK 中使用数组</a></li>
 </ul>
 </li>
 </ul>
@@ -137,269 +139,402 @@ commentsRunWhenDOMLoaded(addUtterances);
              
   <section id="awk">
 <h1>常用的几个 AWK 命令<a class="headerlink" href="#awk" title="Link to this heading"></a></h1>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>声明
-这篇文章非原创，翻译自文章： <a class="reference external" href="https://linuxhandbook.com/awk-command-tutorial/">Getting Started With AWK Command</a></p>
-</div>
 <p>AWK 可以追溯到 Unix 时代，它是 POSIX 标准的一部分，所以在任意一个类 Unix 系统上都可以使用。</p>
-<p>与 Perl 这样的多用途语言相比，AWK 有时会因为年代久远或者缺少功能儿被人诟病，但我依然喜欢它，并且会在日常工作中使用。</p>
-<p>它在处理数据文件的时候很有优势，有时后一行代码就能实现相对复杂的功能。</p>
-<p>这篇文章就罗列了一些这样有用的 AWK 程序，它们都不超过 80 个词。</p>
+<p>与 <a class="reference external" href="https://en.wikipedia.org/wiki/Perl">Perl</a> 这样的多用途语言相比，AWK 有时会因为年代久远或者缺少功能而被人诟病，但我依然喜欢它，并且会在日常工作中使用。</p>
+<p>它在处理数据文件的时候很有优势，有时候一行代码就能实现相对复杂的功能。</p>
+<p>这篇文章就罗列了一些这样简洁但有用的 AWK 程序，它们都不超过 80 个字符。</p>
 <p>即便你没有 AWK 的使用经验，通过练习这几个小程序也可以理解 AWK 的核心功能。</p>
-<p>这个是我们的示例数据文件：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
-<span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
-<span class="n">这里有8个空格</span>
-
-
-<span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+<p>这个是我们后面练习 AWK 所使用的数据文件，练习使用时记得把第 8 行的 <code class="docutils literal notranslate"><span class="pre">这里有8个空格</span></code> 替换为8个空格。</p>
+<p>这个数据文件的源文件地址在这里： <a class="reference external" href="https://gist.github.com/s-leroux/3c3f6cd6a6d01fcba6831aec44ce1dac">数据文件地址</a> 。</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>CREDITS,EXPDATE,USER,GROUPS
+<span class="linenos"> 2</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos"> 3</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 4</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 5</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
+<span class="linenos"> 6</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
+<span class="linenos"> 7</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
+<span class="linenos"> 8</span>这里有8个空格
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>备注</p>
-<p>练习使用时把里面的 <code class="docutils literal notranslate"><span class="pre">这里有8个空格</span></code> 替换为8个空格。</p>
-</div>
-<section id="id1">
-<h2>了解 AWK 中的 <strong>预定义变量</strong> 和 <strong>自动变量</strong><a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id2">
+<h2>了解 AWK 中的 <strong>预定义变量</strong> 和 <strong>自动变量</strong><a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>在写 AWK 程序的时候，常见的预定义变量和自动变量有：</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">RS</span></code> ：The record separator，数据分隔符。AWK 一次处理一条记录，这个 RS 就是把输入数据流拆分为记录的分隔符。</dt><dd><p>默认的 RS 是 <em>换行符</em> ，所以如果不去指定这个 RS，一行就是一条记录。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">RS</span></code> ：The input record separator, by default a newline，数据分隔符。AWK 一次处理一条 Record ，这个 RS 就是把输入数据流拆分为 Record 的分隔符。</dt><dd><p>默认的 RS 是 <em>换行符</em> ，所以如果不去指定这个 RS，一行就是一条 Record。</p>
 </dd>
 </dl>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NR</span></code> ：The current input record number，也就是记录的编号。如果 RS 是 <em>换行符</em> ，那么 NR 就恰好等于数据的行号。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NR</span></code> ：The total number of input records seen so far，也就是 Record 的编号。如果 RS 是 <em>换行符</em> ，那么 NR 就恰好等于数据的行号。</p></li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">FS/OFS</span></code> ：The character(s) used as the field separator，分隔单个词的字符，默认是 <em>空格</em> 。FS 是输入流的词分隔符，OFS 是输出流的词分隔符。</dt><dd><p>比如你的数据是用逗号分开的 CSV 文件，那么用 AWK 读的时候，就要指定 FS 为逗号。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">FS/OFS</span></code> ：The input/output field separator, a space by default，分隔单个词的字符，默认是 <em>空格</em> 。FS 是输入流的词分隔符，OFS 是输出流的词分隔符。</dt><dd><p>比如你的数据是用逗号分开的 CSV 文件，那么用 AWK 读的时候，就要指定 FS 为逗号。</p>
 </dd>
 </dl>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NF</span></code> ：The number of fields in the current record，当前记录中的词的编号，默认是 <em>空格</em> 。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NF</span></code> ：The number of fields in the current input record，当前 Record 中的 Field 的数量。</p></li>
 </ul>
-<p>其他还有很多变量，可以查 <a class="reference external" href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html?ref=linuxhandbook.com">手册</a> 查看完整的介绍，只是日常使用知道这几个就差不多够了。</p>
-<section id="id3">
-<h3>AWK 基本使用<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>用 <cite>man awk</cite> 查看 AWK 的手册，可以看到官方手册对这几个变量的全称。</p>
+<p>其他还有很多变量，也可以查 <a class="reference external" href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html">在线手册</a> 查看完整的介绍，只是日常使用知道这几个就差不多够了。</p>
 <section id="id4">
-<h4>打印所有行<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<h3>AWK 基本使用<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<section id="record">
+<h4>打印所有 Record<a class="headerlink" href="#record" title="Link to this heading"></a></h4>
 <p>这个例子可能没啥用，但是可以很好的介绍 AWK 的基本用法。</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>awk<span class="w"> </span><span class="s1">&#39;1 { print }&#39;</span><span class="w"> </span>file.txt
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="c1"># 输出</span>
-<span class="linenos"> 6</span>CREDITS,EXPDATE,USER,GROUPS
-<span class="linenos"> 7</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
-<span class="linenos"> 8</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos"> 9</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos">10</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
-<span class="linenos">11</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
-<span class="linenos">12</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
-<span class="linenos">13</span>这里有8个空格
-<span class="linenos">14</span>
-<span class="linenos">15</span>
-<span class="linenos">16</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;1 { print }&#39;</span><span class="w"> </span>file.txt
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
+<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
+<span class="linenos"> 9</span><span class="n">这里有8个空格</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
 </pre></div>
 </div>
 <p>AWK 程序由一个或多个 <code class="docutils literal notranslate"><span class="pre">pattern</span> <span class="pre">{</span> <span class="pre">action</span> <span class="pre">}</span></code> 语句构成。
-如果在处理当前的记录时， <code class="docutils literal notranslate"><span class="pre">pattern</span></code> 的计算结果是非零值，也就是 AWK 中的 <code class="docutils literal notranslate"><span class="pre">true</span></code> ， 语句块 <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">}</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">action</span></code> 就会被执行。
-上面这个例子中， <code class="docutils literal notranslate"><span class="pre">1</span></code> 是一个非零常量，AWK 会对所有的记录执行 <code class="docutils literal notranslate"><span class="pre">print</span></code> 动作，这样就把所有数据内容都打印出来了。</p>
-<p>另外， <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">print</span> <span class="pre">}</span></code> 是 AWK 默认的 <code class="docutils literal notranslate"><span class="pre">action</span></code> ，所以其实这个例子里可以不写：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>awk<span class="w"> </span><span class="m">1</span><span class="w"> </span>file.txt
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span>
-<span class="linenos"> 4</span><span class="c1"># 输出</span>
-<span class="linenos"> 5</span>CREDITS,EXPDATE,USER,GROUPS
-<span class="linenos"> 6</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
-<span class="linenos"> 7</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos"> 8</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos"> 9</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
-<span class="linenos">10</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
-<span class="linenos">11</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
-<span class="linenos">12</span>这里有8个空格
-<span class="linenos">13</span>
-<span class="linenos">14</span>
-<span class="linenos">15</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
+如果在处理当前的 Record 时， <code class="docutils literal notranslate"><span class="pre">pattern</span></code> 的计算结果是非零值，
+也就是 AWK 中的 <code class="docutils literal notranslate"><span class="pre">true</span></code> ， 语句块 <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">}</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">action</span></code> 就会被执行。
+上面这个例子中， <code class="docutils literal notranslate"><span class="pre">1</span></code> 是一个非零常量，也就是说在处理每条 Record 时的 <code class="docutils literal notranslate"><span class="pre">pattern</span></code> 都是 <code class="docutils literal notranslate"><span class="pre">true</span></code> ，
+所以 AWK 会对所有的 Record 执行 <code class="docutils literal notranslate"><span class="pre">print</span></code> 动作，这样就把所有数据内容都打印出来了。</p>
+<p>另外， <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">print</span> <span class="pre">}</span></code> 是 AWK 默认的 <code class="docutils literal notranslate"><span class="pre">action</span></code> ，所以其实这个例子里可以将其省略：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="m">1</span><span class="w"> </span>file.txt
+<span class="linenos">2</span><span class="c1"># 或</span>
+<span class="linenos">3</span>awk<span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"> </span>file.txt
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
+<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
+<span class="linenos"> 9</span><span class="n">这里有8个空格</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
 </pre></div>
 </div>
 </section>
 <section id="id5">
-<h4>移除前几个记录<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
-<p>那个数字就是行号，其实可以理解成从第几行开始打印，首行的行号是 0。</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1&#39;</span><span class="w"> </span>file.txt
-<span class="linenos"> 2</span><span class="c1"># 与这样等效</span>
-<span class="linenos"> 3</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1 { print }&#39;</span><span class="w"> </span>file.txt
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="c1"># 输出</span>
-<span class="linenos"> 7</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
-<span class="linenos"> 8</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos"> 9</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos">10</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
-<span class="linenos">11</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
-<span class="linenos">12</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
-<span class="linenos">13</span>这里有8个空格
-<span class="linenos">14</span>
-<span class="linenos">15</span>
-<span class="linenos">16</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
+<h4>移除前几个 Record<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<p>可以让 AWK 从第几行开始打印，比如下面这个例子，我们指定行号为大于 1，即 <code class="docutils literal notranslate"><span class="pre">NR&gt;1</span></code> （首行的行号是 1）。</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1&#39;</span><span class="w"> </span>file.txt
+<span class="linenos">2</span><span class="c1"># 与这样等效</span>
+<span class="linenos">3</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1 { print }&#39;</span><span class="w"> </span>file.txt
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 3</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 5</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 6</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 7</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
+<span class="linenos"> 8</span><span class="n">这里有8个空格</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
 </pre></div>
 </div>
 </section>
 <section id="id6">
-<h4>记录切片<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
-<p>有了上个例子，不难推到出行切片的写法：</p>
+<h4>Record 切片<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>有了上个例子，不难推导出对 Record 进行切片的写法：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1 &amp;&amp; NR&lt;4&#39;</span><span class="w"> </span>file.txt
-<span class="linenos">2</span>
-<span class="linenos">3</span>
-<span class="linenos">4</span><span class="c1"># 输出</span>
-<span class="linenos">5</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
-<span class="linenos">6</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
 </pre></div>
 </div>
-<p>可以看到只打印除了第2、3行。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos">3</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+</pre></div>
+</div>
+<p>可以看到只打印出了第 2、3 行。</p>
 </section>
 <section id="id7">
-<h4>移除仅含空白符的行<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>awk<span class="w"> </span><span class="s1">&#39;NF&#39;</span><span class="w"> </span>file.txt
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span>
-<span class="linenos"> 4</span><span class="c1"># 输出</span>
-<span class="linenos"> 5</span>CREDITS,EXPDATE,USER,GROUPS
-<span class="linenos"> 6</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
-<span class="linenos"> 7</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos"> 8</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos"> 9</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
-<span class="linenos">10</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
-<span class="linenos">11</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
-<span class="linenos">12</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
+<h4>移除仅含空白符的 Record<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<p>这里需要转换一下思路，我们的目的是：把仅含空白符（空格或制表符）的 Record 移除，
+换成 AWK 的处理逻辑应该是：仅打印出非仅含空白符的 Record，有点拗口。</p>
+<p>所以我们的 <code class="docutils literal notranslate"><span class="pre">pattern</span></code> 要能判断出每一个 Record 是不是仅含空白符。
+这里我想到了用正则来判断。</p>
+<p>匹配至少一个非空白符的正则是： <code class="docutils literal notranslate"><span class="pre">\S+</span></code>。
+那么这个程序可以这样写：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;/\S+/ { print }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<p>AWK 根据 <code class="docutils literal notranslate"><span class="pre">FS</span></code> 指定的 <strong>字段分隔符</strong> 来将每个记录分隔成字段。默认的 <code class="docutils literal notranslate"><span class="pre">FS</span></code> 是一个或多个 <em>空白符</em> ，也就是 <em>空格</em> 或 <em>制表符</em> 。
-而且每条记录至少要包含一个字段，所以原来数据中的空行就这样被过滤掉了。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
+<span class="linenos">3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos">4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos">5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos">6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos">7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos">8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
+<span class="linenos">9</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+</pre></div>
+</div>
+<p>可以看到，这样不仅把第 8 行的仅含空格的 Record 移除，也把第 9、10 行的仅含 <em>换行符</em> 的 Record 也移除掉了。</p>
+<p>再看一下这个写法：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NF&#39;</span><span class="w"> </span>file.txt
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">NF</span></code> 是 Field 的编号，这个程序的匹配规则是：每个 Record 中的 Field 数量不为 0。
+而我们知道 Field 是由 Record 拆分出来的，如果不特别指定，分隔符是 <code class="docutils literal notranslate"><span class="pre">FS</span></code> ，也就是 <em>空格</em> 。
+对于仅含空白字符的 Record 或者仅含 <em>换行符</em> 的 Record ，当然就拆分不出 Field ，所以它们的 <code class="docutils literal notranslate"><span class="pre">NF</span></code> 就是 0，会被过滤掉。
+那么这个程序的输出为：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
+<span class="linenos">3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos">4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos">5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos">6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos">7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos">8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
+<span class="linenos">9</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+</pre></div>
+</div>
 </section>
 <section id="id8">
-<h4>移除无内容的行<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>awk<span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"> </span><span class="nv">RS</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="w"> </span>file.txt
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span>
-<span class="linenos"> 4</span><span class="c1"># 输出</span>
-<span class="linenos"> 5</span>CREDITS,EXPDATE,USER,GROUPS
-<span class="linenos"> 6</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
-<span class="linenos"> 7</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos"> 8</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
-<span class="linenos"> 9</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
-<span class="linenos">10</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
-<span class="linenos">11</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
-<span class="linenos">12</span>这里有8个空格
-<span class="linenos">13</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
+<h4>移除仅含 <em>换行符</em> 的 Record<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<p>和上一个例子比起来，这个例子是要把第 8 行保留下来。</p>
+<p>我们同样先用正则来试一下：</p>
+<p>匹配 <em>换行符</em> 是： <code class="docutils literal notranslate"><span class="pre">\n</span></code>
+匹配 <em>非换行符</em> 是： <code class="docutils literal notranslate"><span class="pre">[^\n]</span></code>
+匹配一个或多个 <em>非换行符</em> 是： <code class="docutils literal notranslate"><span class="pre">[^\n]+</span></code></p>
+<p>那么这个程序可以这样写：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;/[^\n]+/ { print }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<p>这个单行代码基于一个晦涩难懂的 POSIX 规则，如果将 RS 设置为空字符串，那么记录由 <strong>换行加上及无内容行</strong> 分隔。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
+<span class="linenos"> 4</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 6</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 7</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 8</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 9</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
+<span class="linenos">10</span><span class="n">这里有8个空格</span>
+<span class="linenos">11</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+</pre></div>
+</div>
+<p>我们再看另一种写法：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"> </span><span class="nv">RS</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="w"> </span>file.txt
+</pre></div>
+</div>
+<p>这个程序指定了 Record 的分隔符为 <em>空字符串</em> 。
+也就是说对于每个 Record 的匹配规则是：每个 Record 用 <em>空字符串</em> 分隔后输出，每个 Record 的 pattern 都为 true，都会输出结果。
+运行结果是这样：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
+<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
+<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
+<span class="linenos"> 9</span><span class="n">这里有8个空格</span>
+<span class="linenos">10</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+</pre></div>
+</div>
+<p>可以看到也可以达到目的，
+这个程序基于一个晦涩难懂的 POSIX 规则，如果将 RS 设置为 <em>空字符串</em> ，那么 Record 由 <em>多个换行符</em> 分隔。
+每行的末尾有 <em>换行符</em> ，而第 9、10 行的内容就是 <em>换行符</em> ，所以它们连同第 8 行末尾的 <em>换行符</em>，这 3 个换行符当成了一个分隔符。
+这就得到了上面的结果。</p>
 </section>
-<section id="id9">
-<h4>提取字段<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<section id="field">
+<h4>提取 Field<a class="headerlink" href="#field" title="Link to this heading"></a></h4>
 <p>这个就比较常用了，我们经常要提取出数据中的一列或几列。
-比如现在我想提取出第一列和第三列，并且输出时指定字段用逗号分隔：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>awk<span class="w"> </span><span class="s1">&#39;{ print $1, $3 }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w">  </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="c1"># 输出</span>
-<span class="linenos"> 4</span>CREDITS,USER
-<span class="linenos"> 5</span><span class="m">99</span>,sylvain
-<span class="linenos"> 6</span><span class="m">52</span>,sonia
-<span class="linenos"> 7</span><span class="m">52</span>,sonia
-<span class="linenos"> 8</span><span class="m">25</span>,sonia
-<span class="linenos"> 9</span><span class="m">10</span>,sylvain
-<span class="linenos">10</span><span class="m">8</span>,öle
-<span class="linenos">11</span><span class="w">        </span>,
-<span class="linenos">12</span>,
-<span class="linenos">13</span>,
-<span class="linenos">14</span><span class="m">17</span>,abhishek
+比如现在我想提取出第一列和第三列，并且输出时指定 Field 用逗号分隔：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;{ print $1, $3 }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w">  </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
 </pre></div>
 </div>
-<p>可以看到，这条命令里没有指定 <code class="docutils literal notranslate"><span class="pre">pattern</span></code> ，因为 AWK 中的 <code class="docutils literal notranslate"><span class="pre">pattern</span></code> 默认为 <code class="docutils literal notranslate"><span class="pre">1</span></code> ，所以不指定的话，就默认对所有行生效。</p>
+<div class="dongbei note admonition">
+<p class="admonition-title">注意</p>
+<p>这个程序中的 action 中， <code class="docutils literal notranslate"><span class="pre">$1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">$3</span></code> 中间有个逗号，这个不是分隔符的意思，而是表示
+我们想要输出 <code class="docutils literal notranslate"><span class="pre">$1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">$3</span></code> 两个变量，如果不写这个逗号，输出结果就不对了。
+因为在 action 的引号中的部分，加不加空格都是可以的，并没有严格的格式要求，
+换言之在里面指定输出的分隔符当然就是无效的。</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">USER</span>
+<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="n">sylvain</span>
+<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="n">sylvain</span>
+<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="n">öle</span>
+<span class="linenos"> 9</span>        <span class="p">,</span>
+<span class="linenos">10</span><span class="p">,</span>
+<span class="linenos">11</span><span class="p">,</span>
+<span class="linenos">12</span><span class="mi">17</span><span class="p">,</span><span class="n">abhishek</span>
+</pre></div>
+</div>
+<p>现在我们可以看到，已经把第一列和第三列提取出来了，并且以逗号为分隔符。
+可以看到，这条命令里没有指定 <code class="docutils literal notranslate"><span class="pre">pattern</span></code> ，因为 AWK 中的 <code class="docutils literal notranslate"><span class="pre">pattern</span></code> 默认为 <code class="docutils literal notranslate"><span class="pre">1</span></code> ，所以不指定的话，就默认对所有行生效。</p>
 <p>结合前面的例子，如果想要同时把无内容行去掉，可以这样：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>awk<span class="w"> </span><span class="s1">&#39;NF { print $1, $3 }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="c1"># 输出</span>
-<span class="linenos"> 4</span>CREDITS,USER
-<span class="linenos"> 5</span><span class="m">99</span>,sylvain
-<span class="linenos"> 6</span><span class="m">52</span>,sonia
-<span class="linenos"> 7</span><span class="m">52</span>,sonia
-<span class="linenos"> 8</span><span class="m">25</span>,sonia
-<span class="linenos"> 9</span><span class="m">10</span>,sylvain
-<span class="linenos">10</span><span class="m">8</span>,öle
-<span class="linenos">11</span><span class="w">        </span>,
-<span class="linenos">12</span><span class="m">17</span>,abhishek
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;/\S+/ { print $1, $3 }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
+</pre></div>
+</div>
+<p>这里我们先用正则过滤掉了所有无内容的行，然后指定 Field 分隔符将他们输出来。</p>
+<p>再看这一种：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NF { print $1, $3 }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
+</pre></div>
+</div>
+<p>我们指定 Field 用逗号分隔，然后输出 Field 数量不为 0 的 Record，
+这样就会包含那个空格行。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">USER</span>
+<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="n">sylvain</span>
+<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="n">sylvain</span>
+<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="n">öle</span>
+<span class="linenos"> 9</span>        <span class="p">,</span>
+<span class="linenos">10</span><span class="mi">17</span><span class="p">,</span><span class="n">abhishek</span>
 </pre></div>
 </div>
 <p>这个例子里我们是手动指定的 FS 和 OFS 值，还有一种更具有编程风格的写法，可以把变量赋值写在一个 BEGIN 块中：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>awk<span class="w"> </span><span class="s1">&#39;BEGIN { FS=OFS=&quot;,&quot; } NF { print $1,$3 }&#39;</span><span class="w"> </span>file.txt
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="c1"># 输出</span>
-<span class="linenos"> 4</span>CREDITS,USER
-<span class="linenos"> 5</span><span class="m">99</span>,sylvain
-<span class="linenos"> 6</span><span class="m">52</span>,sonia
-<span class="linenos"> 7</span><span class="m">52</span>,sonia
-<span class="linenos"> 8</span><span class="m">25</span>,sonia
-<span class="linenos"> 9</span><span class="m">10</span>,sylvain
-<span class="linenos">10</span><span class="m">8</span>,öle
-<span class="linenos">11</span><span class="w">        </span>,
-<span class="linenos">12</span><span class="m">17</span>,abhishek
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;BEGIN { FS=OFS=&quot;,&quot; } NF { print $1,$3 }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<p>现在读出的内容还有个包含空格的空行，这个后面再处理。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">USER</span>
+<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="n">sylvain</span>
+<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="n">sylvain</span>
+<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="n">öle</span>
+<span class="linenos"> 9</span>        <span class="p">,</span>
+<span class="linenos">10</span><span class="mi">17</span><span class="p">,</span><span class="n">abhishek</span>
+</pre></div>
+</div>
+<p>这个例子也可以这样写：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;BEGIN { FS=OFS=&quot;,&quot; } /\S+/ { print $1, $3 }&#39;</span><span class="w"> </span>file.txt
+</pre></div>
+</div>
+<p>输出为这样：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">USER</span>
+<span class="linenos">2</span><span class="mi">99</span><span class="p">,</span><span class="n">sylvain</span>
+<span class="linenos">3</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos">4</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos">5</span><span class="mi">25</span><span class="p">,</span><span class="n">sonia</span>
+<span class="linenos">6</span><span class="mi">10</span><span class="p">,</span><span class="n">sylvain</span>
+<span class="linenos">7</span><span class="mi">8</span><span class="p">,</span><span class="n">öle</span>
+<span class="linenos">8</span><span class="mi">17</span><span class="p">,</span><span class="n">abhishek</span>
+</pre></div>
+</div>
 </section>
-<section id="id10">
-<h4>按列执行计算<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<section id="id9">
+<h4>按列执行计算<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
 <p>AWK 可以编程，从而实现数学运算。现在我们将第一列中的数字求和：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;{ SUM=SUM+$1 } END { print SUM }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
 <span class="linenos">2</span><span class="c1"># 运算符也可以这样写</span>
 <span class="linenos">3</span>awk<span class="w"> </span><span class="s1">&#39;{ SUM+=$1 } END { print SUM }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
-<span class="linenos">4</span>
-<span class="linenos">5</span>
-<span class="linenos">6</span><span class="c1"># 输出</span>
-<span class="linenos">7</span><span class="m">263</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="mi">263</span>
 </pre></div>
 </div>
 <p>AWK 变量在使用前不需要声明，一个未定义的新变量的默认值是 <em>空字符串</em> ，等效于数字 <code class="docutils literal notranslate"><span class="pre">0</span></code> 。
 我们可以注意到，数据的第一列其实是包含表头的字符以及后面行的空白符的，但是因为这些都等效于 <code class="docutils literal notranslate"><span class="pre">0</span></code> ，所以它们不会干扰求和。
 当然，如果我们是乘法的话就有影响了，他就直接返回 <code class="docutils literal notranslate"><span class="pre">0</span></code> 了。</p>
 </section>
-<section id="id11">
-<h4>计算非空行数<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
-<p>上面的例子中我们已经使用了 <code class="docutils literal notranslate"><span class="pre">END</span></code> 规则，我们还可以哟个这个规则来计算数据中的非空行数。</p>
+<section id="id10">
+<h4>计算非空行数<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<p>上面的例子中我们已经使用了 <code class="docutils literal notranslate"><span class="pre">END</span></code> 规则，我们还可以用个这个规则来计算数据中的非空行数。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;/./ { COUNT+=1 } END { print COUNT }&#39;</span><span class="w"> </span>file.txt
-<span class="linenos">2</span>
-<span class="linenos">3</span>
-<span class="linenos">4</span><span class="c1"># 输出</span>
-<span class="linenos">5</span><span class="m">9</span>
 </pre></div>
 </div>
-<p>这个程序中，我们逐记录遍历输入数据流，如果记录能够匹配正则 <code class="docutils literal notranslate"><span class="pre">/./</span></code> ，那么变量 COUNT 就加 <code class="docutils literal notranslate"><span class="pre">1</span></code> 。
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="mi">9</span>
+</pre></div>
+</div>
+<p>这个程序中，我们逐 Record 遍历输入数据流，如果 Record 能够匹配正则 <code class="docutils literal notranslate"><span class="pre">/./</span></code> ，那么变量 COUNT 就加 <code class="docutils literal notranslate"><span class="pre">1</span></code> 。
 这个正则的意思是，至少包含一个字符。
 最后，END 块用于在处理完整个数据流后显示最终结果。
 变量 COUNT 的名称可以随便起，但要符合这个 <a class="reference external" href="https://www.gnu.org/software/gawk/manual/html_node/Using-Variables.html?ref=linuxhandbook.com">命名规则</a> 。</p>
-<p>但是，我们仔细检查下会发现，这个结果是错误的，因为它把那行有8个空格的行也算上了。</p>
+<p>但是，我们仔细检查下会发现，这个结果是错误的，因为它把那行有 8 个空格的行也算上了。</p>
 <p>我们这样改，就可以把这行也去掉：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NF { COUNT+=1 } END { print COUNT }&#39;</span><span class="w"> </span>file.txt
-<span class="linenos">2</span>
-<span class="linenos">3</span>
-<span class="linenos">4</span><span class="c1"># 输出</span>
-<span class="linenos">5</span><span class="m">8</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="mi">8</span>
 </pre></div>
 </div>
 <p>如果想把第一行的表头也忽略，可以这样写：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;+$1 { COUNT+=1 } END { print COUNT }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<p>未完待续</p>
 </section>
+</section>
+<section id="id12">
+<h3>在 AWK 中使用数组<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<p>我现在想创建一个姓名和信用分的映射数组。
+同一个人的信用分累加起来。
+如果用 Python 可以这样写：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">credit_map</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos"> 4</span>    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()):</span>
+<span class="linenos"> 5</span>        <span class="c1"># 跳过表头</span>
+<span class="linenos"> 6</span>        <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 7</span>            <span class="k">continue</span>
+<span class="linenos"> 8</span>        <span class="c1"># 去掉首尾换行符</span>
+<span class="linenos"> 9</span>        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="linenos">10</span>        <span class="c1"># 去掉空行</span>
+<span class="linenos">11</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">12</span>            <span class="k">continue</span>
+<span class="linenos">13</span>        <span class="n">credit</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="linenos">14</span>        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">credit_map</span><span class="p">:</span>
+<span class="linenos">15</span>            <span class="n">credit_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">credit</span><span class="p">)</span>
+<span class="linenos">16</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">17</span>            <span class="n">credit_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">credit</span><span class="p">)</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">credit</span> <span class="ow">in</span> <span class="n">credit_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="linenos">20</span>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">credit</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="n">sylvain</span> <span class="mi">109</span>
+<span class="linenos">3</span><span class="n">sonia</span> <span class="mi">129</span>
+<span class="linenos">4</span><span class="n">öle</span> <span class="mi">8</span>
+<span class="linenos">5</span><span class="n">abhishek</span> <span class="mi">17</span>
+</pre></div>
+</div>
+<p>用 AWK 可以这样写：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;+$1 { CREDITS[$3]+=$1 }</span>
+<span class="linenos">2</span><span class="s1">END { for (NAME in CREDITS) print NAME, CREDITS[NAME] }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span>file.txt
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="n">abhishek</span> <span class="mi">1</span>
+<span class="linenos">3</span><span class="n">sonia</span> <span class="mi">3</span>
+<span class="linenos">4</span><span class="n">öle</span> <span class="mi">1</span>
+<span class="linenos">5</span><span class="n">sylvain</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>简洁是很简洁，但是开始还是有些不好理解。
+我们来解读一下：
+首先 <code class="docutils literal notranslate"><span class="pre">+$1</span></code> 表示过滤掉表头。
+然后创建了一个类似 Python 字典的哈希数组 CREDITS，把第 3 列作为键，第一列作为值，并且相同键的值累加。
+然后遍历 CREDITS，遍历出的每个元素是键，然后把键和值打印出来。
+Field 分隔符是逗号。
+这样就实现了相同的功能了。</p>
 </section>
 </section>
 </section>
@@ -408,7 +543,7 @@ commentsRunWhenDOMLoaded(addUtterances);
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="../index.html" class="btn btn-neutral float-left" title="欢迎来到 小骏的博客" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="post_20231222.html" class="btn btn-neutral float-left" title="如何在你的 Sphinx 项目中加入 plotly 图表支持？" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
         <a href="post_20231220.html" class="btn btn-neutral float-right" title="Matplotlib Axes 的位置参数到底如何设置？" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
