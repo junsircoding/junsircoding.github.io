@@ -46,15 +46,13 @@ AWK 可以追溯到 Unix 时代，它是 POSIX 标准的一部分，所以在任
 
 在写 AWK 程序的时候，常见的预定义变量和自动变量有：
 
-- ``RS`` ：The input record separator, by default a newline，数据分隔符。AWK 一次处理一条 Record ，这个 RS 就是把输入数据流拆分为 Record 的分隔符。
-           默认的 RS 是 *换行符* ，所以如果不去指定这个 RS，一行就是一条 Record。
+- ``RS`` ： The input record separator, by default a newline，数据分隔符。AWK 一次处理一条 Record ，这个 RS 就是把输入数据流拆分为 Record 的分隔符。默认的 RS 是 *换行符* ，所以如果不去指定这个 RS，一行就是一条 Record。
 
-- ``NR`` ：The total number of input records seen so far，也就是 Record 的编号。如果 RS 是 *换行符* ，那么 NR 就恰好等于数据的行号。
+- ``NR`` ： The total number of input records seen so far，也就是 Record 的编号。如果 RS 是 *换行符* ，那么 NR 就恰好等于数据的行号。
 
-- ``FS/OFS`` ：The input/output field separator, a space by default，分隔单个词的字符，默认是 *空格* 。FS 是输入流的词分隔符，OFS 是输出流的词分隔符。
-               比如你的数据是用逗号分开的 CSV 文件，那么用 AWK 读的时候，就要指定 FS 为逗号。
+- ``FS/OFS`` ： The input/output field separator, a space by default，分隔单个词的字符，默认是 *空格* 。FS 是输入流的词分隔符，OFS 是输出流的词分隔符。比如你的数据是用逗号分开的 CSV 文件，那么用 AWK 读的时候，就要指定 FS 为逗号。
 
-- ``NF`` ：The number of fields in the current input record，当前 Record 中的 Field 的数量。
+- ``NF`` ： The number of fields in the current input record，当前 Record 中的 Field 的数量。
 
 用 `man awk` 查看 AWK 的手册，可以看到官方手册对这几个变量的全称。
 

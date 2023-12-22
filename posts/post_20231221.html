@@ -168,18 +168,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 <h2>了解 AWK 中的 <strong>预定义变量</strong> 和 <strong>自动变量</strong><a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>在写 AWK 程序的时候，常见的预定义变量和自动变量有：</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">RS</span></code> ：The input record separator, by default a newline，数据分隔符。AWK 一次处理一条 Record ，这个 RS 就是把输入数据流拆分为 Record 的分隔符。</dt><dd><p>默认的 RS 是 <em>换行符</em> ，所以如果不去指定这个 RS，一行就是一条 Record。</p>
-</dd>
-</dl>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NR</span></code> ：The total number of input records seen so far，也就是 Record 的编号。如果 RS 是 <em>换行符</em> ，那么 NR 就恰好等于数据的行号。</p></li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">FS/OFS</span></code> ：The input/output field separator, a space by default，分隔单个词的字符，默认是 <em>空格</em> 。FS 是输入流的词分隔符，OFS 是输出流的词分隔符。</dt><dd><p>比如你的数据是用逗号分开的 CSV 文件，那么用 AWK 读的时候，就要指定 FS 为逗号。</p>
-</dd>
-</dl>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NF</span></code> ：The number of fields in the current input record，当前 Record 中的 Field 的数量。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RS</span></code> ： The input record separator, by default a newline，数据分隔符。AWK 一次处理一条 Record ，这个 RS 就是把输入数据流拆分为 Record 的分隔符。默认的 RS 是 <em>换行符</em> ，所以如果不去指定这个 RS，一行就是一条 Record。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NR</span></code> ： The total number of input records seen so far，也就是 Record 的编号。如果 RS 是 <em>换行符</em> ，那么 NR 就恰好等于数据的行号。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FS/OFS</span></code> ： The input/output field separator, a space by default，分隔单个词的字符，默认是 <em>空格</em> 。FS 是输入流的词分隔符，OFS 是输出流的词分隔符。比如你的数据是用逗号分开的 CSV 文件，那么用 AWK 读的时候，就要指定 FS 为逗号。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NF</span></code> ： The number of fields in the current input record，当前 Record 中的 Field 的数量。</p></li>
 </ul>
 <p>用 <cite>man awk</cite> 查看 AWK 的手册，可以看到官方手册对这几个变量的全称。</p>
 <p>其他还有很多变量，也可以查 <a class="reference external" href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html">在线手册</a> 查看完整的介绍，只是日常使用知道这几个就差不多够了。</p>
