@@ -139,6 +139,11 @@ commentsRunWhenDOMLoaded(addUtterances);
              
   <section id="awk">
 <h1>常用的几个 AWK 命令<a class="headerlink" href="#awk" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>这篇文章非原创，原文为： <a class="reference external" href="https://linuxhandbook.com/awk-command-tutorial/">Getting Started With AWK Command</a> ，本文是我对它的翻译和整理，
+并非完全直译原文，很多地方的措辞改成了我自己理解后认为更加易懂的方式。</p>
+</div>
 <p>AWK 可以追溯到 Unix 时代，它是 POSIX 标准的一部分，所以在任意一个类 Unix 系统上都可以使用。</p>
 <p>与 <a class="reference external" href="https://en.wikipedia.org/wiki/Perl">Perl</a> 这样的多用途语言相比，AWK 有时会因为年代久远或者缺少功能而被人诟病，但我依然喜欢它，并且会在日常工作中使用。</p>
 <p>它在处理数据文件的时候很有优势，有时候一行代码就能实现相对复杂的功能。</p>
@@ -359,8 +364,8 @@ commentsRunWhenDOMLoaded(addUtterances);
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;{ print $1, $3 }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w">  </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="dongbei note admonition">
-<p class="admonition-title">注意</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
 <p>这个程序中的 action 中， <code class="docutils literal notranslate"><span class="pre">$1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">$3</span></code> 中间有个逗号，这个不是分隔符的意思，而是表示
 我们想要输出 <code class="docutils literal notranslate"><span class="pre">$1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">$3</span></code> 两个变量，如果不写这个逗号，输出结果就不对了。
 因为在 action 的引号中的部分，加不加空格都是可以的，并没有严格的格式要求，
