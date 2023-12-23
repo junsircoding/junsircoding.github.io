@@ -25,8 +25,8 @@
    /posts/post_20231222
    /posts/post_20231221
    /posts/post_20231220
-   /posts/post_03
-   /posts/post_02
-   /posts/post_01
-   /posts/post_00
+   /posts/post_20230723
+   /posts/post_20230722
+   /posts/post_20230529
+   /posts/post_20230527
 
