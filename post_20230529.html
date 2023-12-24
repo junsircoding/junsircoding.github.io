@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<html class="writer-html5" lang="zh-CN" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>气象数据的各种插值问题 &mdash; 小骏的博客  文档</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/twemoji.css?v=2199c511" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/twemoji.css?v=2199c511" />
 
   
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-    <link rel="canonical" href="https://junsircoding.github.io/posts/post_20230529.html" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://junsircoding.github.io/post_20230529.html" />
   <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
+    <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=91bfbbb6"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=91bfbbb6"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
         <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
-        <script src="../_static/twemoji.js?v=a4381b3f"></script>
+        <script src="_static/twemoji.js?v=a4381b3f"></script>
         <script kind="utterances">
 
     var commentsRunWhenDOMLoaded = cb => {
@@ -58,10 +58,10 @@ var addUtterances = () => {
 }
 commentsRunWhenDOMLoaded(addUtterances);
 </script>
-        <script src="../_static/translations.js?v=beaddf03"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+        <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar" href="post_20230527.html" />
     <link rel="prev" title="Matplotlib 等值线图自定义 label 标签位置" href="post_20230722.html" /> 
 </head>
@@ -74,12 +74,12 @@ commentsRunWhenDOMLoaded(addUtterances);
 
           
           
-          <a href="../index.html">
+          <a href="index.html">
             
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -114,7 +114,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">小骏的博客</a>
+          <a href="index.html">小骏的博客</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -122,7 +122,7 @@ commentsRunWhenDOMLoaded(addUtterances);
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">气象数据的各种插值问题</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -172,7 +172,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p>其中 <code class="docutils literal notranslate"><span class="pre">lat</span></code> 表示纬度， <code class="docutils literal notranslate"><span class="pre">lon</span></code> 表示经度， <code class="docutils literal notranslate"><span class="pre">val</span></code> 表示站点观测值。</p>
 <p>这个数据用 <a class="reference external" href="https://code.visualstudio.com/">VSCode</a> 简单预览是这样：</p>
 <figure class="align-default" id="id19">
-<img alt="站点数据预览" src="../_images/00.png" />
+<img alt="站点数据预览" src="_images/00.png" />
 <figcaption>
 <p><span class="caption-text">站点数据预览</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
 </figcaption>
@@ -203,7 +203,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <code class="docutils literal notranslate"><span class="pre">Attributes</span></code> 是一些属性信息，是个 <code class="docutils literal notranslate"><span class="pre">Dict</span></code> 。</p>
 <p>这个数据用 <a class="reference external" href="https://www.giss.nasa.gov/tools/panoply/download/">Panoply</a> 简单预览是这样：</p>
 <figure class="align-default" id="id20">
-<img alt="格点数据预览" src="../_images/01.png" />
+<img alt="格点数据预览" src="_images/01.png" />
 <figcaption>
 <p><span class="caption-text">格点数据预览</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
 </figcaption>
@@ -266,7 +266,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 <p>用 Panoply 预览是这样：</p>
 <figure class="align-default" id="id21">
-<img alt="grib2 格式的格点数据预览" src="../_images/02.png" />
+<img alt="grib2 格式的格点数据预览" src="_images/02.png" />
 <figcaption>
 <p><span class="caption-text">grib2 格式的格点数据预览</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
 </figcaption>
@@ -334,7 +334,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p>用 Panoply 查看插值后的数据，可以看到数据分布和 <em>test_grid.nc</em>
 是一样的，但是这两个数据的坐标是不一样的。</p>
 <figure class="align-default" id="id22">
-<img alt="nc 插值到 grib2 的格点数据预览" src="../_images/03.png" />
+<img alt="nc 插值到 grib2 的格点数据预览" src="_images/03.png" />
 <figcaption>
 <p><span class="caption-text">nc 插值到 grib2 的格点数据预览</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
 </figcaption>
@@ -445,7 +445,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div></blockquote>
 <p>这个数据用 Panoply 预览是这样：</p>
 <figure class="align-default" id="id23">
-<img alt="站点数据转为三维网格数据预览" src="../_images/04.png" />
+<img alt="站点数据转为三维网格数据预览" src="_images/04.png" />
 <figcaption>
 <p><span class="caption-text">站点数据转为三维网格数据预览</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
 </figcaption>
@@ -478,7 +478,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p>得出的 <em>df_nc_interp</em> 就是插值后的数据，<em>dr_nc_to_station.nc</em>
 是用上面的方法将其转成了三维网格。用 Panoply 预览如下：</p>
 <figure class="align-default" id="id24">
-<img alt="格点数据插值到站点，慢速" src="../_images/05.png" />
+<img alt="格点数据插值到站点，慢速" src="_images/05.png" />
 <figcaption>
 <p><span class="caption-text">格点数据插值到站点，慢速</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
 </figcaption>
@@ -563,7 +563,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 函数就可以一次性得到所有插值后的值。和上面一样，因为示例数据量较少，快速的方法优势体现不明显，可以换用数据量大的实际数据自行尝试。</p>
 <p>这两种方式得到的数据是一样的，画出的图预览效果也一样：</p>
 <figure class="align-default" id="id25">
-<img alt="格点数据插值到站点，快速" src="../_images/06.png" />
+<img alt="格点数据插值到站点，快速" src="_images/06.png" />
 <figcaption>
 <p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
 </figcaption>
@@ -636,7 +636,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 <p>插值后的 NC 数据预览如下，可以和上面的站点图像做对比：</p>
 <figure class="align-default" id="id26">
-<img alt="格点数据插值到站点，快速" src="../_images/07.png" />
+<img alt="格点数据插值到站点，快速" src="_images/07.png" />
 <figcaption>
 <p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id26" title="Link to this image"></a></p>
 </figcaption>

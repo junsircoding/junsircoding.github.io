@@ -1,32 +1,32 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<html class="writer-html5" lang="zh-CN" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar &mdash; 小骏的博客  文档</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sphinx_charts/charts.css?v=3e52db8d" />
-      <link rel="stylesheet" type="text/css" href="../_static/twemoji.css?v=2199c511" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx_charts/charts.css?v=3e52db8d" />
+      <link rel="stylesheet" type="text/css" href="_static/twemoji.css?v=2199c511" />
 
   
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-    <link rel="canonical" href="https://junsircoding.github.io/posts/post_20230527.html" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://junsircoding.github.io/post_20230527.html" />
   <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
+    <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=91bfbbb6"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=91bfbbb6"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-        <script src="../_static/sphinx_charts/plotly/plotly-2.11.1.min.js?v=2b020d6f"></script>
-        <script src="../_static/sphinx_charts/charts.js?v=dd41510b"></script>
+        <script src="_static/sphinx_charts/plotly/plotly-2.11.1.min.js?v=2b020d6f"></script>
+        <script src="_static/sphinx_charts/charts.js?v=dd41510b"></script>
         <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
-        <script src="../_static/twemoji.js?v=a4381b3f"></script>
+        <script src="_static/twemoji.js?v=a4381b3f"></script>
         <script kind="utterances">
 
     var commentsRunWhenDOMLoaded = cb => {
@@ -61,10 +61,10 @@ var addUtterances = () => {
 }
 commentsRunWhenDOMLoaded(addUtterances);
 </script>
-        <script src="../_static/translations.js?v=beaddf03"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+        <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
     <link rel="prev" title="气象数据的各种插值问题" href="post_20230529.html" /> 
 </head>
 
@@ -76,12 +76,12 @@ commentsRunWhenDOMLoaded(addUtterances);
 
           
           
-          <a href="../index.html">
+          <a href="index.html">
             
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -108,7 +108,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">小骏的博客</a>
+          <a href="index.html">小骏的博客</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -116,7 +116,7 @@ commentsRunWhenDOMLoaded(addUtterances);
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -350,7 +350,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </table>
 <p>绘制出的图片如下：</p>
 <figure class="align-default" id="id1">
-<img alt="Matplotlib pcolormesh Demo" src="../_images/20230527_00.png" />
+<img alt="Matplotlib pcolormesh Demo" src="_images/20230527_00.png" />
 <figcaption>
 <p><span class="caption-text">Matplotlib pcolormesh Demo</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
@@ -385,7 +385,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </pre></div>
 </div>
 <figure class="align-default">
-<img alt="Matplotlib pcolormesh 自定义 colorbar" src="../_images/20230527_01.png" />
+<img alt="Matplotlib pcolormesh 自定义 colorbar" src="_images/20230527_01.png" />
 </figure>
 <p>Matplotlib pcolormesh 自定义 colorbar</p>
 <p>可以看到，我们设置的 <code class="docutils literal notranslate"><span class="pre">LEVEL</span></code> 并不是连续的数值，但每个色块显示的长度都是相同的。
@@ -398,7 +398,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p>与 pcolormesh 效果对应的就是 Heatmap，上文中的第一个 Demo
 实现出来是这种效果：</p>
 <div class="sphinx-charts docutils container" id="id2">
-<div class="sphinx-charts-chart sphinx-charts-chart-id-0 sphinx-charts-chart-uri-../_charts/charts/20230527/20230527_02.json sphinx-charts-chart-dn-chart docutils container" id="sphinx-charts-chart-id-0">
+<div class="sphinx-charts-chart sphinx-charts-chart-id-0 sphinx-charts-chart-uri-_charts/charts/20230527/20230527_02.json sphinx-charts-chart-dn-chart docutils container" id="sphinx-charts-chart-id-0">
 </div>
 <p class="sphinx-charts-hidden"></p>
 <div class="sphinx-charts-placeholder sphinx-charts-placeholder-0 docutils container" id="id3">
@@ -510,7 +510,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 <p>图表效果是这样：</p>
 <div class="sphinx-charts docutils container" id="id4">
-<div class="sphinx-charts-chart sphinx-charts-chart-id-1 sphinx-charts-chart-uri-../_charts/charts/20230527/20230527_03.json sphinx-charts-chart-dn-chart docutils container" id="sphinx-charts-chart-id-1">
+<div class="sphinx-charts-chart sphinx-charts-chart-id-1 sphinx-charts-chart-uri-_charts/charts/20230527/20230527_03.json sphinx-charts-chart-dn-chart docutils container" id="sphinx-charts-chart-id-1">
 </div>
 <p class="sphinx-charts-hidden"></p>
 <div class="sphinx-charts-placeholder sphinx-charts-placeholder-1 docutils container" id="id5">

@@ -22,11 +22,11 @@
 .. toctree::
    :maxdepth: 1
    
-   /posts/post_20231222
-   /posts/post_20231221
-   /posts/post_20231220
-   /posts/post_20230723
-   /posts/post_20230722
-   /posts/post_20230529
-   /posts/post_20230527
+   post_20231222
+   post_20231221
+   post_20231220
+   post_20230723
+   post_20230722
+   post_20230529
+   post_20230527
 

@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<html class="writer-html5" lang="zh-CN" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Matplotlib Axes 的位置参数到底如何设置？ &mdash; 小骏的博客  文档</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/twemoji.css?v=2199c511" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/twemoji.css?v=2199c511" />
 
   
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-    <link rel="canonical" href="https://junsircoding.github.io/posts/post_20231220.html" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://junsircoding.github.io/post_20231220.html" />
   <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
+    <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=91bfbbb6"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=91bfbbb6"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
         <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
-        <script src="../_static/twemoji.js?v=a4381b3f"></script>
+        <script src="_static/twemoji.js?v=a4381b3f"></script>
         <script kind="utterances">
 
     var commentsRunWhenDOMLoaded = cb => {
@@ -58,10 +58,10 @@ var addUtterances = () => {
 }
 commentsRunWhenDOMLoaded(addUtterances);
 </script>
-        <script src="../_static/translations.js?v=beaddf03"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+        <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="将 Vim 打造成轻量级的 IDE" href="post_20230723.html" />
     <link rel="prev" title="常用的几个 AWK 命令" href="post_20231221.html" /> 
 </head>
@@ -74,12 +74,12 @@ commentsRunWhenDOMLoaded(addUtterances);
 
           
           
-          <a href="../index.html">
+          <a href="index.html">
             
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -102,7 +102,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">小骏的博客</a>
+          <a href="index.html">小骏的博客</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -110,7 +110,7 @@ commentsRunWhenDOMLoaded(addUtterances);
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Matplotlib Axes 的位置参数到底如何设置？</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -166,10 +166,10 @@ commentsRunWhenDOMLoaded(addUtterances);
 </pre></div>
 </div>
 <p>画出的图是这样的：</p>
-<img alt="20231220_00" class="align-center" src="../_images/20231220_00.png" />
+<img alt="20231220_00" class="align-center" src="_images/20231220_00.png" />
 <p>现在的 Colorbar 是垂直显示的。如果想要把它改成水平显示的，可以修改第 32 行代码中的 <code class="docutils literal notranslate"><span class="pre">orientation</span></code>
 参数，改为 <code class="docutils literal notranslate"><span class="pre">horizontal</span></code> ，图片就会变成这样：</p>
-<img alt="20231220_01" class="align-center" src="../_images/20231220_01.png" />
+<img alt="20231220_01" class="align-center" src="_images/20231220_01.png" />
 <p>这两种位置都是 Matplotlib 内置的默认位置，但实际情况下，我们更希望能够自定义 Colorbar 的位置。
 为了达到这一点，我们可以使用手动创建 Axes 的方式来设置 Colorbar。</p>
 <p>按照下面的代码修改：</p>
@@ -220,12 +220,12 @@ commentsRunWhenDOMLoaded(addUtterances);
 </pre></div>
 </div>
 <p>画出的图是这样的：</p>
-<img alt="20231220_02" class="align-center" src="../_images/20231220_02.png" />
+<img alt="20231220_02" class="align-center" src="_images/20231220_02.png" />
 <p>通过这种方式，我们就可以自由设置 Colorbar 的 <strong>位置</strong> 、 <strong>高度</strong> 、 <strong>宽度</strong> 等属性了，下面详细解释一下代码。</p>
 <p>在 Matplotlib 中， <code class="docutils literal notranslate"><span class="pre">Figure</span></code> 表示 <strong>画布</strong> ， <code class="docutils literal notranslate"><span class="pre">Axes</span></code> 表示 <strong>轴</strong> 。
 所有的图，不论包含的内容多么丰富，这两个组件一定是最基本的。</p>
 <p>我们来看这张图：</p>
-<img alt="20231220_03" class="align-center" src="../_images/20231220_03.webp" />
+<img alt="20231220_03" class="align-center" src="_images/20231220_03.webp" />
 <p>这张图展示了一张用 Matplotlib 画出的图的基本骨架，如果忽略那些 Marker、Label、Tick 等元素，其实最基本的就是 Figure 和 Axes。</p>
 <p>先来看第 32 行：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">ax_left</span><span class="p">,</span> <span class="n">ax_bottom</span><span class="p">,</span> <span class="n">ax_width</span><span class="p">,</span> <span class="n">ax_height</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">bounds</span>
@@ -270,7 +270,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p class="admonition-title">备注</p>
 <p>另外还要注意，这四个参数要结合 orientation 来使用，当 colorbar 是垂直或水平时，它的宽度和高度也要相应的变换方向。
 如果我们把现在的代码中的方向改为垂直，这样出来的 colorbar 就不对了，如下图：</p>
-<img alt="20231220_04" class="align-center" src="../_images/20231220_04.png" />
+<img alt="20231220_04" class="align-center" src="_images/20231220_04.png" />
 </div>
 </section>
 
