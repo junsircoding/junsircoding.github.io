@@ -1,3 +1,75 @@
+/* body {
+    overflow-x: hidden;
+
+    width: 70%;
+    margin: auto;
+
+    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
+    font-weight: 400;
+    color: #404040;
+    min-height: 100%;
+    background: #edf0f2
+} */
+/* 全部 */
+/* .wy-grid-for-nav {
+    margin: auto;
+    width: 70%;
+    height: 100%;
+} */
+
+body {
+    margin: auto;
+}
+
+body,
+html {
+    overflow-x: hidden
+}
+
+body {
+    width: 70%;
+
+    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
+    font-weight: 400;
+    color: #404040;
+    min-height: 100%;
+    background: #edf0f2
+}
+
+
+/* 左边栏外 */
+.wy-nav-side {
+    margin-left: 15%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 2em;
+    width: 300px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    min-height: 100%;
+    color: #9b9b9b;
+    background: #343131;
+    z-index: 200
+}
+/* 左边栏内 */
+/* .wy-side-scroll {
+    width: 320px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100%
+} */
+
+/* 文章部分 */
+/* .wy-nav-content-wrap {
+    margin-left: 300px;
+    background: #fcfcfc;
+    min-height: 100%
+} */
+
+/* 头图 */
 .wy-side-nav-search, .wy-nav-top
 {
     background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
