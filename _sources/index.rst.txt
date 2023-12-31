@@ -11,9 +11,6 @@ Welcome to junsircoding's blog |:wave:|
 
 - |:point_right:| `Github`_ 
 - |:point_right:| `Bilibili`_
-- |:point_right:| `即刻`_
-
-.. _即刻: https://web.okjike.com/u/816D18C0-875A-479D-87B9-31CEB3F51953
 
 .. _Github: https://github.com/junsircoding/
 
