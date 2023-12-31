@@ -1,23 +1,4 @@
 /* body {
-    overflow-x: hidden;
-
-    width: 70%;
-    margin: auto;
-
-    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
-    font-weight: 400;
-    color: #404040;
-    min-height: 100%;
-    background: #edf0f2
-} */
-/* 全部 */
-/* .wy-grid-for-nav {
-    margin: auto;
-    width: 70%;
-    height: 100%;
-} */
-
-body {
     margin: auto;
 }
 
@@ -34,11 +15,11 @@ body {
     color: #404040;
     min-height: 100%;
     background: #edf0f2
-}
+} */
 
 
 /* 左边栏外 */
-.wy-nav-side {
+/* .wy-nav-side {
     margin-left: 15%;
     position: fixed;
     top: 0;
@@ -52,7 +33,7 @@ body {
     color: #9b9b9b;
     background: #343131;
     z-index: 200
-}
+} */
 /* 左边栏内 */
 /* .wy-side-scroll {
     width: 320px;
