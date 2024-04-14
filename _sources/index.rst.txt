@@ -3,20 +3,23 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to junsircoding's blog |:wave:|
-=====================================================
+junsircoding's blog
+=======================================
 
-我的社交平台
+.. figure:: /_images/profile.jpg
+   :alt: My Profile
+
+My Social Medias
 ----------------------------
 
-- |:point_right:| `Github`_ 
-- |:point_right:| `Bilibili`_
+- `Github`_ 
+- `Bilibili`_
 
 .. _Github: https://github.com/junsircoding/
 
 .. _Bilibili: https://space.bilibili.com/39994473/video
 
-我的文章
+My Articles
 ----------------------------
 
 .. toctree::
@@ -29,4 +32,3 @@ Welcome to junsircoding's blog |:wave:|
    post_20230722
    post_20230529
    post_20230527
-

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" data-content_root="./">
+<html class="writer-html5" lang="en-US" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>气象数据的各种插值问题 &mdash; junsircoding&#39;s blog  文档</title>
+  <title>气象数据的各种插值问题 &mdash; junsircoding&#39;s blog  documentation</title>
 
 
 
@@ -28,7 +28,6 @@
 
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/twemoji.css?v=2199c511" />
 
   
     <link rel="shortcut icon" href="_static/favicon.ico"/>
@@ -39,50 +38,13 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=91bfbbb6"></script>
+        <script src="_static/documentation_options.js?v=cd149c8d"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-        <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
-        <script src="_static/twemoji.js?v=a4381b3f"></script>
-        <script kind="utterances">
-
-    var commentsRunWhenDOMLoaded = cb => {
-    if (document.readyState != 'loading') {
-        cb()
-    } else if (document.addEventListener) {
-        document.addEventListener('DOMContentLoaded', cb)
-    } else {
-        document.attachEvent('onreadystatechange', function() {
-        if (document.readyState == 'complete') cb()
-        })
-    }
-}
-
-var addUtterances = () => {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = "https://utteranc.es/client.js";
-    script.async = "async";
-
-    script.setAttribute("repo", "junsircoding/blog_comments");
-    script.setAttribute("issue-term", "pathname");
-    script.setAttribute("theme", "github-light");
-    script.setAttribute("label", "💬 comment");
-    script.setAttribute("crossorigin", "anonymous");
-
-    sections = document.querySelectorAll("div.section");
-    if (sections !== null) {
-        section = sections[sections.length-1];
-        section.appendChild(script);
-    }
-}
-commentsRunWhenDOMLoaded(addUtterances);
-</script>
-        <script src="_static/translations.js?v=beaddf03"></script>
     <script src="_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="genindex.html" />
-    <link rel="search" title="搜索" href="search.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar" href="post_20230527.html" />
     <link rel="prev" title="Matplotlib 等值线图自定义 label 标签位置" href="post_20230722.html" />
 
@@ -113,12 +75,12 @@ commentsRunWhenDOMLoaded(addUtterances);
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="post_20231222.html">如何在你的 Sphinx 项目中加入 plotly 图表支持？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="post_20231221.html">常用的几个 AWK 命令</a></li>
@@ -145,15 +107,14 @@ commentsRunWhenDOMLoaded(addUtterances);
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">junsircoding's blog</a>
       </nav>
 
       <div class="wy-nav-content">
-
         <div class="rst-content">
-          <div role="navigation" aria-label="页面导航">
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">气象数据的各种插值问题</li>
@@ -701,37 +662,21 @@ commentsRunWhenDOMLoaded(addUtterances);
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="post_20230722.html" class="btn btn-neutral float-left" title="Matplotlib 等值线图自定义 label 标签位置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="post_20230527.html" class="btn btn-neutral float-right" title="用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="post_20230722.html" class="btn btn-neutral float-left" title="Matplotlib 等值线图自定义 label 标签位置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="post_20230527.html" class="btn btn-neutral float-right" title="用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; 版权所有 2023, junsircoding。</p>
+    <p>&#169; Copyright 2024, junsircoding.</p>
   </div>
 
    
 
 </footer>
         </div>
-
-
-    <hr />
-    <p>请留下你的评论：</p>
-    <script src="https://utteranc.es/client.js"
-        repo="junsircoding/blog_comments"
-        issue-term="pathname"
-        label="✨💬✨"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-    </script>
-
-
-
-
       </div>
     </section>
   </div>
