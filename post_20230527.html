@@ -27,7 +27,6 @@
 
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/sphinx_charts/charts.css?v=3e52db8d" />
 
   
     <link rel="shortcut icon" href="_static/favicon.ico"/>
@@ -39,11 +38,8 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=cd149c8d"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-        <script src="_static/sphinx_charts/plotly/plotly-2.11.1.min.js?v=2b020d6f"></script>
-        <script src="_static/sphinx_charts/charts.js?v=dd41510b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -390,15 +386,9 @@
 <p>有很多库可以绘制交互式的图表，既可以生成 HTML 网页，也可以实时在 Jupyter Notebook 中展示，本文介绍 <a class="reference external" href="https://plotly.com/python/">Plotly</a> 的使用。</p>
 <p>与 pcolormesh 效果对应的就是 Heatmap，上文中的第一个 Demo
 实现出来是这种效果：</p>
-<div class="sphinx-charts docutils container" id="id2">
-<div class="sphinx-charts-chart sphinx-charts-chart-id-0 sphinx-charts-chart-uri-_charts/charts/20230527/20230527_02.json sphinx-charts-chart-dn-chart docutils container" id="sphinx-charts-chart-id-0">
-</div>
-<p class="sphinx-charts-hidden"></p>
-<div class="sphinx-charts-placeholder sphinx-charts-placeholder-0 docutils container" id="id3">
-<p><span class="caption-text">Loading…</span></p>
-</div>
-<p><span class="caption-text">连续色块</span></p>
-</div>
+<figure class="align-default">
+<img alt="连续色块" src="_images/20230527_03.png" />
+</figure>
 <p>绘图代码如下：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -502,15 +492,9 @@
 </pre></div>
 </div>
 <p>图表效果是这样：</p>
-<div class="sphinx-charts docutils container" id="id4">
-<div class="sphinx-charts-chart sphinx-charts-chart-id-1 sphinx-charts-chart-uri-_charts/charts/20230527/20230527_03.json sphinx-charts-chart-dn-chart docutils container" id="sphinx-charts-chart-id-1">
-</div>
-<p class="sphinx-charts-hidden"></p>
-<div class="sphinx-charts-placeholder sphinx-charts-placeholder-1 docutils container" id="id5">
-<p><span class="caption-text">Loading…</span></p>
-</div>
-<p><span class="caption-text">自定义色块分层</span></p>
-</div>
+<figure class="align-default">
+<img alt="自定义色块分层" src="_images/20230527_02.png" />
+</figure>
 </section>
 </section>
 
