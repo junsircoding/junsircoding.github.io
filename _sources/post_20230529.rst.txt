@@ -582,13 +582,13 @@
 ---------------------
 
 .. [1]
-   `test_station.csv </storage/20230529/test_station.csv>`__
+   `test_station.csv <https://github.com/junsircoding/blog_source/blob/main/static/data/20230529/test_station.csv>`__
 
 .. [2]
-   `test_grid.nc </storage/20230529/test_grid.nc>`__
+   `test_grid.nc <https://github.com/junsircoding/blog_source/blob/main/static/data/20230529/test_grid.nc>`__
 
 .. [3]
-   `test_grid.grib2 </storage/20230529/test_grid.grib2>`__
+   `test_grid.grib2 <https://github.com/junsircoding/blog_source/blob/main/static/data/20230529/test_grid.grib2>`__
    
 
 视频讲解
