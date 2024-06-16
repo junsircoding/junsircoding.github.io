@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en-US" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>用抓包的方式理解 TCP 协议 &mdash; junsircoding&#39;s blog  documentation</title>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://junsircoding.github.io/post_20240613.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=cd149c8d"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="如何在你的 Sphinx 项目中加入 plotly 图表支持？" href="post_20231222.html" />
+    <link rel="prev" title="junsircoding’s blog" href="index.html" />
+
+     
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4178487904865687"
+     crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-4178487904865687">
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "kb72rmcxcn");
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">用抓包的方式理解 TCP 协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_20231222.html">如何在你的 Sphinx 项目中加入 plotly 图表支持？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_20231221.html">常用的几个 AWK 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_20231220.html">Matplotlib Axes 的位置参数到底如何设置？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_20230723.html">将 Vim 打造成轻量级的 IDE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_20230722.html">Matplotlib 等值线图自定义 label 标签位置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_20230529.html">气象数据的各种插值问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post_20230527.html">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">junsircoding's blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">用抓包的方式理解 TCP 协议</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tcp">
+<h1>用抓包的方式理解 TCP 协议<a class="headerlink" href="#tcp" title="Link to this heading"></a></h1>
+<figure class="align-default" id="id1">
+<img alt="封面" src="_images/20240613_00.jpeg" />
+<figcaption>
+<p><span class="caption-text">封面</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>程序员在求职的过程中，如果遇到侧重考察计算机网络基础的面试，几乎都会问一下是否理解 TCP 协议。工作快五年了，对这个问题我还是不太明白，这篇文章就尝试梳理一下这个问题。</p>
+<p>首先不管是什么通信协议，其实都是在做一件事情，就是把信息从一端传输到另一端。比如我们用浏览器打开一篇博客。在这个场景中，浏览器是客户端，部署文章的服务器是服务端，我们要看到这篇文章，本质就是完成客户端和服务端之间基于网络的通信。</p>
+<p>要研究网络通信，首先得把经典的 OSI 七层模型搬出来。为了记忆这个模型我自创了一个顺口溜， <strong>物联网传话试用</strong> ，下面这个表格标明了它们的对应关系：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>简写</p></th>
+<th class="head"><p>对应的 OSI 层</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>用</p></td>
+<td><p>应用层</p></td>
+</tr>
+<tr class="row-odd"><td><p>试</p></td>
+<td><p>表示层</p></td>
+</tr>
+<tr class="row-even"><td><p>话</p></td>
+<td><p>会话层</p></td>
+</tr>
+<tr class="row-odd"><td><p>传</p></td>
+<td><p>传输层</p></td>
+</tr>
+<tr class="row-even"><td><p>网</p></td>
+<td><p>网络层</p></td>
+</tr>
+<tr class="row-odd"><td><p>联</p></td>
+<td><p>数据链路层</p></td>
+</tr>
+<tr class="row-even"><td><p>物</p></td>
+<td><p>物理层</p></td>
+</tr>
+</tbody>
+</table>
+<p>每一层都有一些工作在它们上面的通信协议，通信协议其实就是一种程序。当信息到达某一层时，对应的协议会按照其规则对信息进行处理，下面从低层到高层依次举例。</p>
+<p><strong>物理层</strong> ：WIFI 协议。我们用设备连接无线网时，操作系统会调用 WIFI 驱动程序，让无线网卡连接到 WIFI 信号。</p>
+<p><strong>数据链路层</strong> ：MAC 协议。MAC 协议规定每个网卡要有一个 MAC 地址。MAC 地址就是网卡的身份证号，表明了这张网卡是哪个厂子出的，对应的生产序列号是多少。理论上全世界网卡的 MAC 地址不会重复。</p>
+<p><strong>网络层</strong> ：IP 协议。一个联网的设备，在网络的世界中一定得有一个地址，这就是 IP 地址。有了 IP 地址，这个设备才能给另一个设备发送信息，以及接收另一个设备发过来的信息。</p>
+<p><strong>传输层</strong> ：TCP 协议，UDP 协议。有了 IP 地址，下面就可以开始通信了，但是因为通信的背景和需求各式各样，所以有很多不同特点的协议。</p>
+<p>比如说打个视频电话，重要的是速度要快，实时性要保证，通话过程中缺个一两秒也可以接受，那么就可以用 UDP 协议。UDP 协议的特点就是速度快，但可能会因为网络信道不稳定而丢包。</p>
+<p>再比如浏览网页，重要的是数据要完整，缺一点点东西可能全部的信息就乱了，响应慢一点也可以容忍，传输网页的 HTTP 报文就是 TCP 协议的。TCP 协议的特点是有一套可靠的建立连接和断开连接的机制，而且可以保证信息有序完整的传输，以及其他比较复杂的特性。即便网络信道不稳定，产生丢包，也有补救机制把缺失的数据重传补全。</p>
+<p><strong>会话层、表示层、应用层</strong> 这三层可以打包看成一层，在研究网络传输的这个过程里面不需要分这么细。比如上面提到的HTTP协议，就是浏览网页时用到的协议。</p>
+<p>我们网购收到的快递都是用一个个袋子装起来，然后袋子上面有个标签，上面写着由哪个公司投递、发件地址和收件地址等信息，这就类似于一个报文。报文由报头和载荷组成。报头表明这是一个什么报文以及其他的一些描述性的参数信息，载荷里面装着要发送的内容。</p>
+<p>用专业术语讲，二层的数据叫 Frame（帧），三层的数据叫 Packet，四层的数据叫 Segment，但其实都可以理解成报文，只是读取它们所使用的协议不一样。</p>
+<p>客户端和服务端进行通信，其实就是客户端创建了一个 HTTP 的报文，然后根据 TCP 协议把他打包成 TCP 的 Segment，然后又根据 IP 协议打包成 IP 的 Packet，IP 报文再变成网络 Frame，网络 Frame 再变成二进制的比特流，经由交换机、路由器等网络设备层层转发，到达服务端。</p>
+<p>对于 TCP 的 Segment，它的报头表明这个报文的类型是 TCP，载荷里面装着 HTTP 报文，只不过它的内容对于 TCP 协议来说不重要，它也无法理解。</p>
+<p>刚才的比特流信息凭借 IP 地址被正确转发到了服务端所在网络的网关，再凭借 MAC 地址被交换机转发给服务端主机的网卡上。网卡收到了比特流，还原成网络 Frame，操作系统将其还原成 IP Packet，再根据 IP 协议从里面提取出 TCP Segment，TCP Segment 又被交给绑定了对应端口的应用上，这个应用程序再根据 TCP 协议从里面提取出 HTTP 报文，然后根据 HTTP 协议解析出内容，交由对应的处理函数做处理，进而构造响应报文。处理完成后，再经由相同的流程，层层打包后，把响应信息返回给客户端。</p>
+<p>脑子里把这个过程加载完成后，就相当于有了一个知识的地图，那么现在再来讨论 TCP 协议，就能知道它在实际应用中是在什么样的场景下，完成了什么样的事情。</p>
+<p>TCP 协议工作在传输层。根据控制变量原则，假设物理层、数据链路层、网络层都是没有问题的。会话层、表示层、应用层的信息我们尽量简化。在本地机器上用 Python 写一个 TCP 服务端和 TCP 客户端来实现一个 TCP 通信过程，然后用 Wireshark 抓包来实际看一下 TCP 协议的实际工作过程。</p>
+<p>TCP 客户端的代码：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="linenos"> 3</span><span class="c1"># 创建一个 socket 应用，使用 IPV4 和 TCP 协议</span>
+<span class="linenos"> 4</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="c1"># 绑定 ip 地址为本地回环地址，5201 端口</span>
+<span class="linenos"> 6</span><span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">5201</span><span class="p">))</span>
+<span class="linenos"> 7</span><span class="c1"># 要连接的服务端 ip 为本地回环地址，端口为 5200</span>
+<span class="linenos"> 8</span><span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">5200</span><span class="p">))</span>
+<span class="linenos"> 9</span><span class="c1"># 当 TCP 连接成功建立后，打印服务端返回的信息</span>
+<span class="linenos">10</span><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+<span class="linenos">11</span><span class="c1"># 向服务端发送信息</span>
+<span class="linenos">12</span><span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;user1&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;user2&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;user3&quot;</span><span class="p">]:</span>
+<span class="linenos">13</span>    <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="linenos">14</span>    <span class="c1"># 打印服务端返回的信息</span>
+<span class="linenos">15</span>    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+<span class="linenos">16</span><span class="c1"># 想服务端发动断开连接的消息</span>
+<span class="linenos">17</span><span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;exit&quot;</span><span class="p">)</span>
+<span class="linenos">18</span><span class="c1"># 客户端主动断开连接</span>
+<span class="linenos">19</span><span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>TCP 服务端的代码：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="linenos"> 4</span><span class="kn">import</span> <span class="nn">threading</span>
+<span class="linenos"> 5</span><span class="c1"># 创建一个 socket 应用，同样使用 IPV4 和 TCP 协议</span>
+<span class="linenos"> 6</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="c1"># 绑定 ip 地址为本地回环地址，5200 端口</span>
+<span class="linenos"> 8</span><span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">5200</span><span class="p">))</span>
+<span class="linenos"> 9</span><span class="c1"># 开始监听请求，最多同时接受 5 个请求</span>
+<span class="linenos">10</span><span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos">11</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Server is running ...&quot;</span><span class="p">)</span>
+<span class="linenos">12</span><span class="k">def</span> <span class="nf">tcplink</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+<span class="linenos">13</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Get a new connection, ip:</span><span class="si">%s</span><span class="s2">, port:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">addr</span><span class="p">)</span>
+<span class="linenos">14</span>    <span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;Hello!&quot;</span><span class="p">)</span>
+<span class="linenos">15</span>    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="linenos">16</span>        <span class="c1"># 解码接收到的信息</span>
+<span class="linenos">17</span>        <span class="n">data</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="linenos">18</span>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">19</span>        <span class="c1"># 如果接收到的信息是 exit，由服务端主动断开连接</span>
+<span class="linenos">20</span>        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="s2">&quot;exit&quot;</span><span class="p">:</span>
+<span class="linenos">21</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Got exit message, close the connection.&quot;</span><span class="p">)</span>
+<span class="linenos">22</span>            <span class="k">break</span>
+<span class="linenos">23</span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Got a data: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">data</span><span class="p">)</span>
+<span class="linenos">24</span>        <span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="s2">&quot;Hi, </span><span class="si">%s</span><span class="s2">, I got you!&quot;</span> <span class="o">%</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+<span class="linenos">25</span>    <span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">26</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Close a connection, ip:</span><span class="si">%s</span><span class="s2">, port:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">addr</span><span class="p">)</span>
+<span class="linenos">27</span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="linenos">28</span>    <span class="c1"># 收到一条请求，交由一个线程去处理</span>
+<span class="linenos">29</span>    <span class="n">sock</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<span class="linenos">30</span>    <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">tcplink</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">addr</span><span class="p">))</span>
+<span class="linenos">31</span>    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>打开 Wireshark，准备抓包。</p>
+<p>捕获的网卡是本机的回环网卡，筛选规则是 TCP 协议，端口为 5200 和 5201，如下图所示：</p>
+<figure class="align-default" id="id2">
+<img alt="Wireshark 抓包筛选规则" src="_images/20240613_01.png" />
+<figcaption>
+<p><span class="caption-text">Wireshark 抓包筛选规则</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>点 Start，开始抓包。</p>
+<p>先启动服务端：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>python3<span class="w"> </span>tcp_server.py
+</pre></div>
+</div>
+<p>再启动客户端：</p>
+<p>服务端的运行日志是这样：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>Server<span class="w"> </span>is<span class="w"> </span>running<span class="w"> </span>...17:21:36:552048
+<span class="linenos">2</span>Get<span class="w"> </span>a<span class="w"> </span>new<span class="w"> </span>connection,<span class="w"> </span>ip:127.0.0.1,<span class="w"> </span>port:5201,<span class="w"> </span><span class="m">17</span>:21:39:253209
+<span class="linenos">3</span>Got<span class="w"> </span>a<span class="w"> </span>data:<span class="w"> </span>user1,<span class="w"> </span><span class="m">17</span>:21:40:254525
+<span class="linenos">4</span>Got<span class="w"> </span>a<span class="w"> </span>data:<span class="w"> </span>user2,<span class="w"> </span><span class="m">17</span>:21:41:255906
+<span class="linenos">5</span>Got<span class="w"> </span>a<span class="w"> </span>data:<span class="w"> </span>user3,<span class="w"> </span><span class="m">17</span>:21:42:257482
+<span class="linenos">6</span>Got<span class="w"> </span><span class="nb">exit</span><span class="w"> </span>message,<span class="w"> </span>close<span class="w"> </span>the<span class="w"> </span>connection,<span class="w"> </span><span class="m">17</span>:21:43:258953
+<span class="linenos">7</span>Close<span class="w"> </span>a<span class="w"> </span>connection,<span class="w"> </span>ip:127.0.0.1,<span class="w"> </span>port:5201,<span class="w"> </span><span class="m">17</span>:21:43:259191
+</pre></div>
+</div>
+<p>客户端的运行日志是这样：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>Hello!<span class="w"> </span><span class="m">17</span>:21:39:253365
+<span class="linenos">2</span>Hi,<span class="w"> </span>user1,<span class="w"> </span>I<span class="w"> </span>got<span class="w"> </span>you!<span class="w"> </span><span class="m">17</span>:21:40:254783
+<span class="linenos">3</span>Hi,<span class="w"> </span>user2,<span class="w"> </span>I<span class="w"> </span>got<span class="w"> </span>you!<span class="w"> </span><span class="m">17</span>:21:41:256238
+<span class="linenos">4</span>Hi,<span class="w"> </span>user3,<span class="w"> </span>I<span class="w"> </span>got<span class="w"> </span>you!<span class="w"> </span><span class="m">17</span>:21:42:257720
+</pre></div>
+</div>
+<p>抓包得到的信息是这样：</p>
+<figure class="align-default" id="id3">
+<img alt="报文预览" src="_images/20240613_02.png" />
+<figcaption>
+<p><span class="caption-text">报文预览</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>这里面总共有 20 条报文，他们的颜色不一样。不同的颜色代表了不同的报文类型。打开 Wireshark 的 Coloring Rules 可以看到这些每种颜色代表的含义：</p>
+<figure class="align-default" id="id4">
+<img alt="报文代表的含义" src="_images/20240613_03.png" />
+<figcaption>
+<p><span class="caption-text">报文代表的含义</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>红框圈出来的颜色就是我们的报文里涉及到的两种。其中淡紫色表示是 TCP 传输过程的报文，深灰色的表示 TCP 建立连接和关闭连接的报文。SYN 是 Synchronous 的缩写，意思是同步，表示建立连接；FIN 是 Finish 的缩写，意思是完成，表示关闭连接。</p>
+<p><code class="docutils literal notranslate"><span class="pre">tcp.flags</span> <span class="pre">&amp;</span> <span class="pre">0x02</span> <span class="pre">||</span> <span class="pre">tcp.flags.fin</span> <span class="pre">==</span> <span class="pre">1</span></code> 这一段看起来有点高深。</p>
+<p><code class="docutils literal notranslate"><span class="pre">tcp.flags</span></code> 是TCP报文报头的一个标志字段。TCP 报文本质上就是一行二进制数据，二进制数据就是一串 0 和 1 组成的数字串。一个 0 或 1 是 1 个比特，8 个比特是一个字节。这行二进制数据的每个位置上的数值表示固定的含义，通过查看这些值是多少就可以判断当前这个 TCP 连接的状态以及进行流量控制。下面这张图就是 TCP 报头的内容，仔细看里面有一段绿色的字写着 TCP Flags，共有 8 个标志字段，其中 S 就是 SYN ，F 就是 FIN，图的下方有标注。</p>
+<figure class="align-default" id="id5">
+<img alt="TCP 报文头" src="_images/20240613_04.png" />
+<figcaption>
+<p><span class="caption-text">TCP 报文头格式（图片来源：<a class="reference external" href="https://nmap.org/book/images/hdr/MJB-TCP-Header-800x564.png">https://nmap.org/book/images/hdr/MJB-TCP-Header-800x564.png</a>）</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><code class="docutils literal notranslate"><span class="pre">0x02</span></code> 是个十六进制数，把它转成二进制是 00000010。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&amp;</span></code> 意思是按位与运算。遇 0 为 0，遇 1 不变。这里就是把 tcp.flags 和 00000010 做按位与运算。如果运算结果不为 0，是真值，那就表示包含 SYN 标志，是建立连接的报文。</p>
+<p><code class="docutils literal notranslate"><span class="pre">tcp.flags.fin</span></code> 是一个布尔字段，表示 FIN 标志。如果这个值是 1，就表示包含 FIN 标志，是关闭连接的报文。</p>
+<p><code class="docutils literal notranslate"><span class="pre">||</span></code> 是个逻辑运算符，意思是有一个条件为真，整体就为真。</p>
+<p>这一长串整体的意思就是，检查这个报文是不是包含 SYN 或者 FIN 标志，如果包含任意一个，就把它标记为深灰色。</p>
+<p>下面开始看报文。</p>
+<p>第一条报文：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">1</span><span class="w">    </span><span class="m">0</span>.000000000<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">74</span><span class="w">      </span><span class="m">5201</span><span class="w"> </span>→<span class="w"> </span><span class="m">5200</span><span class="w"> </span><span class="o">[</span>SYN<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65495</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">MSS</span><span class="o">=</span><span class="m">65495</span><span class="w"> </span>SACK_PERM<span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1156316798</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">WS</span><span class="o">=</span><span class="m">128</span>
+</pre></div>
+</div>
+<p>在上面的代码里，我们把客户端的端口设置成了 5201，服务端的端口是 5200。</p>
+<p>这行报文的第七列 5201 → 5200 表示这是客户端发给服务端的报文。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>列号</p></th>
+<th class="head"><p>内容</p></th>
+<th class="head"><p>解释</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>Wireshark 捕获到的报文的帧编号</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>0.000000000</p></td>
+<td><p>捕获到这个报文时的时间戳，是个相对时间，因为这个是第一个报文，所以从 0 开始</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>127.0.0.1</p></td>
+<td><p>源 IP 地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>127.0.0.1</p></td>
+<td><p>目标 IP 地址</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>TCP</p></td>
+<td><p>报文的协议</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>74</p></td>
+<td><p>帧的帧长度（以字节为单位），包括以太网头、IP 头、TCP 头和数据</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>5201 → 5200</p></td>
+<td><p>从 5201 端口发到 5200 端口</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>[SYN]</p></td>
+<td><p>标志位上 SYN 的值为 1，所以这个报文是个 SYN 报文，用于建立 TCP 连接</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Seq=0</p></td>
+<td><p>初始序号为 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>Win=65495</p></td>
+<td><p>接收窗口大小为 65495 字节</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>len=0</p></td>
+<td><p>载荷的长度是 0 字节，因为这是个 SYN 报文，不包含数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>MSS=65495</p></td>
+<td><p>最大分段尺寸为 65495 字节</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>SACK_PERM=1</p></td>
+<td><p>表示支持 SACK 选项</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>TSval=1156316798</p></td>
+<td><p>时间戳值为 1156316798</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>TSecr=0</p></td>
+<td><p>时间戳密钥值为 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>WS=128</p></td>
+<td><p>窗口缩放因子为 128</p></td>
+</tr>
+</tbody>
+</table>
+<p>这行 Wireshark 抓取的 TCP 报文表明，客户端正在向本地运行的服务器建立 TCP 连接。客户端首先发送 SYN 数据包，其中包含其初始序号和时间戳值。其中还有一些别的参数，比如时间窗口、SACK、TSVal 等等可以先忽略以后再研究，我们现在的目的是把 TCP 的整个传输过程捋清楚。</p>
+<p>第二条报文：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">2</span><span class="w">    </span><span class="m">0</span>.000019926<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">74</span><span class="w">      </span><span class="m">5200</span><span class="w"> </span>→<span class="w"> </span><span class="m">5201</span><span class="w"> </span><span class="o">[</span>SYN,<span class="w"> </span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65483</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">MSS</span><span class="o">=</span><span class="m">65495</span><span class="w"> </span>SACK_PERM<span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1156316798</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1156316798</span><span class="w"> </span><span class="nv">WS</span><span class="o">=</span><span class="m">128</span>
+</pre></div>
+</div>
+<p>再次列表格详细解释：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>列号</p></th>
+<th class="head"><p>内容</p></th>
+<th class="head"><p>解释</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>Wireshark 分配的帧编号</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>0.000019926</p></td>
+<td><p>捕获到这个报文的相对时间，单位是秒</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>127.0.0.1</p></td>
+<td><p>源 IP 地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>127.0.0.1</p></td>
+<td><p>目标 IP 地址</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>TCP</p></td>
+<td><p>报文的协议</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>74</p></td>
+<td><p>帧的帧长度（以字节为单位），包括以太网头、IP 头、TCP 头和数据</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>5200 → 5201</p></td>
+<td><p>从 5200 端口发到 5201 端口</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>[SYN, ACK]</p></td>
+<td><p>这是个 SYN-ACK 数据包</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Seq=0</p></td>
+<td><p>数据包的序列号，序列号用于按顺序排列 TCP 连接中的数据包</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>Ack=1</p></td>
+<td><p>确认号，确认号指示接收方期望接收的下一个序列号。在本例中，确认号为 1，因为接收方已确认收到发送方的 SYN 数据包（序列号为 0）</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>Win=65483</p></td>
+<td><p>接收窗口大小为 65483 字节</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>len=0</p></td>
+<td><p>载荷的长度是 0 字节，因为这是个 SYN-ACK 报文，不包含数据</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>MSS=65495</p></td>
+<td><p>最大分段尺寸为 65495 字节</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>SACK_PERM=1</p></td>
+<td><p>表示支持 SACK 选项</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>TSval=1156316798</p></td>
+<td><p>时间戳值为 1156316798</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>TSecr=1156316798</p></td>
+<td><p>时间戳密钥值为 1156316798</p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>WS=128</p></td>
+<td><p>窗口缩放因子为 128</p></td>
+</tr>
+</tbody>
+</table>
+<p>这个报文是服务端回复给客户端的 SYN-ACK 报文，表示服务端已经接收到了第一个 SYN 包，并且指定了下一个发过来的报文的序列号是 1。</p>
+<p>第三条报文：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">3</span><span class="w">    </span><span class="m">0</span>.000033010<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">66</span><span class="w">      </span><span class="m">5201</span><span class="w"> </span>→<span class="w"> </span><span class="m">5200</span><span class="w"> </span><span class="o">[</span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65536</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1156316798</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1156316798</span>
+</pre></div>
+</div>
+<p>这条报文是客户端发给服务端的 ACK 报文，报文的序列号是 1，</p>
+<p>未完待续…</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="junsircoding’s blog" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="post_20231222.html" class="btn btn-neutral float-right" title="如何在你的 Sphinx 项目中加入 plotly 图表支持？" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, junsircoding.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KTSZ2L0J1T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-KTSZ2L0J1T', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
