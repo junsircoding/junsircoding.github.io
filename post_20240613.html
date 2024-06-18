@@ -88,8 +88,19 @@
 <li class="toctree-l2"><a class="reference internal" href="#wireshark">用 Wireshark 抓包</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">报文颜色解释</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">报文内容解释</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id5">三次握手建立连接</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">四次挥手断开连接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">三次握手建立连接</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">第一次握手</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">第二次握手</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">第三次握手</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">四次挥手断开连接</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">第一次挥手</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">第二次挥手</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">第三次挥手</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">第四次挥手</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -128,10 +139,10 @@
              
   <section id="tcp">
 <h1>用抓包的方式理解 TCP 协议<a class="headerlink" href="#tcp" title="Link to this heading"></a></h1>
-<figure class="align-default" id="id7">
+<figure class="align-default" id="id14">
 <img alt="封面" src="_images/20240613_00.jpeg" />
 <figcaption>
-<p><span class="caption-text">封面</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">封面</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <section id="id1">
@@ -251,10 +262,10 @@
 <h2>用 Wireshark 抓包<a class="headerlink" href="#wireshark" title="Link to this heading"></a></h2>
 <p>打开 Wireshark，准备抓包。</p>
 <p>捕获的网卡是本机的回环网卡，筛选规则是 TCP 协议，端口为 5200 和 5201，如下图所示：</p>
-<figure class="align-default" id="id8">
+<figure class="align-default" id="id15">
 <img alt="Wireshark 抓包筛选规则" src="_images/20240613_01.png" />
 <figcaption>
-<p><span class="caption-text">Wireshark 抓包筛选规则</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-text">Wireshark 抓包筛选规则</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>点 Start，开始抓包。</p>
@@ -281,10 +292,10 @@
 </pre></div>
 </div>
 <p>抓包得到的信息是这样：</p>
-<figure class="align-default" id="id9">
+<figure class="align-default" id="id16">
 <img alt="报文预览" src="_images/20240613_02.png" />
 <figcaption>
-<p><span class="caption-text">报文预览</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+<p><span class="caption-text">报文预览</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>报文文件下载，可以直接用 Wireshark 打开：</p>
@@ -293,19 +304,19 @@
 <section id="id3">
 <h2>报文颜色解释<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p>这里面总共有 20 条报文，他们的颜色不一样。不同的颜色代表了不同的报文类型。打开 Wireshark 的 Coloring Rules 可以看到这些每种颜色代表的含义：</p>
-<figure class="align-default" id="id10">
+<figure class="align-default" id="id17">
 <img alt="报文代表的含义" src="_images/20240613_03.png" />
 <figcaption>
-<p><span class="caption-text">报文代表的含义</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+<p><span class="caption-text">报文代表的含义</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>红框圈出来的颜色就是我们的报文里涉及到的两种。其中淡紫色表示是 TCP 传输过程的报文，深灰色的表示 TCP 建立连接和关闭连接的报文。SYN 是 Synchronous 的缩写，意思是同步，表示建立连接；FIN 是 Finish 的缩写，意思是完成，表示关闭连接。</p>
 <p><code class="docutils literal notranslate"><span class="pre">tcp.flags</span> <span class="pre">&amp;</span> <span class="pre">0x02</span> <span class="pre">||</span> <span class="pre">tcp.flags.fin</span> <span class="pre">==</span> <span class="pre">1</span></code> 这一段看起来有点高深。</p>
 <p><code class="docutils literal notranslate"><span class="pre">tcp.flags</span></code> 是TCP报文报头的一个标志字段。TCP 报文本质上就是一行二进制数据，二进制数据就是一串 0 和 1 组成的数字串。一个 0 或 1 是 1 个比特，8 个比特是一个字节。这行二进制数据的每个位置上的数值表示固定的含义，通过查看这些值是多少就可以判断当前这个 TCP 连接的状态以及进行流量控制。下面这张图就是 TCP 报头的内容，仔细看里面有一段绿色的字写着 TCP Flags，共有 8 个标志字段，其中 S 就是 SYN ，F 就是 FIN，图的下方有标注。</p>
-<figure class="align-default" id="id11">
+<figure class="align-default" id="id18">
 <img alt="TCP 报文头" src="_images/20240613_04.png" />
 <figcaption>
-<p><span class="caption-text">TCP 报文头格式（图片来源：<a class="reference external" href="https://nmap.org/book/images/hdr/MJB-TCP-Header-800x564.png">https://nmap.org/book/images/hdr/MJB-TCP-Header-800x564.png</a>）</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+<p><span class="caption-text">TCP 报文头格式（图片来源：<a class="reference external" href="https://nmap.org/book/images/hdr/MJB-TCP-Header-800x564.png">https://nmap.org/book/images/hdr/MJB-TCP-Header-800x564.png</a>）</span><a class="headerlink" href="#id18" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><code class="docutils literal notranslate"><span class="pre">0x02</span></code> 是个十六进制数，把它转成二进制是 00000010。</p>
@@ -318,7 +329,8 @@
 <h2>报文内容解释<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <section id="id5">
 <h3>三次握手建立连接<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<p>第一条报文：</p>
+<section id="id6">
+<h4>第一次握手<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">1</span><span class="w">    </span><span class="m">0</span>.000000000<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">74</span><span class="w">      </span><span class="m">5201</span><span class="w"> </span>→<span class="w"> </span><span class="m">5200</span><span class="w"> </span><span class="o">[</span>SYN<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65495</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">MSS</span><span class="o">=</span><span class="m">65495</span><span class="w"> </span>SACK_PERM<span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1156316798</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">WS</span><span class="o">=</span><span class="m">128</span>
 </pre></div>
 </div>
@@ -438,8 +450,10 @@ tcp<span class="w">        </span><span class="m">0</span><span class="w">      
 <figure class="align-default">
 <img alt="三次握手状态" src="_images/20240613_10.png" />
 </figure>
-<p>这条报文的作用是： <strong>客户端发送了 SYN 报文后，自己进入 SYN-SENT 状态。</strong> 。</p>
-<p>第二条报文：</p>
+<p>这条报文的作用是： <strong>客户端生成自己的初始 Seq 码，将 Seq 标志位置为 1，向服务端发送 SYN 报文，从 CLOSED 状态进入 SYN-SENT 状态。</strong> 。</p>
+</section>
+<section id="id7">
+<h4>第二次握手<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">2</span><span class="w">    </span><span class="m">0</span>.000019926<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">74</span><span class="w">      </span><span class="m">5200</span><span class="w"> </span>→<span class="w"> </span><span class="m">5201</span><span class="w"> </span><span class="o">[</span>SYN,<span class="w"> </span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65483</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">MSS</span><span class="o">=</span><span class="m">65495</span><span class="w"> </span>SACK_PERM<span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1156316798</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1156316798</span><span class="w"> </span><span class="nv">WS</span><span class="o">=</span><span class="m">128</span>
 </pre></div>
 </div>
@@ -453,8 +467,10 @@ tcp<span class="w">        </span><span class="m">0</span><span class="w">      
 <p>之所以叫做 SYN-ACK 报文，就是因为它做了两件事情，一个是向客户端同步自己的 Seq 值，这是 SYN 报文，因此它的 SYN 标志位置为 1。
 另一个是确认客户端的 Seq 值，这是 ACK 报文，因此它的 ACK 标志位置为 1。
 这条报文是把这两个动作合到一起了。</p>
-<p>这条报文的作用是： <strong>服务端收到了客户端发送的的 SYN 报文，返回一个 SYN-ACK 报文，表示服务端已收到之前的报文，并且同步自己的 Seq</strong> 。</p>
-<p>第三条报文：</p>
+<p>这条报文的作用是： <strong>服务端收到了客户端发送的的 SYN 报文，将 Seq 码加 1 作为 Ack 码，生成自己的初始 Seq 码，将 Seq 和 Ack 两个标志位置为 1，给服务端发送一个 SYN-ACK 报文，从 LISTEN 状态进入 SYN-RECEIVED 状态</strong> 。</p>
+</section>
+<section id="id8">
+<h4>第三次握手<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">3</span><span class="w">    </span><span class="m">0</span>.000033010<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">66</span><span class="w">      </span><span class="m">5201</span><span class="w"> </span>→<span class="w"> </span><span class="m">5200</span><span class="w"> </span><span class="o">[</span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65536</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1156316798</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1156316798</span>
 </pre></div>
 </div>
@@ -465,26 +481,51 @@ tcp<span class="w">        </span><span class="m">0</span><span class="w">      
 <p>客户端收到这条报文后，拿到 Seq 值为 <code class="docutils literal notranslate"><span class="pre">2543691202</span></code> ，将其加 1，作为自己的 Ack 值 <code class="docutils literal notranslate"><span class="pre">2543691203</span></code> 。
 将第二条报文中的 Ack 值作为 Seq 值 <code class="docutils literal notranslate"><span class="pre">1784164157</span></code> 。
 将 ACK 标志位置为 1，构造 ACK 报文，发送给服务端。</p>
-<p>这条报文的作用是： <strong>客户端收到了服务端返回的 SYN-ACK 报文，确认服务端已收到之前的报文，现在可以正式建立连接</strong> 。</p>
+<p>这条报文的作用是： <strong>客户端收到了服务端返回的 SYN-ACK 报文，将 Seq 码加 1 作为 Ack 码，将 Ack 标志位置为 1，构造 Ack 报文发送给服务端，由 SYN-SENT 状态变为 ESTABLISHED 状态。服务端收到这条 ACK 报文后，状态由 SYN-RECEIVED 变为 ESTABLISHED 状态，连接建立</strong> 。</p>
 </section>
-<section id="id6">
-<h3>四次挥手断开连接<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
-<p>第十七条报文：</p>
+</section>
+<section id="id9">
+<h3>四次挥手断开连接<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<section id="id10">
+<h4>第一次挥手<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">17</span><span class="w">   </span><span class="m">3</span>.005417521<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">66</span><span class="w">      </span><span class="m">5201</span><span class="w"> </span>→<span class="w"> </span><span class="m">5200</span><span class="w"> </span><span class="o">[</span>FIN,<span class="w"> </span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">22</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">50</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65536</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1136610107</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1136610107</span>
 </pre></div>
 </div>
-<p>第十八条报文：</p>
+<p>这条报文的详细信息如下：</p>
+<figure class="align-default">
+<img alt="第十七条报文详细信息" src="_images/20240613_11.png" />
+</figure>
+</section>
+<section id="id11">
+<h4>第二次挥手<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">18</span><span class="w">   </span><span class="m">3</span>.046771271<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">66</span><span class="w">      </span><span class="m">5200</span><span class="w"> </span>→<span class="w"> </span><span class="m">5201</span><span class="w"> </span><span class="o">[</span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">50</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">23</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65536</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1136610149</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1136610107</span>
 </pre></div>
 </div>
-<p>第十九条报文：</p>
+<p>这条报文的详细信息如下：</p>
+<figure class="align-default">
+<img alt="第十八条报文详细信息" src="_images/20240613_12.png" />
+</figure>
+</section>
+<section id="id12">
+<h4>第三次挥手<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">19</span><span class="w">   </span><span class="m">4</span>.006796503<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">66</span><span class="w">      </span><span class="m">5200</span><span class="w"> </span>→<span class="w"> </span><span class="m">5201</span><span class="w"> </span><span class="o">[</span>FIN,<span class="w"> </span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">50</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">23</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65536</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1136611109</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1136610107</span>
 </pre></div>
 </div>
-<p>第二十条报文：</p>
+<p>这条报文的详细信息如下：</p>
+<figure class="align-default">
+<img alt="第十九条报文详细信息" src="_images/20240613_13.png" />
+</figure>
+</section>
+<section id="id13">
+<h4>第四次挥手<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">20</span><span class="w">   </span><span class="m">4</span>.006834955<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">66</span><span class="w">      </span><span class="m">5201</span><span class="w"> </span>→<span class="w"> </span><span class="m">5200</span><span class="w"> </span><span class="o">[</span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">23</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">51</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65536</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1136611109</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1136611109</span>
 </pre></div>
 </div>
+<p>这条报文的详细信息如下：</p>
+<figure class="align-default">
+<img alt="第二十条报文详细信息" src="_images/20240613_14.png" />
+</figure>
+</section>
 </section>
 </section>
 </section>
