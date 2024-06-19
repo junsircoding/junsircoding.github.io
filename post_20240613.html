@@ -486,6 +486,10 @@ tcp<span class="w">        </span><span class="m">0</span><span class="w">      
 </section>
 <section id="id9">
 <h3>四次挥手断开连接<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>这张图就是四次挥手的过程和状态：</p>
+<figure class="align-default">
+<img alt="四次挥手状态" src="_images/20240613_15.png" />
+</figure>
 <section id="id10">
 <h4>第一次挥手<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="m">17</span><span class="w">   </span><span class="m">3</span>.005417521<span class="w">     </span><span class="m">127</span>.0.0.1<span class="w">       </span><span class="m">127</span>.0.0.1<span class="w">       </span>TCP<span class="w">     </span><span class="m">66</span><span class="w">      </span><span class="m">5201</span><span class="w"> </span>→<span class="w"> </span><span class="m">5200</span><span class="w"> </span><span class="o">[</span>FIN,<span class="w"> </span>ACK<span class="o">]</span><span class="w"> </span><span class="nv">Seq</span><span class="o">=</span><span class="m">22</span><span class="w"> </span><span class="nv">Ack</span><span class="o">=</span><span class="m">50</span><span class="w"> </span><span class="nv">Win</span><span class="o">=</span><span class="m">65536</span><span class="w"> </span><span class="nv">Len</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">TSval</span><span class="o">=</span><span class="m">1136610107</span><span class="w"> </span><span class="nv">TSecr</span><span class="o">=</span><span class="m">1136610107</span>
@@ -495,6 +499,9 @@ tcp<span class="w">        </span><span class="m">0</span><span class="w">      
 <figure class="align-default">
 <img alt="第十七条报文详细信息" src="_images/20240613_11.png" />
 </figure>
+<p>现在是由客户端主动发起关闭动作。</p>
+<p>客户端把 FIN 标志位置为 1，向服务端发动一个 FIN 包。这里的 ACK 也置为 1 了，这个 ACK 是为了回应上一步的数据传输，并不是关闭连接的逻辑，可以忽略。</p>
+<p>这条报文的作用是： <strong>客户端将 FIN 标志位置为 1，构造 FIN 报文发给服务端，由 ESTABLISHED 状态变为 FIN-WAIT-1 状态</strong> 。</p>
 </section>
 <section id="id11">
 <h4>第二次挥手<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
@@ -505,6 +512,7 @@ tcp<span class="w">        </span><span class="m">0</span><span class="w">      
 <figure class="align-default">
 <img alt="第十八条报文详细信息" src="_images/20240613_12.png" />
 </figure>
+<p>这条报文的作用是： <strong>服务端收到 FIN 报文后，告诉应用程序即将关闭，由 ESTABLISHED 状态变为 CLOSE-WAIT 状态，向客户端发送 ACK 报文。客户端收到 ACK 报文后，由 FIN-WAIT-1 状态变为 FIN-WAIT-2 状态，继续等待下一个 FIN 报文</strong> 。</p>
 </section>
 <section id="id12">
 <h4>第三次挥手<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
@@ -515,6 +523,7 @@ tcp<span class="w">        </span><span class="m">0</span><span class="w">      
 <figure class="align-default">
 <img alt="第十九条报文详细信息" src="_images/20240613_13.png" />
 </figure>
+<p>这条报文的作用是： <strong>应用程序准备好关闭，服务端将 FIN 标志位置为 1，向客户端发送 FIN 报文，由 CLOSE-WAIT 状态变为 LAST-ACK 状态</strong> 。</p>
 </section>
 <section id="id13">
 <h4>第四次挥手<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
@@ -525,6 +534,7 @@ tcp<span class="w">        </span><span class="m">0</span><span class="w">      
 <figure class="align-default">
 <img alt="第二十条报文详细信息" src="_images/20240613_14.png" />
 </figure>
+<p>这条报文的作用是： <strong>客户端收到 FIN 报文，将 ACK 标志位置为 1，向服务端发送 ACK 报文，由 FIN-WAIT-2 状态变为 TIME-WAIT 状态，等待 2 倍 MSL 的时间后，变为 CLOSED 状态断开连接。服务端收到 ACK 报文后，由 LAST-ACK 变为 CLOSED 状态，断开连接</strong> 。</p>
 </section>
 </section>
 </section>
