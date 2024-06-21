@@ -1,0 +1,108 @@
+微信 Linux 版上架 Flathub 商店
+===============================================
+
+喜欢用 Linux 系统的人有个乐趣，如果用腻了现在的系统，总有很多的新系统可以换，而且都正版免费。
+
+最近我又换到了 Fedora 系统，这个系统的包管理工具除了 `DNF`_ 之外，默认安装了 Flatpak。
+
+.. _DNF: https://en.wikipedia.org/wiki/DNF_(software)
+
+Flatpak 也是一个软件包管理工具，和 DNF 直接使用系统的全局环境不同，Flatpak 自带了一套沙盒环境，里面有这个软件所需要的所有依赖，虽然占用空间更多，但是操作更简便。
+
+另外它在 Linux 生态里面是跨平台的，也就是说在非 Redhat 系列的发行版上也是可以用的，比如 Debian、Arch、Gentoo 等。相比 DNF，Flatpak 里面的很多软件都比较新，运行效果也比较好。Ubuntu 上也有类似的工具 Snap，这俩难分伯仲，都挺好用的，区别就在于软件数量上的差别了。
+
+在 Fedora 或者任何安装了 Flatpak 的系统终端里，可以直接用 ``flatpak`` 安装、卸载、搜索软件。
+
+Flatpak 有一个软件商店 Flathub，网址是 https://flathub.org/ ，上面有所有的软件。
+
+.. figure:: /_images/20240621/20240621_00.png
+   :alt: Flathub 网站 
+
+Snap 也类似，它的网址是：https://snapcraft.io/ 。
+
+.. figure:: /_images/20240621/20240621_06.png
+   :alt: Snap 软件商店
+
+
+实际工作中，服务器的操作系统大多是 Linux。对于编程工作来说，不同操作系统之间还是有比较大的差别的，在 Windows 上调通的代码，可能上了服务器就出现一些不小心忽略了的兼容性问题。
+
+如果工作用的开发机也使用 Linux，可以让自己的开发环境最大限度的接近服务器，思维上也不需要频繁切换，从而避免很多低级问题。
+
+但是有一点很不方便，国产软件在 Linux 上的支持往往很滞后，因为用户太少。国外软件比如 Discord、Telegram、Skype、Zoom、Slack 等等都是发布的时候就支持 Windows、Mac、Linux，而我们重度使用的 QQ、微信、钉钉、腾讯会议等等这些软件都是近几年才开发的 Linux 版本，尤其是微信。
+
+现在在 Flathub 上直接搜索 wechat，就会发现微信已经上架了。
+
+
+.. figure:: /_images/20240621/20240621_01.png
+   :alt: 微信上架 Flathub 
+
+点进去之后，在微信软件的页面上有个 **Install** ，点按钮右边的向下箭头，然后会显示出安装命令。只要把这个命令复制一下，然后在系统的终端里粘贴运行就可以安装了。
+
+
+.. figure:: /_images/20240621/20240621_02.png
+   :alt: 微信 Flatpak 版安装命令 
+
+
+.. code-block:: shell
+   :linenos:
+
+   flatpak install flathub com.tencent.WeChat
+
+安装过程：
+
+.. code-block:: shell
+   :linenos:
+
+   $ flatpak install flathub com.tencent.WeChat
+   Looking for matches…
+
+   com.tencent.WeChat permissions:
+       ipc      network      pulseaudio      x11      devices     file access [1]     dbus access [2]     bus ownership [3]
+
+       [1] xdg-download
+       [2] org.freedesktop.FileManager1, org.freedesktop.Notifications, org.kde.StatusNotifierWatcher
+       [3] org.kde.*
+
+
+           ID                          Branch         Op         Remote          Download
+   1. [✓] com.tencent.WeChat          stable         i          flathub         117.3 MB / 117.4 MB
+
+   Installation complete.
+   
+
+然后在系统启动器页面就有 WeChat 了。
+
+.. figure:: /_images/20240621/20240621_03.png
+   :alt: 微信安装成功 
+
+另外可以看到腾讯还上架了 QQ、QQ 音乐、腾讯会议。
+
+.. figure:: /_images/20240621/20240621_04.png
+   :alt: 腾讯其他软件 
+
+搜索 ``baidu`` ，会发现百度网盘也有了，百度网盘可能是最早支持 Linux 版本的国产软件之一了，软件界面也比 Windows 上的要简洁，和 Mac 上的差不多。
+
+
+.. figure:: /_images/20240621/20240621_05.png
+   :alt: 百度网盘 
+
+
+当然了，自家 VIP 的广告还是少不了的。
+
+.. figure:: /_images/20240621/20240621_08.png
+   :alt: 百度网盘 Linux 版 
+
+
+Flathub 里面的软件又多又全，很有探索的乐趣。
+
+在 Snap 里面现在还没有上架原生 WeChat Linux 版，目前的版本还是打包的网页版本，不怎么好用。
+
+.. figure:: /_images/20240621/20240621_07.png
+   :alt: Snap 商店的 WeChat 
+
+如果你不想用 Flatpak，而且你的系统是 Debian 系列的，可以用国内一个社区自己修改打包的版本，叫做 **铜豌豆** ，网址 https://www.atzlinux.com/index.htm 。
+
+只要添加他们的 APT 源就可以直接用 ``apt`` 安装原生版的 Linux 微信，只是它默认的图标不太好看，需要自己改一下。
+ 
+
+
