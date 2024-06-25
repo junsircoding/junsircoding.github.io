@@ -6,18 +6,15 @@
 junsircoding's blog
 =======================================
 
-.. figure:: /_images/profile.jpg
-   :alt: My Profile
-
 My Social Medias
 ----------------------------
 
 - `Github`_ 
-- `Bilibili`_
+- `LeetCode`_
 
 .. _Github: https://github.com/junsircoding/
 
-.. _Bilibili: https://space.bilibili.com/39994473/video
+.. _LeetCode: https://leetcode.cn/u/junsircoding/
 
 My Articles
 ----------------------------
