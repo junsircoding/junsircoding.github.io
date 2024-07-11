@@ -78,11 +78,12 @@
 
    sudo docker run hello-world
 
-结果：
 
 .. code-block:: shell
    :linenos:
    
+   结果：
+
    Unable to find image 'hello-world:latest' locally
    latest: Pulling from library/hello-world
    c1ec31eb5944: Pull complete 
@@ -110,14 +111,14 @@
    For more examples and ideas, visit:
     https://docs.docker.com/get-started/
 
-8. 设置 Docker 开机自启动：
+9. 设置 Docker 开机自启动：
 
 .. code-block:: shell
    :linenos:
 
    sudo systemctl enable docker
 
-9. 将普通用户添加进 Docker 组：
+10. 将普通用户添加进 Docker 组：
 
 .. code-block:: shell
    :linenos:
