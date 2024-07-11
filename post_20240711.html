@@ -217,6 +217,20 @@
 <span class="linenos">26</span><span class="w"> </span>https://docs.docker.com/get-started/
 </pre></div>
 </div>
+<ol class="arabic simple" start="8">
+<li><p>设置 Docker 开机自启动：</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>docker
+</pre></div>
+</div>
+<ol class="arabic simple" start="9">
+<li><p>将普通用户添加进 Docker 组：</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span>junsircoding
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1"># 重启</span>
+</pre></div>
+</div>
 </section>
 <section id="id2">
 <h2>参考资料<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
