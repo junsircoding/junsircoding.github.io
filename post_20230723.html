@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en-US" data-content_root="./">
-<head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="zh-CN" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>将 Vim 打造成轻量级的 IDE &mdash; junsircoding&#39;s blog  documentation</title>
+
+    <title>将 Vim 打造成轻量级的 IDE &#8212; 小骏的博客  文档</title>
 
 
 
@@ -25,29 +26,30 @@
 
 
 
-
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-
-  
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=41b4f12d" />
+    <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=b20cc3f5" />
+    
+    <script src="_static/documentation_options.js?v=91bfbbb6"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    
     <link rel="canonical" href="https://junsircoding.github.io/post_20230723.html" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=cd149c8d"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="icon" href="_static/favicon.ico"/>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="Matplotlib 等值线图自定义 label 标签位置" href="post_20230722.html" />
     <link rel="prev" title="Matplotlib Axes 的位置参数到底如何设置？" href="post_20231220.html" />
 
-     
+    <link rel="stylesheet" href="_static/pydoctheme_dark.css" media="(prefers-color-scheme: dark)" id="pydoctheme_dark_css">
+    <link rel="shortcut icon" type="image/png" href="_static/favicon.svg" />
+            <script type="text/javascript" src="_static/copybutton.js"></script>
+            <script type="text/javascript" src="_static/menu.js"></script>
+            <script type="text/javascript" src="_static/search-focus.js"></script>
+            <script type="text/javascript" src="_static/themetoggle.js"></script> 
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4178487904865687"
      crossorigin="anonymous"></script>
@@ -61,87 +63,147 @@
     })(window, document, "clarity", "script", "kb72rmcxcn");
 </script>
 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="index.html">
-            
-              <img src="_static/logo.png" class="logo" alt="Logo"/>
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="post_20240711.html">在新机器安装 Docker 以及代理配置</a></li>
-<li class="toctree-l1"><a class="reference internal" href="post_20240613.html">用抓包的方式理解 TCP 协议</a></li>
-<li class="toctree-l1"><a class="reference internal" href="post_20231222.html">如何在你的 Sphinx 项目中加入 plotly 图表支持？</a></li>
-<li class="toctree-l1"><a class="reference internal" href="post_20231221.html">常用的几个 AWK 命令</a></li>
-<li class="toctree-l1"><a class="reference internal" href="post_20231220.html">Matplotlib Axes 的位置参数到底如何设置？</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">将 Vim 打造成轻量级的 IDE</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">介绍</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">步骤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#vundle">安装 Vundle 插件，用来管理插件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tab">配置 TAB 键、搜索、内置终端</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#vim-polyglot">增加各种编程语言语法包和缩进，vim-polyglot 插件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">安装配色主题</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#auto-pairs">方括号、圆括号和引号的自动成对补全，auto-pairs 插件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#nerdtree">文件管理器，NERDTree 插件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tagbar">增加一个面板条，在里面展示源文件的标签，tagbar 插件</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">参考文章</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="post_20230722.html">Matplotlib 等值线图自定义 label 标签位置</a></li>
-<li class="toctree-l1"><a class="reference internal" href="post_20230529.html">气象数据的各种插值问题</a></li>
-<li class="toctree-l1"><a class="reference internal" href="post_20230527.html">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a></li>
-</ul>
-
-        </div>
-      </div>
+  </head>
+<body>
+<div class="mobile-nav">
+    <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+    <nav class="nav-content" role="navigation">
+        <label for="menuToggler" class="toggler__label">
+            <span></span>
+        </label>
+        <span class="nav-items-wrapper">
+            <a href="https://junsircoding.github.io" class="nav-logo">
+                <img src="_static/favicon.svg" alt="junsircoding"/>
+            </a>
+            <span class="version_switcher_placeholder"></span>
+            <form role="search" class="search" action="search.html" method="get">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="search-icon">
+                    <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+                <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" />
+                <input type="submit" value="提交"/>
+            </form>
+        </span>
     </nav>
+    <div class="menu-wrapper">
+        <nav class="menu" role="navigation" aria-label="main navigation">
+            <div class="language_switcher_placeholder"></div>
+            
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="activateTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label>
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">将 Vim 打造成轻量级的 IDE</a><ul>
+<li><a class="reference internal" href="#id1">介绍</a></li>
+<li><a class="reference internal" href="#id2">步骤</a><ul>
+<li><a class="reference internal" href="#vundle">安装 Vundle 插件，用来管理插件</a></li>
+<li><a class="reference internal" href="#tab">配置 TAB 键、搜索、内置终端</a></li>
+<li><a class="reference internal" href="#vim-polyglot">增加各种编程语言语法包和缩进，vim-polyglot 插件</a></li>
+<li><a class="reference internal" href="#id5">安装配色主题</a></li>
+<li><a class="reference internal" href="#auto-pairs">方括号、圆括号和引号的自动成对补全，auto-pairs 插件</a></li>
+<li><a class="reference internal" href="#nerdtree">文件管理器，NERDTree 插件</a></li>
+<li><a class="reference internal" href="#tagbar">增加一个面板条，在里面展示源文件的标签，tagbar 插件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9">参考文章</a></li>
+</ul>
+</li>
+</ul>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">junsircoding's blog</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">将 Vim 打造成轻量级的 IDE</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="post_20231220.html"
+                          title="上一章">Matplotlib Axes 的位置参数到底如何设置？</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="post_20230722.html"
+                          title="下一章">Matplotlib 等值线图自定义 label 标签位置</a></p>
+  </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </nav>
+    </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+  
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="post_20230722.html" title="Matplotlib 等值线图自定义 label 标签位置"
+             accesskey="N">下一页</a> |</li>
+        <li class="right" >
+          <a href="post_20231220.html" title="Matplotlib Axes 的位置参数到底如何设置？"
+             accesskey="P">上一页</a> |</li>
+          <li><img src="_static/favicon.svg" alt="junsircoding" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://junsircoding.github.io">junsircoding</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+          </li>
+        <li class="nav-item nav-item-this"><a href="">将 Vim 打造成轻量级的 IDE</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
+          <input type="submit" value="提交" />
+        </form>
+    </div>
+                     |
+                </li>
+            <li class="right">
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="activateTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label> |</li>
+            
+      </ul>
+    </div>    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
   <section id="vim-ide">
-<h1>将 Vim 打造成轻量级的 IDE<a class="headerlink" href="#vim-ide" title="Link to this heading"></a></h1>
+<h1>将 Vim 打造成轻量级的 IDE<a class="headerlink" href="#vim-ide" title="Link to this heading">¶</a></h1>
 <section id="id1">
-<h2>介绍<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<h2>介绍<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <p>在 Linux 系统中， <a class="reference external" href="https://www.vim.org/">Vim</a> 是我们最常用的编辑器。Vim 可以提供缓冲区(buffers)、宏(macros) 和书签(bookmarking)的功能。Vim 还内置了一种自己的脚本语言，以便开发人员编写插件增强它的功能。下面我们就通过 <strong>安装插件</strong> 和 <strong>增加配置</strong> 的方式，来把基础的 Vim 变成一个轻量级的 IDE。</p>
 </section>
 <section id="id2">
-<h2>步骤<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<h2>步骤<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <section id="vundle">
-<h3>安装 Vundle 插件，用来管理插件<a class="headerlink" href="#vundle" title="Link to this heading"></a></h3>
+<h3>安装 Vundle 插件，用来管理插件<a class="headerlink" href="#vundle" title="Link to this heading">¶</a></h3>
 <p>我们下面要安装很多插件，而这些插件可以用别的插件来管理，这个管理插件的插件就是 <a class="reference external" href="https://github.com/VundleVim/Vundle.vim">Vundle</a> ，以下是命令步骤。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.vim/bundle
 $<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/.vim/bundle
@@ -150,7 +212,7 @@ $<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span
 </div>
 <p>然后把这写配置代码添加到 <code class="docutils literal notranslate"><span class="pre">~/.vimrc</span></code> 中：</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="admonition-title">备注</p>
 <p>注意，在 .vimrc 文件中， <code class="docutils literal notranslate"><span class="pre">&quot;</span></code> 开头的是注释。</p>
 </div>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">nocompatible</span>
@@ -184,7 +246,7 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 <p>当开启语法高亮后，vim 会从 <code class="docutils literal notranslate"><span class="pre">syntax/&lt;language&gt;.vim</span></code> 中寻找对应后缀文件的高亮文件。比如打开了 main.cpp，vim 会自动寻找 syntax.cpp 文件，并按照里面的规则进行代码文件的渲染。</p>
 </section>
 <section id="tab">
-<h3>配置 TAB 键、搜索、内置终端<a class="headerlink" href="#tab" title="Link to this heading"></a></h3>
+<h3>配置 TAB 键、搜索、内置终端<a class="headerlink" href="#tab" title="Link to this heading">¶</a></h3>
 <p>下面添加几个和 Tab 键有关的配置：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 输入 \t 制表符后空 4 个空格</span>
 <span class="k">set</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 按下 Tab 后空 4 个空格</span>
@@ -205,7 +267,7 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 </div>
 </section>
 <section id="vim-polyglot">
-<h3>增加各种编程语言语法包和缩进，vim-polyglot 插件<a class="headerlink" href="#vim-polyglot" title="Link to this heading"></a></h3>
+<h3>增加各种编程语言语法包和缩进，vim-polyglot 插件<a class="headerlink" href="#vim-polyglot" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://github.com/sheerun/vim-polyglot">vim-polyglot</a>  插件可以对 50 多种编程语言进行语法高亮。通过下面的命令安装这个插件：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 在 .vimrc 中添加这行配置</span>
 Plugin<span class="w"> </span><span class="s1">&#39;sheerun/vim-polyglot&#39;</span>
@@ -223,10 +285,10 @@ $<span class="w"> </span>vim<span class="w"> </span>+PluginInstall<span class="w
 </div>
 </section>
 <section id="id5">
-<h3>安装配色主题<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<h3>安装配色主题<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
 <p>虽然 Vim 的默认主题已经够用了，但我们也可以自己另外安装主题。输入 <code class="docutils literal notranslate"><span class="pre">:color&lt;space&gt;</span></code> ，然后按 <code class="docutils literal notranslate"><span class="pre">&lt;TAB&gt;</span></code> 键自动按顺序遍历出所有主题名称。</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="admonition-title">备注</p>
 <p><code class="docutils literal notranslate"><span class="pre">:color&lt;space&gt;</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">&lt;space&gt;</span></code> 代表空格。</p>
 </div>
 <p><a class="reference external" href="https://github.com/rafi/awesome-vim-colorschemes">awesome-vim-colorschemes</a> 这个仓库包含了许多好看的主题，可以从里面找自己喜欢的。添加下面的配置，并且执行安装，就可以安装对应主题了。</p>
@@ -247,7 +309,7 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 </div>
 </section>
 <section id="auto-pairs">
-<h3>方括号、圆括号和引号的自动成对补全，auto-pairs 插件<a class="headerlink" href="#auto-pairs" title="Link to this heading"></a></h3>
+<h3>方括号、圆括号和引号的自动成对补全，auto-pairs 插件<a class="headerlink" href="#auto-pairs" title="Link to this heading">¶</a></h3>
 <p>在输入括号、反引号、单双引号时可以让编辑器自动成对输入，通过安装 <a class="reference external" href="https://github.com/jiangmiao/auto-pairs">auto-pairs</a> 插件可以实现：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;jiangmiao/auto-pairs&#39;</span>
   # Install <span class="k">on</span> command line
@@ -261,7 +323,7 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 <p>添加这条配置后，按 <cite>CTRL P</cite> 可以临时调节，编辑器是否自动成对输入那些字符。</p>
 </section>
 <section id="nerdtree">
-<h3>文件管理器，NERDTree 插件<a class="headerlink" href="#nerdtree" title="Link to this heading"></a></h3>
+<h3>文件管理器，NERDTree 插件<a class="headerlink" href="#nerdtree" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://github.com/preservim/nerdtree">NERDTree</a> 插件是一个文件资源管理器，可以在左侧打开一个边栏，以选择、浏览、重命名等等的当时管理文件。</p>
 <p>安装配置如下：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;preservim/nerdtree&#39;</span>
@@ -282,7 +344,7 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 </div>
 </section>
 <section id="tagbar">
-<h3>增加一个面板条，在里面展示源文件的标签，tagbar 插件<a class="headerlink" href="#tagbar" title="Link to this heading"></a></h3>
+<h3>增加一个面板条，在里面展示源文件的标签，tagbar 插件<a class="headerlink" href="#tagbar" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://github.com/preservim/tagbar">tagbar</a> 这个插件可以在文件管理器里面的当前打开的文件下面显示一横条，方便我们查看。</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;preservim/tagbar&#39;</span>
   # Install <span class="k">on</span> command line
@@ -292,48 +354,133 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 </section>
 </section>
 <section id="id9">
-<h2>参考文章<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<h2>参考文章<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://dane-bulat.medium.com/how-to-turn-vim-into-a-lightweight-ide-6185e0f47b79">How to Turn Vim Into a Lightweight IDE</a></p>
 </section>
 </section>
 
 
-           </div>
+            <div class="clearer"></div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="post_20231220.html" class="btn btn-neutral float-left" title="Matplotlib Axes 的位置参数到底如何设置？" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="post_20230722.html" class="btn btn-neutral float-right" title="Matplotlib 等值线图自定义 label 标签位置" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2024, junsircoding.</p>
-  </div>
-
-   
-
-</footer>
         </div>
       </div>
-    </section>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo of 小骏的博客"/>
+            </a></p>
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">将 Vim 打造成轻量级的 IDE</a><ul>
+<li><a class="reference internal" href="#id1">介绍</a></li>
+<li><a class="reference internal" href="#id2">步骤</a><ul>
+<li><a class="reference internal" href="#vundle">安装 Vundle 插件，用来管理插件</a></li>
+<li><a class="reference internal" href="#tab">配置 TAB 键、搜索、内置终端</a></li>
+<li><a class="reference internal" href="#vim-polyglot">增加各种编程语言语法包和缩进，vim-polyglot 插件</a></li>
+<li><a class="reference internal" href="#id5">安装配色主题</a></li>
+<li><a class="reference internal" href="#auto-pairs">方括号、圆括号和引号的自动成对补全，auto-pairs 插件</a></li>
+<li><a class="reference internal" href="#nerdtree">文件管理器，NERDTree 插件</a></li>
+<li><a class="reference internal" href="#tagbar">增加一个面板条，在里面展示源文件的标签，tagbar 插件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9">参考文章</a></li>
+</ul>
+</li>
+</ul>
+
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KTSZ2L0J1T"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="post_20231220.html"
+                          title="上一章">Matplotlib Axes 的位置参数到底如何设置？</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="post_20230722.html"
+                          title="下一章">Matplotlib 等值线图自定义 label 标签位置</a></p>
+  </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>  
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="post_20230722.html" title="Matplotlib 等值线图自定义 label 标签位置"
+             >下一页</a> |</li>
+        <li class="right" >
+          <a href="post_20231220.html" title="Matplotlib Axes 的位置参数到底如何设置？"
+             >上一页</a> |</li>
+          <li><img src="_static/favicon.svg" alt="junsircoding" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://junsircoding.github.io">junsircoding</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+          </li>
+        <li class="nav-item nav-item-this"><a href="">将 Vim 打造成轻量级的 IDE</a></li>
+                <li class="right">
+                    
 
-      gtag('config', 'G-KTSZ2L0J1T', {
-          'anonymize_ip': false,
-      });
-    </script> 
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
+          <input type="submit" value="提交" />
+        </form>
+    </div>
+                     |
+                </li>
+            <li class="right">
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="activateTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label> |</li>
+            
+      </ul>
+    </div>  
+    <div class="footer">
+    &copy; 
+    版权所有
+     2024, junsircoding.
+    <br />
+    This page is licensed under the Python Software Foundation License Version 2.
+    <br />
+    Examples, recipes, and other code in the documentation are additionally licensed under the Zero Clause BSD License.
+    <br />
+    
+    
+    <br />
 
-</body>
+    The Python Software Foundation is a non-profit corporation.
+<a href="https://www.python.org/psf/donations/">Please donate.</a>
+<br />
+    <br />
+    
+    <br />
+
+    由 <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7创建。
+    </div>
+
+  </body>
 </html>

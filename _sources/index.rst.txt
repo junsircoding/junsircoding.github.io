@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-junsircoding's blog
+小骏的博客
 =======================================
 
-My Social Medias
+我的社交媒体
 ----------------------------
 
 - `Github`_ 
@@ -16,7 +16,7 @@ My Social Medias
 
 .. _LeetCode: https://leetcode.cn/u/junsircoding/
 
-My Articles
+我的文章
 ----------------------------
 
 .. toctree::
