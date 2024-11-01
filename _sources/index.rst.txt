@@ -6,18 +6,9 @@
 小骏的博客
 =======================================
 
-我的社交媒体
-----------------------------
+Get busy living, or get busy dying. 💪
 
-- `Github`_ 
-- `LeetCode`_
-
-.. _Github: https://github.com/junsircoding/
-
-.. _LeetCode: https://leetcode.cn/u/junsircoding/
-
-我的文章
-----------------------------
+________________________
 
 .. toctree::
    :maxdepth: 1

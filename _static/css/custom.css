@@ -51,7 +51,31 @@ body {
 } */
 
 /* 头图 */
-.wy-side-nav-search, .wy-nav-top
+/* .wy-side-nav-search, .wy-nav-top
 {
     background: rgb(52,49,49);
+} */
+
+
+div.related {
+    width: 1130px;          /* 设置适当的宽度 */
+    font-size: 90%;
+    margin: 0 auto;       /* 自动左右边距，达到水平居中效果 */
+    overflow-wrap: break-word;  /* 保持长文本换行 */
+}
+
+div.body {
+    min-width: initial;    /* 或者使用 initial */
+    max-width: initial;    /* 或者使用 initial */
+    min-height: 80vh;
+}
+
+div.document {
+    width: 1130px;          /* 设置适当的宽度 */
+    margin: 0 auto;       /* 自动左右边距，达到水平居中效果 */
+    overflow-wrap: break-word;  /* 保持长文本换行 */
+}
+
+.footer {
+    display: none;
 }
