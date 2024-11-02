@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             // 创建 <span> 元素并添加日期前缀
             let datePrefix = document.createElement("span");
-            datePrefix.innerHTML = `<strong>${formattedDate}</strong> - `;
+            datePrefix.innerHTML = `<strong>${formattedDate}</strong> &nbsp;`;
             
             // 将日期前缀插入到链接之前
             link.parentNode.insertBefore(datePrefix, link);

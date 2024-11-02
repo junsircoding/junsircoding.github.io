@@ -89,6 +89,9 @@ body {
     div.bodywrapper_custom {
         margin: 0 0 0 0;
     }
+    .toctree-wrapper ul {
+        padding-left: initial;
+    }
     .toctree-wrapper li {
         list-style-type: none;
         position: relative;
