@@ -57,25 +57,50 @@ body {
 } */
 
 
-div.related {
-    width: 1130px;          /* 设置适当的宽度 */
-    font-size: 90%;
-    margin: 0 auto;       /* 自动左右边距，达到水平居中效果 */
-    overflow-wrap: break-word;  /* 保持长文本换行 */
-}
-
-div.body {
-    min-width: initial;    /* 或者使用 initial */
-    max-width: initial;    /* 或者使用 initial */
+/* div.body {
+    min-width: initial;
+    max-width: initial; 
     min-height: 80vh;
+} */
+
+
+/* 只有屏幕宽度大于1023px时才应用内容居中,即移动设备不受影响 */
+@media (min-width: 1023px) {
+    /* 文章部分 */
+    div.body {
+        min-height: 80vh;
+        min-width: initial;
+        max-width: initial; 
+    }
+    /* 文章及左边栏部分 */
+    div.document {
+        width: 70%;          
+        margin: 0 auto;       
+        overflow-wrap: break-word; 
+    }
+    /* 顶部和底部导航栏 */
+    div.related {
+        width: 70%;      
+        font-size: 90%;
+        margin: 0 auto;     
+        overflow-wrap: break-word;
+    }
+    /* 首页左侧导航栏在在首页不显示 */
+    div.bodywrapper_custom {
+        margin: 0 0 0 0;
+    }
+    .toctree-wrapper li {
+        list-style-type: none;
+        position: relative;
+    }
+    
 }
 
-div.document {
-    width: 1130px;          /* 设置适当的宽度 */
-    margin: 0 auto;       /* 自动左右边距，达到水平居中效果 */
-    overflow-wrap: break-word;  /* 保持长文本换行 */
-}
 
-.footer {
-    display: none;
-}
+/* div.document {
+    background-color: inherit;
+    color: inherit;
+    width: 1130px;
+    margin: 0 auto;  
+    overflow-wrap: break-word;
+} */

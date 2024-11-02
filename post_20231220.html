@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-    <title>Matplotlib Axes 的位置参数到底如何设置？ &#8212; 小骏不抬杠  文档</title>
+<title>Matplotlib Axes 的位置参数到底如何设置？
+    
+    -小骏的博客
+    
+</title>
+
 
 
 
@@ -26,17 +31,21 @@
 
 
 
+
+
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=41b4f12d" />
     <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=b20cc3f5" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=57851a22" />
     
     <script src="_static/documentation_options.js?v=91bfbbb6"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/custom.js?v=de1733a4"></script>
     
     <link rel="canonical" href="https://junsircoding.github.io/post_20231220.html" />
     <link rel="icon" href="_static/favicon.ico"/>
@@ -44,18 +53,15 @@
     <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="将 Vim 打造成轻量级的 IDE" href="post_20230723.html" />
     <link rel="prev" title="常用的几个 AWK 命令" href="post_20231221.html" />
-
-    <link rel="stylesheet" href="_static/pydoctheme_dark.css" media="(prefers-color-scheme: dark)" id="pydoctheme_dark_css">
+<link rel="stylesheet" href="_static/pydoctheme_dark.css" media="(prefers-color-scheme: dark)" id="pydoctheme_dark_css">
     <link rel="shortcut icon" type="image/png" href="_static/favicon.svg" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4178487904865687"
+     crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-4178487904865687">
             <script type="text/javascript" src="_static/copybutton.js"></script>
             <script type="text/javascript" src="_static/menu.js"></script>
             <script type="text/javascript" src="_static/search-focus.js"></script>
             <script type="text/javascript" src="_static/themetoggle.js"></script> 
-    <link rel="stylesheet" type="text/css" href="_static/css/custom.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4178487904865687"
-     crossorigin="anonymous"></script>
-    <meta name="google-adsense-account" content="ca-pub-4178487904865687">
-
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -75,7 +81,7 @@
         </label>
         <span class="nav-items-wrapper">
             <a href="https://junsircoding.github.io" class="nav-logo">
-                <img src="_static/favicon.svg" alt="junsircoding"/>
+                <img src="_static/favicon.svg" alt="小骏的博客"/>
             </a>
             <span class="version_switcher_placeholder"></span>
             <form role="search" class="search" action="search.html" method="get">
@@ -123,20 +129,12 @@
     </div>
 </div>
   
-    <div class="related" role="navigation" aria-label="Related">
+
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>导航</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="总索引"
-             accesskey="I">索引</a></li>
-        <li class="right" >
-          <a href="post_20230723.html" title="将 Vim 打造成轻量级的 IDE"
-             accesskey="N">下一页</a> |</li>
-        <li class="right" >
-          <a href="post_20231221.html" title="常用的几个 AWK 命令"
-             accesskey="P">上一页</a> |</li>
-          <li><img src="_static/favicon.svg" alt="junsircoding" style="vertical-align: middle; margin-top: -1px"/></li>
-          <li><a href="https://junsircoding.github.io">junsircoding</a> &#187;</li>
+          <li><img src="_static/favicon.svg" alt="小骏的博客" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://junsircoding.github.io">小骏的博客</a> &#187;</li>
           <li class="switchers">
             <div class="language_switcher_placeholder"></div>
             <div class="version_switcher_placeholder"></div>
@@ -144,7 +142,10 @@
           <li>
               
           </li>
-        <li class="nav-item nav-item-this"><a href="">Matplotlib Axes 的位置参数到底如何设置？</a></li>
+
+            <li class="nav-item nav-item-this"><a href="">Matplotlib Axes 的位置参数到底如何设置？</a></li>
+
+            
                 <li class="right">
                     
 
@@ -154,7 +155,6 @@
           <input type="submit" value="提交" />
         </form>
     </div>
-                     |
                 </li>
             <li class="right">
 <label class="theme-selector-label">
@@ -167,13 +167,16 @@
 </label> |</li>
             
       </ul>
-    </div>    
+    </div>  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<div class="document">
+  <div class="documentwrapper">
+    
+    <div class="bodywrapper">
+
+      <div class="body" role="main">
+      
   <section id="matplotlib-axes">
 <h1>Matplotlib Axes 的位置参数到底如何设置？<a class="headerlink" href="#matplotlib-axes" title="Link to this heading">¶</a></h1>
 <p>为了引出这篇文章想说明的问题，我们首先使用 Matplotlib 绘制一个简单的 pcolormesh 示例：</p>
@@ -329,89 +332,38 @@
 </section>
 
 
-            <div class="clearer"></div>
-          </div>
-        </div>
+        <div class="clearer"></div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+    </div>
+    
+
+  </div>
+  
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/logo.png" alt="Logo of 小骏不抬杠"/>
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
             </a></p>
-  <div>
-    <h4>上一主题</h4>
-    <p class="topless"><a href="post_20231221.html"
-                          title="上一章">常用的几个 AWK 命令</a></p>
-  </div>
-  <div>
-    <h4>下一主题</h4>
-    <p class="topless"><a href="post_20230723.html"
-                          title="下一章">将 Vim 打造成轻量级的 IDE</a></p>
-  </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">快速搜索</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="提交" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>  
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>导航</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="总索引"
-             >索引</a></li>
-        <li class="right" >
-          <a href="post_20230723.html" title="将 Vim 打造成轻量级的 IDE"
-             >下一页</a> |</li>
-        <li class="right" >
-          <a href="post_20231221.html" title="常用的几个 AWK 命令"
-             >上一页</a> |</li>
-          <li><img src="_static/favicon.svg" alt="junsircoding" style="vertical-align: middle; margin-top: -1px"/></li>
-          <li><a href="https://junsircoding.github.io">junsircoding</a> &#187;</li>
-          <li class="switchers">
-            <div class="language_switcher_placeholder"></div>
-            <div class="version_switcher_placeholder"></div>
-          </li>
-          <li>
-              
-          </li>
-        <li class="nav-item nav-item-this"><a href="">Matplotlib Axes 的位置参数到底如何设置？</a></li>
-                <li class="right">
-                    
+  
+  
 
-    <div class="inline-search" role="search">
-        <form class="inline-search" action="search.html" method="get">
-          <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
-          <input type="submit" value="提交" />
-        </form>
-    </div>
-                     |
-                </li>
-            <li class="right">
-<label class="theme-selector-label">
-    Theme
-    <select class="theme-selector" oninput="activateTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-    </select>
-</label> |</li>
-            
-      </ul>
-    </div>  
-<div class="footer">
-    &copy; 
-    版权所有
-     2024, junsircoding.
-    <br />
+    <div class="clearer"></div>
+</div> 
+<div class="related">
+    <ul>
+        <li class="nav-item nav-item-this">
+            &copy; 
+            版权所有
+             2024, junsircoding.
+        </li>
+        &nbsp;&nbsp;&nbsp;
+        <li class="nav-item nav-item-this"><a href="https://github.com/junsircoding" target="_blank">Github</a></li>
+        &nbsp;&nbsp;&nbsp;
+        <li class="nav-item nav-item-this"><a href="mailto:junsircoding@foxmail.com" target="_blank">Email</a></li>
+    </ul>
 </div>
 
   </body>
