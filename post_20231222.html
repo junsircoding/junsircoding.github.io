@@ -60,8 +60,7 @@
     <meta name="google-adsense-account" content="ca-pub-4178487904865687">
             <script type="text/javascript" src="_static/copybutton.js"></script>
             <script type="text/javascript" src="_static/menu.js"></script>
-            <script type="text/javascript" src="_static/search-focus.js"></script>
-            <script type="text/javascript" src="_static/themetoggle.js"></script> 
+            <script type="text/javascript" src="_static/search-focus.js"></script> 
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -99,7 +98,7 @@
             
 <label class="theme-selector-label">
     Theme
-    <select class="theme-selector" oninput="activateTheme(this.value)">
+    <select class="theme-selector" oninput="changeTheme(this.value)">
         <option value="auto" selected>Auto</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>
@@ -159,7 +158,7 @@
             <li class="right">
 <label class="theme-selector-label">
     Theme
-    <select class="theme-selector" oninput="activateTheme(this.value)">
+    <select class="theme-selector" oninput="changeTheme(this.value)">
         <option value="auto" selected>Auto</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>
@@ -307,6 +306,65 @@
 </div>
 </section>
 
+
+
+        <script>
+            function loadUtterances(theme) {
+                const script = document.createElement('script');
+                script.src = 'https://utteranc.es/client.js';
+                script.setAttribute('repo', 'junsircoding/blog_comments');
+                script.setAttribute('label', '✨💬✨');
+                script.setAttribute('issue-term', 'pathname');
+                script.setAttribute('theme', theme === 'dark' ? 'github-dark' : 'github-light');
+                script.setAttribute('crossorigin', 'anonymous');
+                script.async = true;
+                const utterancesContainer = document.getElementById('utterances-container');
+                utterancesContainer.innerHTML = '';
+                utterancesContainer.appendChild(script);
+            }
+        
+            const pydocthemeDark = document.getElementById('pydoctheme_dark_css')
+            const pygmentsDark = document.getElementById('pygments_dark_css')
+            const themeSelectors = document.getElementsByClassName('theme-selector')
+
+            function activateTheme(theme) {
+                localStorage.setItem('currentTheme', theme);
+                [...themeSelectors].forEach(e => e.value = theme)
+                switch (theme) {
+                    case 'light':
+                    pydocthemeDark.media = 'not all'
+                    pygmentsDark.media = 'not all'
+                    break;
+                    case 'dark':
+                    pydocthemeDark.media = 'all'
+                    pygmentsDark.media = 'all'
+                    break;
+                    default:
+                    // auto
+                    pydocthemeDark.media = '(prefers-color-scheme: dark)'
+                    pygmentsDark.media = '(prefers-color-scheme: dark)'
+                }
+            }
+
+            function changeTheme(value) {
+                const theme = value === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : value;
+                document.documentElement.setAttribute('data-theme', theme);
+                activateTheme(value)
+                loadUtterances(theme);
+            }
+            
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize theme on page load
+                const initialTheme = document.documentElement.getAttribute('data-theme') || 'auto';
+                const currentTheme = initialTheme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
+                loadUtterances(currentTheme);
+                activateTheme(initialTheme);
+            });
+        </script>
+        <hr/>
+        <h1>欢迎评论：</h1>
+        <!-- Utterances comments section -->
+        <div id="utterances-container"></div>
 
         <div class="clearer"></div>
       </div>
