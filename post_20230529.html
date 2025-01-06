@@ -36,9 +36,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=08c2cdb3" />
-    <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=b20cc3f5" />
+    <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=773749bf" />
     
     <script src="_static/documentation_options.js?v=91bfbbb6"></script>
@@ -200,7 +200,7 @@
 <p>注：为叙述简便，<strong>等经纬度网格数据</strong> 以下简称 <strong>网格数据</strong> 。数据下载来源点击这里： <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">站点数据</a> （搜索 <code class="docutils literal notranslate"><span class="pre">station</span></code> ）， <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">网格数据</a> 。</p>
 <p><strong>站点数据</strong> 就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用 <em>test_station.csv</em> <a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> 文件。</p>
 <p>通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Pandas</a> 读取：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;test_station.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -240,7 +240,7 @@
 </figcaption>
 </figure>
 <p><strong>网格数据</strong> 通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Xarray</a> 读取，这里我使用 <em>test_grid.nc</em>  <a class="footnote-reference brackets" href="#id15" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;test_grid.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds_nc</span><span class="p">:</span>
     <span class="n">ds_nc</span> <span class="o">=</span> <span class="n">ds_nc</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span><span class="s2">&quot;lon&quot;</span><span class="p">})</span> <span class="c1"># 重命名维度名称</span>
@@ -282,7 +282,7 @@
 <h2>将网格数据插值到另一个坐标、分辨率不同的网格数据上<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
 <p>我们这里再读取一个与 <em>test_grid.nc</em> 坐标不同的一个 grib2
 格式的网格数据，<em>test_grid.grib2</em> <a class="footnote-reference brackets" href="#id16" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
     <span class="s2">&quot;test_grid.grib2&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;cfgrib&quot;</span><span class="p">,</span>
@@ -339,7 +339,7 @@
 <p>如果我们想得到 <em>test_grid.nc</em> 在 <em>test_grid.grib2</em>
 的坐标上对应的值，只要将前者插值到 <em>test_grid.grib2</em>
 上就可以了，代码如下：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;test_grid.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds_nc</span><span class="p">:</span>
     <span class="n">ds_nc</span> <span class="o">=</span> <span class="n">ds_nc</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span><span class="s2">&quot;lon&quot;</span><span class="p">})</span> <span class="c1"># 重命名维度名称</span>
@@ -409,13 +409,13 @@
 <p>这里我写了两种方式，一种是直接 for
 循环填充数据，当数据量较大时速度很慢；一种是用 Pandas
 的内置方法，性能较好。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 
-<span class="k">def</span> <span class="nf">d1_to_d2_low</span><span class="p">(</span><span class="n">df_ori</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">nan_val</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">d1_to_d2_low</span><span class="p">(</span><span class="n">df_ori</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">nan_val</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;将 flatten 后的二维数据转为三维网格数据, 慢速版本</span>
 
 <span class="sd">    Args:</span>
@@ -449,7 +449,7 @@
     <span class="k">return</span> <span class="n">dr</span>
 
 
-<span class="k">def</span> <span class="nf">d1_to_d2_fast</span><span class="p">(</span><span class="n">df_ori</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">is_save</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">d1_to_d2_fast</span><span class="p">(</span><span class="n">df_ori</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">is_save</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;将 flatten 后的二维数据转为三维网格数据, 快速版本</span>
 
 <span class="sd">    Args:</span>
@@ -517,9 +517,9 @@
 <h3>将网格数据插值到站点数据<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
 <p>完成这个步骤的常规方法是逐行读取站点数据，然后将每个站点插值到 <em>test_nc</em>
 上：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;test_grid.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds_nc</span><span class="p">:</span>
     <span class="n">ds_nc</span> <span class="o">=</span> <span class="n">ds_nc</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span><span class="s2">&quot;lon&quot;</span><span class="p">})</span> <span class="c1"># 重命名维度名称</span>
@@ -547,14 +547,14 @@
 </figure>
 <p>可以想见，这种方式性能也比较一般，当站点数据很多是，逐一循环速度很慢。</p>
 <p>我们可以用 <a class="reference external" href="https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py">Scipy</a> 的插值方法一次性得到所有的插值结果：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">scipy.interpolate</span> <span class="k">as</span> <span class="nn">interpolate</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">interpolate</span>
 
 
-<span class="k">def</span> <span class="nf">grid_to_station_low</span><span class="p">(</span><span class="n">station_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grid_dr</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grid_to_station_low</span><span class="p">(</span><span class="n">station_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grid_dr</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;三维格点转插值到二维站点, 慢速</span>
 
 <span class="sd">    Args:</span>
@@ -575,7 +575,7 @@
     <span class="k">return</span> <span class="n">df_nc_interp</span>
 
 
-<span class="k">def</span> <span class="nf">grid_to_station_fast</span><span class="p">(</span><span class="n">station_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grid_dr</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grid_to_station_fast</span><span class="p">(</span><span class="n">station_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grid_dr</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;三维格点转插值到二维站点, 快速</span>
 
 <span class="sd">    Args:</span>
@@ -636,8 +636,8 @@
 <p><strong>这个步骤也不是必须的</strong>，仅用于需要的情况。</p>
 <p><code class="docutils literal notranslate"><span class="pre">Xarray</span></code>
 有方便的方法可以将三维的网格数据直接转为类似站点数据格式的二维数据：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;test_grid.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds_nc</span><span class="p">:</span>
     <span class="n">ds_nc</span> <span class="o">=</span> <span class="n">ds_nc</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span><span class="s2">&quot;lon&quot;</span><span class="p">})</span> <span class="c1"># 重命名维度名称</span>
@@ -664,10 +664,10 @@
 </pre></div>
 </div>
 <p>这里直接给出代码：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">wradlib.ipol</span> <span class="k">as</span> <span class="nn">ipol</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">wradlib.ipol</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ipol</span>
 
 
 <span class="c1"># 目标网格精度</span>

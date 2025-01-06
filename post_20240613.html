@@ -36,9 +36,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=08c2cdb3" />
-    <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=b20cc3f5" />
+    <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=773749bf" />
     
     <script src="_static/documentation_options.js?v=91bfbbb6"></script>
@@ -273,7 +273,7 @@
 <p>TCP 协议工作在传输层。根据控制变量原则，假设物理层、数据链路层、网络层都是没有问题的。会话层、表示层、应用层的信息我们尽量简化。在本地机器上用 Python 写一个 TCP 服务端和 TCP 客户端来实现一个 TCP 通信过程，然后用 <a class="reference external" href="https://www.wireshark.org/">Wireshark</a> 抓包来实际看一下 TCP 协议的实际工作过程。</p>
 <p>TCP 客户端的代码：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
 <span class="linenos"> 3</span><span class="c1"># 创建一个 socket 应用，使用 IPV4 和 TCP 协议</span>
 <span class="linenos"> 4</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
 <span class="linenos"> 5</span><span class="c1"># 绑定 ip 地址为本地回环地址，5201 端口</span>
@@ -295,9 +295,9 @@
 </div>
 <p>TCP 服务端的代码：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">time</span>
-<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">socket</span>
-<span class="linenos"> 4</span><span class="kn">import</span> <span class="nn">threading</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+<span class="linenos"> 4</span><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 <span class="linenos"> 5</span><span class="c1"># 创建一个 socket 应用，同样使用 IPV4 和 TCP 协议</span>
 <span class="linenos"> 6</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
 <span class="linenos"> 7</span><span class="c1"># 绑定 ip 地址为本地回环地址，5200 端口</span>
@@ -305,7 +305,7 @@
 <span class="linenos"> 9</span><span class="c1"># 开始监听请求，最多同时接受 5 个请求</span>
 <span class="linenos">10</span><span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="linenos">11</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Server is running ...&quot;</span><span class="p">)</span>
-<span class="linenos">12</span><span class="k">def</span> <span class="nf">tcplink</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+<span class="linenos">12</span><span class="k">def</span><span class="w"> </span><span class="nf">tcplink</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
 <span class="linenos">13</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Get a new connection, ip:</span><span class="si">%s</span><span class="s2">, port:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">addr</span><span class="p">)</span>
 <span class="linenos">14</span>    <span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;Hello!&quot;</span><span class="p">)</span>
 <span class="linenos">15</span>    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
