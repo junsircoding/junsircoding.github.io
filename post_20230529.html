@@ -37,7 +37,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=08c2cdb3" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=23252803" />
     <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=773749bf" />
     
@@ -197,7 +197,7 @@
   <section id="id1">
 <h1>气象数据的各种插值问题<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>到目前为止，我接触到的气象相关数据有 <strong>等经纬度网格数据</strong> 和 <strong>站点数据</strong>。</p>
-<p>注：为叙述简便，<strong>等经纬度网格数据</strong> 以下简称 <strong>网格数据</strong> 。数据下载来源点击这里： <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">站点数据</a> （搜索 <code class="docutils literal notranslate"><span class="pre">station</span></code> ）， <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">网格数据</a> 。</p>
+<p>注：为叙述简便，<strong>等经纬度网格数据</strong> 以下简称 <strong>网格数据</strong> 。示例数据可以从欧洲哥白尼气候数据平台找到： <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">站点数据</a> （搜索 <code class="docutils literal notranslate"><span class="pre">station</span></code> ）， <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">网格数据</a> 。</p>
 <p><strong>站点数据</strong> 就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用 <em>test_station.csv</em> <a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> 文件。</p>
 <p>通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Pandas</a> 读取：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -406,9 +406,8 @@
 <h2>将网格数据插值到站点数据上<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
 <section id="id9">
 <h3>将二维的站点数据转为三维的网格数据<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
-<p>这里我写了两种方式，一种是直接 for
-循环填充数据，当数据量较大时速度很慢；一种是用 Pandas
-的内置方法，性能较好。</p>
+<p>这里我写了两种方式，一种是直接 for 循环填充数据，当数据量较大时速度很慢；
+一种是用 Pandas 的内置方法，性能较好。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -643,64 +642,143 @@
     <span class="n">ds_nc</span> <span class="o">=</span> <span class="n">ds_nc</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span><span class="s2">&quot;lon&quot;</span><span class="p">})</span> <span class="c1"># 重命名维度名称</span>
     <span class="n">dr_nc</span> <span class="o">=</span> <span class="n">ds_nc</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="s2">&quot;t&quot;</span><span class="p">]</span> <span class="c1"># 用索引的方式选取首个 time 维度, 选取变量 t</span>
 
-<span class="n">dr_stack</span> <span class="o">=</span> <span class="n">dr</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">))</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span>
+<span class="n">dr_stack</span> <span class="o">=</span> <span class="n">dr_nc</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;lat&quot;</span><span class="p">:</span><span class="n">dr_stack</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
     <span class="s2">&quot;lon&quot;</span><span class="p">:</span><span class="n">dr_stack</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
     <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">dr_stack</span><span class="o">.</span><span class="n">values</span>
-<span class="p">})</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;d2_to_d1.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="c1"># 或者</span>
+<span class="c1"># df = dr_nc.to_dataframe(name=&quot;value&quot;).reset_index()</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;d2_to_d1.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="id12">
 <h2>将站点数据插值到网格数据上（反距离权重插值）<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h2>
-<p>还会有一种需求，是将站点数据插值到指定精度的网格上。 原本为 NAN
-的数据要运用反距离权重插值预测出对应的值，而反距离权重插值简单讲就是要预测的点的值取决于距离它最近的点。
-与它距离越近，对它的影响就越大。</p>
-<p>反距离权重插值需要安装 <a class="reference external" href="https://docs.wradlib.org/en/latest/generated/wradlib.ipol.Idw.html#wradlib.ipol.Idw">wradlib</a> 库，用 Conda 可以直接安装：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>wradlib<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>-y
-</pre></div>
-</div>
-<p>这里直接给出代码：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<p>还会有一种需求，是将站点数据插值到指定精度的网格上。
+原本为 <code class="docutils literal notranslate"><span class="pre">np.nan</span></code> 的数据要运用反距离权重插值预测出对应的值。
+反距离权重插值的原理，简单讲就是被预测的值由它附近的点决定，与它距离越近的点权重越大，对它的影响就越大。</p>
+<p>这里整理了国家气象信息中心开发的 <a class="reference external" href="https://github.com/nmcdev/meteva/blob/master/meteva/base/fun/interpolating.py">meteva</a> 库中提供的代码：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">wradlib.ipol</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ipol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">cKDTree</span>
 
 
-<span class="c1"># 目标网格精度</span>
-<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span>
+<span class="c1"># 地球半径</span>
+<span class="n">ER</span> <span class="o">=</span> <span class="mf">6371.229</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">lon_lat_to_cartesian</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    经度纬度信息转换为直角坐标系</span>
+
+<span class="sd">    calculates lon, lat coordinates of a point on a sphere with</span>
+<span class="sd">    radius R</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lon_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
+    <span class="n">lat_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat_r</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lon_r</span><span class="p">)</span>
+    <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat_r</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lon_r</span><span class="p">)</span>
+    <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat_r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">xyz</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">grid_data</span><span class="p">(</span><span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_len</span><span class="p">,</span> <span class="n">lon_res</span><span class="p">,</span> <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_len</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    返回一个DataArray，其维度信息和grid描述一致，数组里面的值为0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 通过起始经纬度和格距计算经纬度格点数</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lon_len</span><span class="p">)</span> <span class="o">*</span> <span class="n">lon_res</span> <span class="o">+</span> <span class="n">lon_min</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lat_len</span><span class="p">)</span> <span class="o">*</span> <span class="n">lat_res</span> <span class="o">+</span> <span class="n">lat_min</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">lat_len</span><span class="p">,</span> <span class="n">lon_len</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">lat_len</span><span class="p">,</span> <span class="n">lon_len</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="n">lon</span><span class="p">},</span>
+        <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">grd_info</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">vres</span><span class="p">):</span>
+    <span class="n">vlen</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">vmax</span> <span class="o">-</span> <span class="n">vmin</span><span class="p">)</span> <span class="o">/</span> <span class="n">vres</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">vlen</span><span class="p">)</span> <span class="o">-</span> <span class="n">vlen</span><span class="p">)</span><span class="o">/</span><span class="n">vlen</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">):</span>
+        <span class="n">vlen</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">vlen</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vlen</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">vlen</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vlen</span><span class="p">,</span> <span class="n">vres</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">interp_sg_idw</span><span class="p">(</span><span class="n">sta</span><span class="p">,</span> <span class="n">lon_info</span><span class="p">,</span> <span class="n">lat_info</span><span class="p">,</span> <span class="n">effectR</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">nearNum</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">decrease</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;站点到格点IDW插值</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sta(pd.Dataframe): 站点数据, lat, lon, data</span>
+<span class="sd">        lon_info(tuple): 目标网格的经度信息, (起始经度, 结束经度, 分辨率)</span>
+<span class="sd">        lat_info(tuple): 目标网格的纬度信息, (起始纬度, 结束纬度, 分辨率)</span>
+<span class="sd">        effectR(float): 最大的插值半径, 单位km</span>
+<span class="sd">        nearNum(int): 插值选择的临近站点的个数, nearNum =1时即为临近点插值</span>
+<span class="sd">        decrease(int): 站点权重随距离幂次衰减，即 站点权重 = 1 /(距离 ** decrease), 其中decrease是幂函数的指数部分参数</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (xr.DataArray): 插值后的网格</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_len</span><span class="p">,</span> <span class="n">lon_res</span> <span class="o">=</span> <span class="n">grd_info</span><span class="p">(</span><span class="o">*</span><span class="n">lon_info</span><span class="p">)</span>
+    <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_len</span><span class="p">,</span> <span class="n">lat_res</span> <span class="o">=</span> <span class="n">grd_info</span><span class="p">(</span><span class="o">*</span><span class="n">lat_info</span><span class="p">)</span>
+    <span class="n">xyz_sta</span> <span class="o">=</span> <span class="n">lon_lat_to_cartesian</span><span class="p">(</span><span class="n">sta</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">sta</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">ER</span><span class="p">)</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lon_len</span><span class="p">)</span> <span class="o">*</span> <span class="n">lon_res</span> <span class="o">+</span> <span class="n">lon_min</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lat_len</span><span class="p">)</span> <span class="o">*</span> <span class="n">lat_res</span> <span class="o">+</span> <span class="n">lat_min</span>
+    <span class="n">grid_lon</span><span class="p">,</span> <span class="n">grid_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+    <span class="n">xyz_grid</span> <span class="o">=</span> <span class="n">lon_lat_to_cartesian</span><span class="p">(</span><span class="n">grid_lon</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">grid_lat</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">R</span><span class="o">=</span><span class="n">ER</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">xyz_sta</span><span class="p">)</span>
+    <span class="c1"># d,inds 分别是站点到格点的距离和id</span>
+    <span class="k">if</span> <span class="n">nearNum</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sta</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+        <span class="n">nearNum</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sta</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">inds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">xyz_grid</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">nearNum</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nearNum</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">+=</span> <span class="mf">1e-6</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">d</span> <span class="o">**</span> <span class="n">decrease</span>
+        <span class="n">input_dat</span> <span class="o">=</span> <span class="n">sta</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">dat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">input_dat</span><span class="p">[</span><span class="n">inds</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">bg</span> <span class="o">=</span> <span class="n">grid_data</span><span class="p">(</span><span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_len</span><span class="p">,</span> <span class="n">lon_res</span><span class="p">,</span> <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_len</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">)</span>
+        <span class="n">bg_dat</span> <span class="o">=</span> <span class="n">bg</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">dat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">d</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">effectR</span><span class="p">,</span> <span class="n">bg_dat</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">input_dat</span> <span class="o">=</span> <span class="n">sta</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">dat</span> <span class="o">=</span> <span class="n">input_dat</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
+        <span class="n">bg</span> <span class="o">=</span> <span class="n">grid_data</span><span class="p">(</span><span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_len</span><span class="p">,</span> <span class="n">lon_res</span><span class="p">,</span> <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_len</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">)</span>
+        <span class="n">bg_dat</span> <span class="o">=</span> <span class="n">bg</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">dat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">d</span><span class="p">[:]</span> <span class="o">&gt;</span> <span class="n">effectR</span><span class="p">,</span> <span class="n">bg_dat</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span>
+    <span class="n">dat</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">grd</span> <span class="o">=</span> <span class="n">grid_data</span><span class="p">(</span><span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_len</span><span class="p">,</span> <span class="n">lon_res</span><span class="p">,</span> <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_len</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">grd</span>
+
+
 <span class="c1"># 站点数据</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;test_station.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>\
     <span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">)</span>\
         <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;total_column_water_vapour&quot;</span><span class="p">]]</span>
 <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
-<span class="n">data_lon</span><span class="p">,</span> <span class="n">data_lat</span><span class="p">,</span> <span class="n">data_val</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-<span class="n">vals</span> <span class="o">=</span> <span class="n">data_val</span><span class="o">.</span><span class="n">values</span>
-<span class="n">src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">data_lon</span><span class="p">,</span> <span class="n">data_lat</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-<span class="c1"># 生成目标经纬度坐标</span>
-<span class="n">range_lon</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">data_lon</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="n">data_lon</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">20</span><span class="p">,</span> <span class="n">nx</span><span class="p">)]</span>
-<span class="n">range_lat</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">data_lat</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="n">data_lat</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">20</span><span class="p">,</span> <span class="n">ny</span><span class="p">)]</span>
-
-<span class="c1"># 生成目标经纬度网格</span>
-<span class="n">lon_lst</span><span class="p">,</span> <span class="n">lat_lst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">range_lon</span><span class="p">,</span> <span class="n">range_lat</span><span class="p">)</span>
-<span class="n">trg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">lon_lst</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">lat_lst</span><span class="o">.</span><span class="n">ravel</span><span class="p">()))</span><span class="o">.</span><span class="n">T</span>
-<span class="c1"># IDW 插值</span>
-<span class="n">idw</span> <span class="o">=</span> <span class="n">ipol</span><span class="o">.</span><span class="n">Idw</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">trg</span><span class="p">)</span>
-<span class="n">interpolated</span> <span class="o">=</span> <span class="n">idw</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">interpolated</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">range_lon</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">range_lat</span><span class="p">)))</span>
-<span class="n">nc_interp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">),</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span><span class="n">range_lat</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span><span class="n">range_lon</span><span class="p">})</span>
+<span class="n">nc_interp</span> <span class="o">=</span> <span class="n">interp_sg_idw</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">89</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">effectR</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
 <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">nc_interp</span><span class="p">})</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;station_to_grid.nc&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>插值后的 NC 数据预览如下，可以和上面的站点图像做对比：</p>
 <figure class="align-default" id="id26">
-<img alt="格点数据插值到站点，快速" src="_images/07.png" />
+<img alt="格点数据插值到站点" src="_images/07.png" />
 <figcaption>
-<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id26" title="Link to this image">¶</a></p>
+<p><span class="caption-text">格点数据插值到站点</span><a class="headerlink" href="#id26" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
