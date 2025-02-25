@@ -78,6 +78,14 @@ body {
         margin: 0 auto;       
         overflow-wrap: break-word; 
     }
+    /* 左边栏 */
+    div.sphinxsidebar {
+        width: 25%; 
+    }
+    /* 文章部分 */
+    div.bodywrapper {
+        margin: 0 0 0 27%;
+    }
     /* 顶部和底部导航栏 */
     div.related {
         width: 70%;      
