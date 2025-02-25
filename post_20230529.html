@@ -196,7 +196,7 @@
                 
   <section id="id1">
 <h1>气象数据的各种插值问题<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
-<p>到目前为止，我接触到的气象相关数据有 <strong>等经纬度网格数据</strong> 和 <strong>站点数据</strong>。</p>
+<p>到目前为止，我接触过的气象相关数据有 <strong>等经纬度网格数据</strong> 和 <strong>站点数据</strong>。</p>
 <p>注：为叙述简便，<strong>等经纬度网格数据</strong> 以下简称 <strong>网格数据</strong> 。示例数据可以从欧洲哥白尼气候数据平台找到： <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">站点数据</a> （搜索 <code class="docutils literal notranslate"><span class="pre">station</span></code> ）， <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">网格数据</a> 。</p>
 <p><strong>站点数据</strong> 就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用 <em>test_station.csv</em> <a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> 文件。</p>
 <p>通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Pandas</a> 读取：</p>
@@ -774,11 +774,17 @@
 <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">nc_interp</span><span class="p">})</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;station_to_grid.nc&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>插值后的 NC 数据预览如下，可以和上面的站点图像做对比：</p>
+<p>插值后的 NC 数据预览如下，可以和刚才的站点图像做对比：</p>
 <figure class="align-default" id="id26">
-<img alt="格点数据插值到站点" src="_images/07.png" />
+<img alt="站点图像" src="_images/04.png" />
 <figcaption>
-<p><span class="caption-text">格点数据插值到站点</span><a class="headerlink" href="#id26" title="Link to this image">¶</a></p>
+<p><span class="caption-text">站点图像</span><a class="headerlink" href="#id26" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id27">
+<img alt="站点IDW插值到网格" src="_images/07.png" />
+<figcaption>
+<p><span class="caption-text">站点IDW插值到网格</span><a class="headerlink" href="#id27" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
