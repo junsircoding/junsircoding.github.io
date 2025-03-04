@@ -1,252 +1,301 @@
-气象数据的各种插值问题
-========================
+处理气象数据常用的插值方法
+===========================
 
-到目前为止，我接触过的气象相关数据有 **等经纬度网格数据** 和 **站点数据**。
+气象业务当中，比较常见的数据形式有 **站点数据** 和 **网格数据**  。
 
-注：为叙述简便，**等经纬度网格数据** 以下简称 **网格数据** 。示例数据可以从欧洲哥白尼气候数据平台找到： `站点数据`_ （搜索 ``station`` ）， `网格数据`_ 。
+站点数据
+---------------
 
-.. _站点数据: https://cds.climate.copernicus.eu/#!/search?text=ERA5&type=dataset
+**站点数据** 就是个二维数据表，一般是 CSV、TXT、或者 Excel 等格式，这里我们用一个 CSV 数据（ *UPA_obs.csv* [1]_ ）举例。
 
-.. _网格数据: https://cds.climate.copernicus.eu/#!/search?text=ERA5&type=dataset
-
-
-**站点数据** 就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用 *test_station.csv* [1]_ 文件。
-
-通常用 `Pandas`_ 读取：
+用 `Pandas`_ 读取：
 
 .. _Pandas: https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
-   import pandas as pd
+    import pandas as pd
 
-   df = pd.read_csv("test_station.csv", sep=",", encoding="utf-8", comment="#")
-   print(df.columns)
-   df = df[["latitude", "longitude", "total_column_water_vapour"]]
-   df.columns = ["lat", "lon", "value"]
-   print(df)
+    df = pd.read_csv("UPA_obs.csv", sep=",", encoding="utf-8")
+    df = df[["latitude", "longitude", "temperature"]]
+    df = df.dropna(subset=["latitude", "longitude"], how="any")
+    df.index = range(len(df))
+    df["temperature"] = df["temperature"].astype(float)
+    df = df.rename(columns={"latitude": "lat", "longitude": "lon", "temperature": "value"})
+    df
 
 结构就像这样：
 
 ::
 
-   Index(['report_id', 'station_name', 'city', 'organisation_name', 'latitude',
-          'longitude', 'sensor_altitude', 'height_of_station_above_sea_level',
-          'start_date', 'report_timestamp', 'total_column_water_vapour'],
-         dtype='object')
+            lat         lon  value
+    0    51.466667  -90.200000  -43.5
+    1    51.466667  -90.200000  -53.9
+    2    53.533333 -114.083333  -28.3
+    3    53.533333 -114.083333  -53.5
+    4    53.750000  -73.666667  -41.7
+    ..         ...         ...    ...
+    177  34.733333 -120.583333  -42.3
+    178  40.900000 -117.800000  -16.8
+    179  40.900000 -117.800000  -44.2
+    180  46.466667  -84.366667  -39.1
+    181  46.466667  -84.366667  -48.1
 
-               lat         lon  value
-   0     49.186825  -68.263330  12.88
-   1     51.192345   14.521734  30.69
-   2     47.907738    7.632879  29.42
-   3     48.380493   -4.496594  15.99
-   4     50.798060    4.358563  19.01
-   ...         ...         ...    ...
-   9811  60.750510 -135.222100  14.09
-   9812  52.236870 -122.167810  19.11
-   9813  34.226120 -118.055916  13.35
-   9814  62.481323 -114.480840  15.52
-   9815  62.480892 -114.480705  15.57
+    [182 rows x 3 columns]
 
-   [9816 rows x 3 columns]
+其中 ``lat`` 表示纬度， ``lon`` 表示经度， ``value`` 表示站点观测值。
 
-其中 ``lat`` 表示纬度， ``lon`` 表示经度， ``val`` 表示站点观测值。
-
-这个数据用 `VSCode`_ 简单预览是这样：
-
-.. _VSCode: https://code.visualstudio.com/
+把这个数据在地图上以打点的形式画出来，点的颜色对应数值大小：
 
 .. figure:: /_images/20230529/00.png
-   :alt: 站点数据预览
+   :alt: 站点数据打点
 
-   站点数据预览
+可以看到，这个数据内容是北美的气温数据，每个点的颜色代表了温度的大小，温度单位是摄氏度（℃）。
+我们把温度的显示范围设定在了 -60 ~ -30 ℃ 之间，以便让各个颜色区域都有值。
+
+画图脚本如下：
+
+.. code-block:: python
+    :linenos:
+
+    # -*- coding: utf-8 -*-
+
+    import numpy as np
+    import pandas as pd
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+
+    mpl.rcParams['font.sans-serif'] = ['Microsoft YaHei']
+    mpl.rcParams['axes.unicode_minus'] = False
+
+    # 读取数据
+    df = pd.read_csv("UPA_obs.csv", sep=",", encoding="utf-8")
+    df = df[["latitude", "longitude", "temperature"]]
+    df = df.dropna(subset=["latitude", "longitude"], how="any")
+    df.index = range(len(df))
+    df["temperature"] = df["temperature"].astype(float)
+    df = df.rename(columns={"latitude": "lat", "longitude": "lon", "temperature": "value"})
+    # 计算经纬度范围
+    lon_min, lon_max, lat_min, lat_max = df.lon.min(), df.lon.max(), df.lat.min(), df.lat.max()
+    lon_buffer = abs(lon_max - lon_min) * 0.1
+    lat_buffer = abs(lat_max - lat_min) * 0.1
+    map_extent = [lon_min - lon_buffer, lon_max + lon_buffer, lat_min - lat_buffer, lat_max + lat_buffer]
+
+    # 绘图
+    proj = ccrs.PlateCarree()
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111, projection=proj)
+
+    cmap = mpl.colormaps.get_cmap('jet')
+    img = ax.scatter(df.lon, df.lat, s=200, c=df.value, marker='.', cmap=cmap, transform=proj, vmax=-30, vmin=-60)
+
+    # 设置绘图经纬度区域
+    ax.set_extent(map_extent, crs=proj) # type: ignore
+
+    # 添加海岸线、国界
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), edgecolor='black', linewidth=0.5)
+    ax.add_feature(cfeature.BORDERS.with_scale('50m'), linestyle='-', edgecolor='black', linewidth=0.5)
+
+    # 添加经纬度坐标
+    ax.set_yticks(np.arange(map_extent[2], map_extent[3], 10).round(2), crs=proj)
+    ax.set_xticks(np.arange(map_extent[0], map_extent[1], 10).round(2), crs=proj)
+    lon_formatter = LongitudeFormatter(degree_symbol='', dateline_direction_label=True)
+    lat_formatter = LatitudeFormatter(degree_symbol='')
+    ax.yaxis.set_major_formatter(lat_formatter)
+    ax.xaxis.set_major_formatter(lon_formatter)
+
+    # 获取画布位置大小参数
+    l, b, w, h = ax.get_position().bounds
+
+    # 添加色带
+    cax = plt.axes([l, b - h * 0.06 - 0, w, h * 0.02])  # type: ignore
+    cb = fig.colorbar(img, cax=cax, ticks=None, orientation='horizontal', extend="both")
+    cb.ax.tick_params(labelsize=15)
+    cb.set_label(r"$^{\circ}$C", size=20)
+
+    # 标题
+    title = 'Station Temperature Distribution'
+    ax.set_title(title, fontsize=18, loc="left")
+
+    # 保存图片
+    fig.savefig('test_plot.png', dpi=200, bbox_inches='tight')
+    plt.cla()
+    plt.close(fig)
+    plt.close("all")
 
 
-**网格数据** 通常用 `Xarray`_ 读取，这里我使用 *test_grid.nc*  [2]_：
+网格数据
+----------------------
+
+**网格数据** 通常用 `Xarray`_ 库读取，这里我们使用 *GFS_test.nc*  [2]_：
 
 .. _Xarray: https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
-   import xarray as xr
+    with xr.open_dataset("GFS_test.nc") as ds:
+        ds = ds.assign_coords(lon=((ds.lon + 180) % 360 - 180)) # 将经度范围从[0, 360]转换为[-180, 180]
+        dr = ds["Temperature_isobaric"]
+        dr = dr.isel(time=0) # first time step
+        dr = dr.sel(isobaric3=85000) # 850 hPa
+        dr = dr - 273.15 # K to °C
 
-   with xr.open_dataset("test_grid.nc") as ds_nc:
-       ds_nc = ds_nc.rename({"latitude":"lat", "longitude":"lon"}) # 重命名维度名称
-       dr_nc = ds_nc.isel(time=0)["t"] # 用索引的方式选取首个 time 维度, 选取变量 t
-       print(dr_nc)
 
 结构就像这样：
 
 ::
 
-   <xarray.DataArray 't' (lat: 721, lon: 1440)>
-   [1038240 values with dtype=float32]
-   Coordinates:
-     * lon      (lon) float32 0.0 0.25 0.5 0.75 1.0 ... 359.0 359.2 359.5 359.8
-     * lat      (lat) float32 90.0 89.75 89.5 89.25 ... -89.25 -89.5 -89.75 -90.0
-       time     datetime64[ns] 2020-07-01
-   Attributes:
-       units:          K
-       long_name:      Temperature
-       standard_name:  air_temperature
+    <xarray.DataArray 'Temperature_isobaric' (lat: 46, lon: 101)>
+    [4646 values with dtype=float32]
+    Coordinates:
+        time       datetime64[ns] 2010-10-26T12:00:00
+        isobaric3  float32 8.5e+04
+      * lat        (lat) float32 65.0 64.0 63.0 62.0 61.0 ... 23.0 22.0 21.0 20.0
+      * lon        (lon) float32 -150.0 -149.0 -148.0 -147.0 ... -52.0 -51.0 -50.0
+    Attributes:
+        long_name:  Temperature @ Isobaric surface
+        units:      K
 
-其中， ``lat`` 和 ``lon`` 是这个数据的两个维度，即纬度和经度， ``Coordinates`` 展示了这两个维度对应的坐标信息， 
-``Attributes`` 是一些属性信息，是个 ``Dict`` 。
+其中， ``lat`` 和 ``lon`` 是这个数据的两个维度，即纬度和经度， ``Coordinates`` 展示了这各个维度对应的坐标信息， 
+``Attributes`` 是一些属性信息，是个 ``Dict`` 。可以看到这个气温数据的单位是开尔文（K）。
 
-这个数据用 `Panoply`_ 简单预览是这样：
-
-.. _Panoply: https://www.giss.nasa.gov/tools/panoply/download/
-
+把这个数据用网格填色的方式画在地图上：
 
 .. figure:: /_images/20230529/01.png
    :alt: 格点数据预览
 
-   格点数据预览
+画图脚本如下：
+
+.. code-block:: python
+    :linenos:
+
+    # -*- coding: utf-8 -*-
+
+    import numpy as np
+    import pandas as pd
+    import xarray as xr
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+
+    mpl.rcParams['font.sans-serif'] = ['Microsoft YaHei']
+    mpl.rcParams['axes.unicode_minus'] = False
+
+    # 读取数据
+    with xr.open_dataset("GFS_test.nc") as ds:
+        ds = ds.assign_coords(lon=((ds.lon + 180) % 360 - 180)) # 将经度范围从[0, 360]转换为[-180, 180]
+        dr = ds["Temperature_isobaric"]
+        dr = dr.isel(time=0) # first time step
+        dr = dr.sel(isobaric3=85000) # 850 hPa
+        dr = dr - 273.15 # K to °C
+
+    # 计算经纬度范围
+    lon_min, lon_max, lat_min, lat_max = dr.lon.min(), dr.lon.max(), dr.lat.min(), dr.lat.max()
+    lon_buffer = abs(lon_max - lon_min) * 0.0
+    lat_buffer = abs(lat_max - lat_min) * 0.0
+    map_extent = [lon_min - lon_buffer, lon_max + lon_buffer, lat_min - lat_buffer, lat_max + lat_buffer]
+
+    # 绘图
+    proj = ccrs.PlateCarree()
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111, projection=proj)
+
+    cmap = mpl.colormaps.get_cmap('jet')
+    LON, LAT = np.meshgrid(dr.lon, dr.lat)
+    img = ax.pcolormesh(LON, LAT, dr, cmap=cmap, transform=proj, alpha=1)
+
+    # 设置绘图经纬度区域
+    ax.set_extent(map_extent, crs=proj) # type: ignore
+
+    # 添加海岸线、国界
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), edgecolor='black', linewidth=0.5)
+    ax.add_feature(cfeature.BORDERS.with_scale('50m'), linestyle='-', edgecolor='black', linewidth=0.5)
+
+    # 添加经纬度坐标
+    ax.set_yticks(np.arange(map_extent[2], map_extent[3], 10).round(2), crs=proj)
+    ax.set_xticks(np.arange(map_extent[0], map_extent[1], 10).round(2), crs=proj)
+    lon_formatter = LongitudeFormatter(degree_symbol='', dateline_direction_label=True)
+    lat_formatter = LatitudeFormatter(degree_symbol='')
+    ax.yaxis.set_major_formatter(lat_formatter)
+    ax.xaxis.set_major_formatter(lon_formatter)
+
+    # 获取画布位置大小参数
+    l, b, w, h = ax.get_position().bounds
+
+    # 添加色带
+    cax = plt.axes([l, b - h * 0.085, w, h * 0.03])  # type: ignore
+    cb = fig.colorbar(img, cax=cax, ticks=None, orientation='horizontal', extend="both")
+    cb.ax.tick_params(labelsize=15)
+    cb.set_label(r"$^{\circ}$C", size=20)
+
+    # 标题
+    title = 'Grid Temperature Distribution'
+    ax.set_title(title, fontsize=18, loc="left")
+
+    # 保存图片
+    fig.savefig('test_plot.png', dpi=200, bbox_inches='tight')
+    plt.cla()
+    plt.close(fig)
+    plt.close("all")
 
 
 在实际使用过程中，经常会有这样的需求：
 
--  将\ **网格数据**\ 插值到另一个坐标、分辨率不同的\ **网格数据**\ 上
--  将\ **网格数据**\ 插值到\ **站点数据**\ 上
--  将\ **站点数据**\ 插值到\ **网格数据**\ 上
+-  将\ **网格数据**\ 插值到另一个分辨率不同的\ **网格坐标**\ 上
+-  将\ **网格数据**\ 插值到\ **站点数据**\ 的坐标上
+-  将\ **站点数据**\ 插值到\ **网格数据**\ 的坐标上
 -  …
 
 下面逐一说明。
 
 
-将网格数据插值到另一个坐标、分辨率不同的网格数据上
+将网格数据插值到另一个坐标、分辨率不同的网格坐标上
 ---------------------------------------------------------------
 
-我们这里再读取一个与 *test_grid.nc* 坐标不同的一个 grib2
-格式的网格数据，\ *test_grid.grib2*\  [3]_：
+我们上面用到的 *GFS_test.nc* 的经纬度坐标 shape 为 ``(lon: 101, lat: 46)`` ，
+lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨率是 1 度。
+现在我们要将这个数据插值到一个分辨率是 0.1 度的网格坐标上，范围不变。
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
-   import xarray as xr
+    with xr.open_dataset("GFS_test.nc") as ds:
+        ds = ds.assign_coords(lon=((ds.lon + 180) % 360 - 180)) # 将经度范围从[0, 360]转换为[-180, 180]
+        dr = ds["Temperature_isobaric"]
+        dr = dr.isel(time=0) # first time step
+        dr = dr.sel(isobaric3=85000) # 850 hPa
+        dr = dr - 273.15 # K to °C
 
-   with xr.open_dataset(
-       "test_grid.grib2", engine="cfgrib", 
-       backend_kwargs={
-           "indexpath":"",
-           'filter_by_keys':{
-               'typeOfLevel':'surface',
-               'shortName':'t',
-               'level':0
-           }
-       }
-   ) as ds_grib2:
-       ds_grib2 = ds_grib2.rename({"latitude":"lat", "longitude":"lon"}) # 重命名维度名称
-       dr_grib2 = ds_grib2["t"]
-       print(dr_grib2)
-
-结构就像这样：
-
-::
-
-   <xarray.DataArray 't' (lat: 181, lon: 360)>
-   [65160 values with dtype=float32]
-   Coordinates:
-       time        datetime64[ns] ...
-       step        timedelta64[ns] ...
-       surface     float64 ...
-     * lat         (lat) float64 90.0 89.0 88.0 87.0 ... -87.0 -88.0 -89.0 -90.0
-     * lon         (lon) float64 0.0 1.0 2.0 3.0 4.0 ... 356.0 357.0 358.0 359.0
-       valid_time  datetime64[ns] ...
-   Attributes: (12/29)
-       GRIB_paramId:                             130
-       GRIB_dataType:                            fc
-       GRIB_numberOfPoints:                      65160
-       GRIB_typeOfLevel:                         surface
-       GRIB_stepUnits:                           1
-       GRIB_stepType:                            instant
-       ...                                       ...
-       GRIB_name:                                Temperature
-       GRIB_shortName:                           t
-       GRIB_units:                               K
-       long_name:                                Temperature
-       units:                                    K
-       standard_name:                            air_temperature
-
-用 Panoply 预览是这样：
-
-.. figure:: /_images/20230529/02.png
-   :alt: grib2 格式的格点数据预览
-
-   grib2 格式的格点数据预览
-
-可以看到 *test_grid.nc* 的经纬度坐标为
-``(lon: 1440, lat: 721)``\ ，\ *test_grid.grib2* 的经纬度坐标为
-``(lat: 181, lon: 360)``\ ，是不一样的。
-
-如果我们想得到 *test_grid.nc* 在 *test_grid.grib2*
-的坐标上对应的值，只要将前者插值到 *test_grid.grib2*
-上就可以了，代码如下：
-
-.. code:: python
-
-   import xarray as xr
-
-   with xr.open_dataset("test_grid.nc") as ds_nc:
-       ds_nc = ds_nc.rename({"latitude":"lat", "longitude":"lon"}) # 重命名维度名称
-       dr_nc = ds_nc.isel(time=0)["t"] # 用索引的方式选取首个 time 维度, 选取变量 t
-
-   with xr.open_dataset(
-       "test_grid.grib2", engine="cfgrib", 
-       backend_kwargs={
-           "indexpath":"",
-           'filter_by_keys':{
-               'typeOfLevel':'surface',
-               'shortName':'t',
-               'level':0
-           }
-       }
-   ) as ds_grib2:
-       ds_grib2 = ds_grib2.rename({"latitude":"lat", "longitude":"lon"}) # 重命名维度名称
-       dr_grib2 = ds_grib2["t"]
-
-   dr_nc_interp = dr_nc.interp(lat=dr_grib2.lat, lon=dr_grib2.lon) # 将 nc 插值到 grib2 的坐标上
-
-   print(dr_nc_interp)
-   dr_nc_interp.to_netcdf("test_grid_interp.nc") # 将插值后的数据导出成 nc
+    # 分辨率为 0.1 度的网格
+    new_lat = np.arange(dr.lat.min(), dr.lat.max()+0.1, 0.1)
+    new_lon = np.arange(dr.lon.min(), dr.lon.max()+0.1, 0.1)
+    dr = dr.interp(lat=new_lat, lon=new_lon) # 插值
+    dr.to_netcdf("GFS_test_850hPa_Temperature_0.1deg.nc")
 
 插值后的数据预览如下：
 
 ::
 
-   <xarray.DataArray 't' (lat: 181, lon: 360)>
-   array([[254.54649353, 254.54649353, 254.54649353, ..., 254.54649353,
-           254.54649353, 254.54649353],
-          [252.3180542 , 252.36672974, 252.41772461, ..., 252.17819214,
-           252.2230072 , 252.2701416 ],
-          [249.42973328, 249.46296692, 249.50082397, ..., 249.34706116,
-           249.3717804 , 249.39805603],
-          ...,
-          [234.89929199, 234.8343811 , 234.77180481, ..., 235.0947876 ,
-           235.02911377, 234.96342468],
-          [235.33354187, 235.33818054, 235.34359741, ..., 235.31808472,
-           235.32427979, 235.3289032 ],
-          [235.04379272, 235.04379272, 235.04379272, ..., 235.04379272,
-           235.04379272, 235.04379272]])
-   Coordinates:
-       time        datetime64[ns] 2020-07-01
-     * lat         (lat) float64 90.0 89.0 88.0 87.0 ... -87.0 -88.0 -89.0 -90.0
-     * lon         (lon) float64 0.0 1.0 2.0 3.0 4.0 ... 356.0 357.0 358.0 359.0
-       step        timedelta64[ns] 00:00:00
-       surface     float64 0.0
-       valid_time  datetime64[ns] 2016-10-06
-   Attributes:
-       units:          K
-       long_name:      Temperature
-       standard_name:  air_temperature
+    <xarray.DataArray 'Temperature_isobaric' (lat: 451, lon: 1001)>
+    Coordinates:
+        time       datetime64[ns] 2010-10-26T12:00:00
+        isobaric3  float32 8.5e+04
+      * lat        (lat) float64 20.0 20.1 20.2 20.3 20.4 ... 64.7 64.8 64.9 65.0
+      * lon        (lon) float64 -150.0 -149.9 -149.8 -149.7 ... -50.2 -50.1 -50.0
 
-用 Panoply 查看插值后的数据，可以看到数据分布和 *test_grid.nc*
-是一样的，但是这两个数据的坐标是不一样的。
+可以看到数据的分辨率已经变成 0.1 度了，那么我们把这个插值后的数据画在地图上：
 
-.. figure:: /_images/20230529/03.png
-   :alt: nc 插值到 grib2 的格点数据预览
+.. figure:: /_images/20230529/02.png
+   :alt: 插值加密后的网格数据预览
 
-   nc 插值到 grib2 的格点数据预览
-
+和之前的图相比，插值后的数据明显更密集，没有了原来的网格状，而是更加平滑的分布。
 
 将网格数据插值到站点数据上
 ------------------------------------------
@@ -257,7 +306,8 @@
 这里我写了两种方式，一种是直接 for 循环填充数据，当数据量较大时速度很慢；
 一种是用 Pandas 的内置方法，性能较好。
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
    import time
    import pandas as pd
@@ -372,13 +422,14 @@
 完成这个步骤的常规方法是逐行读取站点数据，然后将每个站点插值到 *test_nc*
 上：
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
    import xarray as xr
    import numpy as np
    import pandas as pd
 
-   with xr.open_dataset("test_grid.nc") as ds_nc:
+   with xr.open_dataset("GFS_test.nc") as ds_nc:
        ds_nc = ds_nc.rename({"latitude":"lat", "longitude":"lon"}) # 重命名维度名称
        dr_nc = ds_nc.isel(time=0)["t"] # 用索引的方式选取首个 time 维度, 选取变量 t
 
@@ -407,7 +458,8 @@
 
 .. _Scipy: https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
    import time
    import xarray as xr
@@ -465,7 +517,7 @@
    df = df[["latitude", "longitude", "total_column_water_vapour"]]
    df.columns = ["lat", "lon", "value"]
 
-   with xr.open_dataset("test_grid.nc") as ds_nc:
+   with xr.open_dataset("GFS_test.nc") as ds_nc:
        ds_nc = ds_nc.rename({"latitude":"lat", "longitude":"lon"}) # 重命名维度名称
        dr_nc = ds_nc.isel(time=0)["t"] # 用索引的方式选取首个 time 维度, 选取变量 t
 
@@ -501,12 +553,13 @@
 ``Xarray``
 有方便的方法可以将三维的网格数据直接转为类似站点数据格式的二维数据：
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
    import pandas as pd
    import xarray as xr
 
-   with xr.open_dataset("test_grid.nc") as ds_nc:
+   with xr.open_dataset("GFS_test.nc") as ds_nc:
        ds_nc = ds_nc.rename({"latitude":"lat", "longitude":"lon"}) # 重命名维度名称
        dr_nc = ds_nc.isel(time=0)["t"] # 用索引的方式选取首个 time 维度, 选取变量 t
 
@@ -534,7 +587,8 @@
 
 .. _meteva: https://github.com/nmcdev/meteva/blob/master/meteva/base/fun/interpolating.py
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
     import math
     import pandas as pd
@@ -664,10 +718,10 @@
 ---------------------
 
 .. [1]
-   `test_station.csv <https://github.com/junsircoding/junsircoding.github.io/blob/main/storage/20230529/test_station.csv>`__
+   `UPA_obs.csv <https://github.com/Unidata/MetPy/blob/main/staticdata/UPA_obs.csv>`__
 
 .. [2]
-   `test_grid.nc <https://github.com/junsircoding/junsircoding.github.io/blob/main/storage/20230529/test_grid.nc>`__
+   `GFS_test.nc <https://github.com/Unidata/MetPy/blob/main/staticdata/GFS_test.nc>`__
 
 .. [3]
    `test_grid.grib2 <https://github.com/junsircoding/junsircoding.github.io/blob/main/storage/20230529/test_grid.grib2>`__
