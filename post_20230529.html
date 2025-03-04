@@ -116,15 +116,9 @@
 <li><a class="reference internal" href="#id2">站点数据</a></li>
 <li><a class="reference internal" href="#id4">网格数据</a></li>
 <li><a class="reference internal" href="#id6">将网格数据插值到另一个坐标、分辨率不同的网格坐标上</a></li>
-<li><a class="reference internal" href="#id7">将网格数据插值到站点数据上</a><ul>
-<li><a class="reference internal" href="#id8">将二维的站点数据转为三维的网格数据</a></li>
-<li><a class="reference internal" href="#id9">将网格数据插值到站点数据</a></li>
-<li><a class="reference internal" href="#id10">将三维网格数据转为二维</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id11">将站点数据插值到网格数据上（反距离权重插值）</a></li>
-<li><a class="reference internal" href="#id12">示例数据下载</a></li>
-<li><a class="reference internal" href="#id16">视频讲解</a></li>
+<li><a class="reference internal" href="#id7">将网格数据插值到站点数据上</a></li>
+<li><a class="reference internal" href="#id8">将站点数据插值到网格数据上（反距离权重插值）</a></li>
+<li><a class="reference internal" href="#id9">示例数据下载</a></li>
 </ul>
 </li>
 </ul>
@@ -207,7 +201,7 @@
 <p>气象业务当中，比较常见的数据形式有 <strong>站点数据</strong> 和 <strong>网格数据</strong>  。</p>
 <section id="id2">
 <h2>站点数据<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
-<p><strong>站点数据</strong> 就是个二维数据表，一般是 CSV、TXT、或者 Excel 等格式，这里我们用一个 CSV 数据（ <em>UPA_obs.csv</em> <a class="footnote-reference brackets" href="#id13" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> ）举例。</p>
+<p><strong>站点数据</strong> 就是个二维数据表，一般是 CSV、TXT、或者 Excel 等格式，这里我们用一个 CSV 数据（ <em>UPA_obs.csv</em> <a class="footnote-reference brackets" href="#id10" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> ）举例。</p>
 <p>用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Pandas</a> 读取：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="linenos">2</span>
@@ -217,7 +211,6 @@
 <span class="linenos">6</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
 <span class="linenos">7</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 <span class="linenos">8</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">})</span>
-<span class="linenos">9</span><span class="n">df</span>
 </pre></div>
 </div>
 <p>结构就像这样：</p>
@@ -317,7 +310,7 @@
 </section>
 <section id="id4">
 <h2>网格数据<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
-<p><strong>网格数据</strong> 通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Xarray</a> 库读取，这里我们使用 <em>GFS_test.nc</em>  <a class="footnote-reference brackets" href="#id14" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>：</p>
+<p><strong>网格数据</strong> 通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Xarray</a> 库读取，这里我们使用 <em>GFS_test.nc</em>  <a class="footnote-reference brackets" href="#id11" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;GFS_test.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
 <span class="linenos">2</span>    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="p">((</span><span class="n">ds</span><span class="o">.</span><span class="n">lon</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">180</span><span class="p">))</span> <span class="c1"># 将经度范围从[0, 360]转换为[-180, 180]</span>
 <span class="linenos">3</span>    <span class="n">dr</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;Temperature_isobaric&quot;</span><span class="p">]</span>
@@ -463,58 +456,64 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 </section>
 <section id="id7">
 <h2>将网格数据插值到站点数据上<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
+<p>我们可以用 <a class="reference external" href="https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py">Scipy</a> 的插值函数方法一次性得到所有的插值结果：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="linenos"> 4</span><span class="kn">import</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">interpolate</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">def</span><span class="w"> </span><span class="nf">grid_to_station</span><span class="p">(</span><span class="n">station_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grid_dr</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;三维格点转插值到二维站点, 快速</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="sd">    Args:</span>
+<span class="linenos">11</span><span class="sd">        station_df(pd.DataFrame): 站点数据</span>
+<span class="linenos">12</span><span class="sd">        grid_dr: 格点数据</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="sd">    Returns:</span>
+<span class="linenos">15</span><span class="sd">        (pd.DataFrame): 插值后的数据</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos">18</span>    <span class="n">grid_dr_lat</span><span class="p">,</span> <span class="n">grid_dr_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid_dr</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">grid_dr</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+<span class="linenos">19</span>    <span class="n">grid_dr_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">grid_dr_lat</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">grid_dr_lon</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]))</span>
+<span class="linenos">20</span>    <span class="n">grid_dr_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid_dr</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">21</span>    <span class="n">xi</span> <span class="o">=</span> <span class="p">(</span><span class="n">station_df</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">station_df</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+<span class="linenos">22</span>    <span class="n">nc_interp_values</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">griddata</span><span class="p">(</span>
+<span class="linenos">23</span>        <span class="n">grid_dr_points</span><span class="p">,</span> <span class="n">grid_dr_values</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="linenos">24</span>    <span class="n">nc_interp_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">nc_interp_values</span><span class="p">)</span>
+<span class="linenos">25</span>    <span class="n">df_nc_interp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span><span class="n">station_df</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span><span class="n">station_df</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="n">nc_interp_values</span><span class="p">})</span>
+<span class="linenos">26</span>    <span class="k">return</span> <span class="n">df_nc_interp</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;UPA_obs.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="linenos">30</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">]]</span>
+<span class="linenos">31</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;any&quot;</span><span class="p">)</span>
+<span class="linenos">32</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<span class="linenos">33</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="linenos">34</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">})</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;GFS_test.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
+<span class="linenos">39</span>    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="p">((</span><span class="n">ds</span><span class="o">.</span><span class="n">lon</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">180</span><span class="p">))</span> <span class="c1"># 将经度范围从[0, 360]转换为[-180, 180]</span>
+<span class="linenos">40</span>    <span class="n">dr</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;Temperature_isobaric&quot;</span><span class="p">]</span>
+<span class="linenos">41</span>    <span class="n">dr</span> <span class="o">=</span> <span class="n">dr</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># first time step</span>
+<span class="linenos">42</span>    <span class="n">dr</span> <span class="o">=</span> <span class="n">dr</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">isobaric3</span><span class="o">=</span><span class="mi">85000</span><span class="p">)</span> <span class="c1"># 850 hPa</span>
+<span class="linenos">43</span>    <span class="n">dr</span> <span class="o">=</span> <span class="n">dr</span> <span class="o">-</span> <span class="mf">273.15</span> <span class="c1"># K to °C</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span>
+<span class="linenos">46</span><span class="n">df_interp</span> <span class="o">=</span> <span class="n">grid_to_station</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">dr</span><span class="p">)</span>
+<span class="linenos">47</span><span class="n">df_interp</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;grid_to_station.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>将插值后的数据打点画图：</p>
+<figure class="align-default">
+<img alt="格点数据插值到站点" src="_images/03.png" />
+</figure>
+<p>可以看到，点的位置和 <code class="docutils literal notranslate"><span class="pre">UPA_obs.csv</span></code> 中的点位置是相同的，但数值是数据 <code class="docutils literal notranslate"><span class="pre">GFS_test.nc</span></code> 中的值。</p>
+</section>
 <section id="id8">
-<h3>将二维的站点数据转为三维的网格数据<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
-<p>这里我写了两种方式，一种是直接 for 循环填充数据，当数据量较大时速度很慢；
-一种是用 Pandas 的内置方法，性能较好。</p>
-<p>执行代码后生成的 <em>station_grid.nc</em>
-就是二维的站点数据转为三维的网格数据。</p>
-<p><strong>这一步骤不是必须的</strong> ，只是为了能直观的用 Panoply 快速查看站点数据的分布情况。当然你也可以用 <a class="reference external" href="https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py">Matplotlib</a> 绘制站点数据的散点图。</p>
-<p>代码最后注释标出的快速版的时间比慢速版的还要慢，这是正常的，这是因为示例数据数据量较少。当数据量很大，数据精度很高时，耗时的区别就非常明显了，可以自行尝试。</p>
-<blockquote>
-<div><p>注：站点数据要保证同一经纬度是唯一的，这里的示例数据因为源数据有其他维度，所以同一经纬度的数据不唯一，我在读取的时候手动去重了。</p>
-</div></blockquote>
-<p>这个数据用 Panoply 预览是这样：</p>
-<figure class="align-default" id="id18">
-<img alt="站点数据转为三维网格数据预览" src="_images/04.png" />
-<figcaption>
-<p><span class="caption-text">站点数据转为三维网格数据预览</span><a class="headerlink" href="#id18" title="Link to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id9">
-<h3>将网格数据插值到站点数据<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
-<p>完成这个步骤的常规方法是逐行读取站点数据，然后将每个站点插值到 <em>test_nc</em>
-上：</p>
-<p>得出的 <em>df_nc_interp</em> 就是插值后的数据，<em>dr_nc_to_station.nc</em>
-是用上面的方法将其转成了三维网格。用 Panoply 预览如下：</p>
-<figure class="align-default" id="id19">
-<img alt="格点数据插值到站点，慢速" src="_images/05.png" />
-<figcaption>
-<p><span class="caption-text">格点数据插值到站点，慢速</span><a class="headerlink" href="#id19" title="Link to this image">¶</a></p>
-</figcaption>
-</figure>
-<p>可以想见，这种方式性能也比较一般，当站点数据很多是，逐一循环速度很慢。</p>
-<p>我们可以用 <a class="reference external" href="https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py">Scipy</a> 的插值方法一次性得到所有的插值结果：</p>
-<p>上面的 <code class="docutils literal notranslate"><span class="pre">grid_to_station_fast</span></code>
-函数就可以一次性得到所有插值后的值。和上面一样，因为示例数据量较少，快速的方法优势体现不明显，可以换用数据量大的实际数据自行尝试。</p>
-<p>这两种方式得到的数据是一样的，画出的图预览效果也一样：</p>
-<figure class="align-default" id="id20">
-<img alt="格点数据插值到站点，快速" src="_images/06.png" />
-<figcaption>
-<p><span class="caption-text">格点数据插值到站点，快速</span><a class="headerlink" href="#id20" title="Link to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id10">
-<h3>将三维网格数据转为二维<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
-<p><strong>这个步骤也不是必须的</strong>，仅用于需要的情况。</p>
-<p><code class="docutils literal notranslate"><span class="pre">Xarray</span></code>
-有方便的方法可以将三维的网格数据直接转为类似站点数据格式的二维数据：</p>
-</section>
-</section>
-<section id="id11">
-<h2>将站点数据插值到网格数据上（反距离权重插值）<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h2>
+<h2>将站点数据插值到网格数据上（反距离权重插值）<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
 <p>还会有一种需求，是将站点数据插值到指定精度的网格上。
 原本为 <code class="docutils literal notranslate"><span class="pre">np.nan</span></code> 的数据要运用反距离权重插值预测出对应的值。
 反距离权重插值的原理，简单讲就是被预测的值由它附近的点决定，与它距离越近的点权重越大，对它的影响就越大。</p>
@@ -622,49 +621,41 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 <span class="linenos">101</span>
 <span class="linenos">102</span>
 <span class="linenos">103</span><span class="c1"># 站点数据</span>
-<span class="linenos">104</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;test_station.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>\
-<span class="linenos">105</span>    <span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">)</span>\
-<span class="linenos">106</span>        <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="linenos">107</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;total_column_water_vapour&quot;</span><span class="p">]]</span>
-<span class="linenos">108</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
-<span class="linenos">109</span><span class="n">nc_interp</span> <span class="o">=</span> <span class="n">interp_sg_idw</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">89</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">effectR</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
-<span class="linenos">110</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">nc_interp</span><span class="p">})</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;station_to_grid.nc&quot;</span><span class="p">)</span>
+<span class="linenos">104</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;UPA_obs.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="linenos">105</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">]]</span>
+<span class="linenos">106</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;any&quot;</span><span class="p">)</span>
+<span class="linenos">107</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<span class="linenos">108</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="linenos">109</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">})</span>
+<span class="linenos">110</span><span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_max</span><span class="p">,</span> <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_max</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="linenos">111</span><span class="n">lon_buffer</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lon_max</span> <span class="o">-</span> <span class="n">lon_min</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+<span class="linenos">112</span><span class="n">lat_buffer</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lat_max</span> <span class="o">-</span> <span class="n">lat_min</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+<span class="linenos">113</span><span class="n">nc_interp</span> <span class="o">=</span> <span class="n">interp_sg_idw</span><span class="p">(</span>
+<span class="linenos">114</span>    <span class="n">df</span><span class="p">,</span>
+<span class="linenos">115</span>    <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="n">lon_buffer</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">lon_buffer</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+<span class="linenos">116</span>    <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="n">lat_buffer</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">lat_buffer</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+<span class="linenos">117</span>    <span class="n">effectR</span><span class="o">=</span><span class="mi">100000</span>
+<span class="linenos">118</span><span class="p">)</span>
+<span class="linenos">119</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">nc_interp</span><span class="p">})</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;station_to_grid.nc&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>插值后的 NC 数据预览如下，可以和刚才的站点图像做对比：</p>
-<figure class="align-default" id="id21">
-<img alt="站点图像" src="_images/04.png" />
-<figcaption>
-<p><span class="caption-text">站点图像</span><a class="headerlink" href="#id21" title="Link to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id22">
-<img alt="站点IDW插值到网格" src="_images/07.png" />
-<figcaption>
-<p><span class="caption-text">站点IDW插值到网格</span><a class="headerlink" href="#id22" title="Link to this image">¶</a></p>
-</figcaption>
+<p>插值后的数据填色绘图如下：</p>
+<figure class="align-default">
+<img alt="站点IDW插值到网格" src="_images/04.png" />
 </figure>
 </section>
-<section id="id12">
-<h2>示例数据下载<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h2>
+<section id="id9">
+<h2>示例数据下载<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id13" role="doc-footnote">
+<aside class="footnote brackets" id="id10" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">1</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/staticdata/UPA_obs.csv">UPA_obs.csv</a></p>
 </aside>
-<aside class="footnote brackets" id="id14" role="doc-footnote">
+<aside class="footnote brackets" id="id11" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">2</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/staticdata/GFS_test.nc">GFS_test.nc</a></p>
 </aside>
-<aside class="footnote brackets" id="id15" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://github.com/junsircoding/junsircoding.github.io/blob/main/storage/20230529/test_grid.grib2">test_grid.grib2</a></p>
 </aside>
-</aside>
-</section>
-<section id="id16">
-<h2>视频讲解<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h2>
-<p><a class="reference external" href="https://www.bilibili.com/video/BV1iX4y147eT/">我在处理气象数据时常用到的插值方法</a></p>
 </section>
 </section>
 
@@ -750,15 +741,9 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 <li><a class="reference internal" href="#id2">站点数据</a></li>
 <li><a class="reference internal" href="#id4">网格数据</a></li>
 <li><a class="reference internal" href="#id6">将网格数据插值到另一个坐标、分辨率不同的网格坐标上</a></li>
-<li><a class="reference internal" href="#id7">将网格数据插值到站点数据上</a><ul>
-<li><a class="reference internal" href="#id8">将二维的站点数据转为三维的网格数据</a></li>
-<li><a class="reference internal" href="#id9">将网格数据插值到站点数据</a></li>
-<li><a class="reference internal" href="#id10">将三维网格数据转为二维</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id11">将站点数据插值到网格数据上（反距离权重插值）</a></li>
-<li><a class="reference internal" href="#id12">示例数据下载</a></li>
-<li><a class="reference internal" href="#id16">视频讲解</a></li>
+<li><a class="reference internal" href="#id7">将网格数据插值到站点数据上</a></li>
+<li><a class="reference internal" href="#id8">将站点数据插值到网格数据上（反距离权重插值）</a></li>
+<li><a class="reference internal" href="#id9">示例数据下载</a></li>
 </ul>
 </li>
 </ul>
