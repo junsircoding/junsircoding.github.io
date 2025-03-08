@@ -48,7 +48,7 @@
 把这个数据在地图上以打点的形式画出来，点的颜色对应数值大小：
 
 .. figure:: /_images/20230529/00.png
-   :alt: 站点数据打点
+   :alt: 站点数据原始绘图
 
 可以看到，这个数据内容是北美的气温数据，每个点的颜色代表了温度的大小，温度单位是摄氏度（℃）。
 我们把温度的显示范围设定在了 -60 ~ -30 ℃ 之间，以便让各个颜色区域都有值。
@@ -117,11 +117,11 @@
     cb.set_label(r"$^{\circ}$C", size=20)
 
     # 标题
-    title = 'Station Temperature Distribution'
+    title = '站点数据原始绘图'
     ax.set_title(title, fontsize=18, loc="left")
 
     # 保存图片
-    fig.savefig('test_plot.png', dpi=200, bbox_inches='tight')
+    fig.savefig('站点数据原始绘图.png', dpi=200, bbox_inches='tight')
     plt.cla()
     plt.close(fig)
     plt.close("all")
@@ -161,12 +161,12 @@
         units:      K
 
 其中， ``lat`` 和 ``lon`` 是这个数据的两个维度，即纬度和经度， ``Coordinates`` 展示了这各个维度对应的坐标信息， 
-``Attributes`` 是一些属性信息，是个 ``Dict`` 。可以看到这个气温数据的单位是开尔文（K）。
+``Attributes`` 是一些属性信息，是个 ``Dict`` 。可以看到这个气温数据的单位是开尔文（K），将它减去 273.15 就是摄氏度的值。
 
 把这个数据用网格填色的方式画在地图上：
 
 .. figure:: /_images/20230529/01.png
-   :alt: 格点数据预览
+   :alt: 网格数据原始绘图
 
 画图脚本如下：
 
@@ -235,11 +235,11 @@
     cb.set_label(r"$^{\circ}$C", size=20)
 
     # 标题
-    title = 'Grid Temperature Distribution'
+    title = '网格数据原始绘图'
     ax.set_title(title, fontsize=18, loc="left")
 
     # 保存图片
-    fig.savefig('test_plot.png', dpi=200, bbox_inches='tight')
+    fig.savefig('网格数据原始绘图.png', dpi=200, bbox_inches='tight')
     plt.cla()
     plt.close(fig)
     plt.close("all")
@@ -292,9 +292,13 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 可以看到数据的分辨率已经变成 0.1 度了，那么我们把这个插值后的数据画在地图上：
 
 .. figure:: /_images/20230529/02.png
-   :alt: 插值加密后的网格数据预览
+   :alt: 网格数据插值绘图
 
 和之前的图相比，插值后的数据明显更密集，没有了原来的网格状，而是更加平滑的分布。
+
+.. figure:: /_images/20230529/06.png
+   :alt: 网格数据原始插值对比绘图
+
 
 将网格数据插值到站点数据上
 ------------------------------------------
@@ -358,7 +362,7 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 将插值后的数据打点画图：
 
 .. figure:: /_images/20230529/03.png
-   :alt: 格点数据插值到站点
+   :alt: 网格数据插值到站点绘图
 
 可以看到，点的位置和 ``UPA_obs.csv`` 中的点位置是相同的，但数值是数据 ``GFS_test.nc`` 中的值。 
 
@@ -493,7 +497,7 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
         df, 
         (df.lon.min()-lon_buffer, df.lon.max()+lon_buffer, 0.1), 
         (df.lat.min()-lat_buffer, df.lat.max()+lat_buffer, 0.1),
-        effectR=100000
+        effectR=10000
     )
     xr.Dataset({"data": nc_interp}).to_netcdf("station_to_grid.nc")
 
@@ -502,6 +506,11 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 
 .. figure:: /_images/20230529/04.png
    :alt: 站点IDW插值到网格
+
+站点数据和插值后的对比图如下：
+
+.. figure:: /_images/20230529/05.png
+   :alt: 站点数据插值到网格对比图
 
 
 示例数据下载

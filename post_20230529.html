@@ -233,7 +233,7 @@
 <p>其中 <code class="docutils literal notranslate"><span class="pre">lat</span></code> 表示纬度， <code class="docutils literal notranslate"><span class="pre">lon</span></code> 表示经度， <code class="docutils literal notranslate"><span class="pre">value</span></code> 表示站点观测值。</p>
 <p>把这个数据在地图上以打点的形式画出来，点的颜色对应数值大小：</p>
 <figure class="align-default">
-<img alt="站点数据打点" src="_images/00.png" />
+<img alt="站点数据原始绘图" src="_images/00.png" />
 </figure>
 <p>可以看到，这个数据内容是北美的气温数据，每个点的颜色代表了温度的大小，温度单位是摄氏度（℃）。
 我们把温度的显示范围设定在了 -60 ~ -30 ℃ 之间，以便让各个颜色区域都有值。</p>
@@ -297,11 +297,11 @@
 <span class="linenos">57</span><span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$^{\circ}$C&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="linenos">58</span>
 <span class="linenos">59</span><span class="c1"># 标题</span>
-<span class="linenos">60</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Station Temperature Distribution&#39;</span>
+<span class="linenos">60</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;站点数据原始绘图&#39;</span>
 <span class="linenos">61</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
 <span class="linenos">62</span>
 <span class="linenos">63</span><span class="c1"># 保存图片</span>
-<span class="linenos">64</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;test_plot.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="linenos">64</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;站点数据原始绘图.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="linenos">65</span><span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
 <span class="linenos">66</span><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 <span class="linenos">67</span><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
@@ -333,10 +333,10 @@
 </pre></div>
 </div>
 <p>其中， <code class="docutils literal notranslate"><span class="pre">lat</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lon</span></code> 是这个数据的两个维度，即纬度和经度， <code class="docutils literal notranslate"><span class="pre">Coordinates</span></code> 展示了这各个维度对应的坐标信息，
-<code class="docutils literal notranslate"><span class="pre">Attributes</span></code> 是一些属性信息，是个 <code class="docutils literal notranslate"><span class="pre">Dict</span></code> 。可以看到这个气温数据的单位是开尔文（K）。</p>
+<code class="docutils literal notranslate"><span class="pre">Attributes</span></code> 是一些属性信息，是个 <code class="docutils literal notranslate"><span class="pre">Dict</span></code> 。可以看到这个气温数据的单位是开尔文（K），将它减去 273.15 就是摄氏度的值。</p>
 <p>把这个数据用网格填色的方式画在地图上：</p>
 <figure class="align-default">
-<img alt="格点数据预览" src="_images/01.png" />
+<img alt="网格数据原始绘图" src="_images/01.png" />
 </figure>
 <p>画图脚本如下：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># -*- coding: utf-8 -*-</span>
@@ -401,11 +401,11 @@
 <span class="linenos">60</span><span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$^{\circ}$C&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="linenos">61</span>
 <span class="linenos">62</span><span class="c1"># 标题</span>
-<span class="linenos">63</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Grid Temperature Distribution&#39;</span>
+<span class="linenos">63</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;网格数据原始绘图&#39;</span>
 <span class="linenos">64</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
 <span class="linenos">65</span>
 <span class="linenos">66</span><span class="c1"># 保存图片</span>
-<span class="linenos">67</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;test_plot.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="linenos">67</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;网格数据原始绘图.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="linenos">68</span><span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
 <span class="linenos">69</span><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 <span class="linenos">70</span><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
@@ -450,9 +450,12 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 </div>
 <p>可以看到数据的分辨率已经变成 0.1 度了，那么我们把这个插值后的数据画在地图上：</p>
 <figure class="align-default">
-<img alt="插值加密后的网格数据预览" src="_images/02.png" />
+<img alt="网格数据插值绘图" src="_images/02.png" />
 </figure>
 <p>和之前的图相比，插值后的数据明显更密集，没有了原来的网格状，而是更加平滑的分布。</p>
+<figure class="align-default">
+<img alt="网格数据原始插值对比绘图" src="_images/06.png" />
+</figure>
 </section>
 <section id="id7">
 <h2>将网格数据插值到站点数据上<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
@@ -508,7 +511,7 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 </div>
 <p>将插值后的数据打点画图：</p>
 <figure class="align-default">
-<img alt="格点数据插值到站点" src="_images/03.png" />
+<img alt="网格数据插值到站点绘图" src="_images/03.png" />
 </figure>
 <p>可以看到，点的位置和 <code class="docutils literal notranslate"><span class="pre">UPA_obs.csv</span></code> 中的点位置是相同的，但数值是数据 <code class="docutils literal notranslate"><span class="pre">GFS_test.nc</span></code> 中的值。</p>
 </section>
@@ -634,7 +637,7 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 <span class="linenos">114</span>    <span class="n">df</span><span class="p">,</span>
 <span class="linenos">115</span>    <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="n">lon_buffer</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">lon_buffer</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
 <span class="linenos">116</span>    <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="n">lat_buffer</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">lat_buffer</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
-<span class="linenos">117</span>    <span class="n">effectR</span><span class="o">=</span><span class="mi">100000</span>
+<span class="linenos">117</span>    <span class="n">effectR</span><span class="o">=</span><span class="mi">10000</span>
 <span class="linenos">118</span><span class="p">)</span>
 <span class="linenos">119</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">nc_interp</span><span class="p">})</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;station_to_grid.nc&quot;</span><span class="p">)</span>
 </pre></div>
@@ -642,6 +645,10 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 <p>插值后的数据填色绘图如下：</p>
 <figure class="align-default">
 <img alt="站点IDW插值到网格" src="_images/04.png" />
+</figure>
+<p>站点数据和插值后的对比图如下：</p>
+<figure class="align-default">
+<img alt="站点数据插值到网格对比图" src="_images/05.png" />
 </figure>
 </section>
 <section id="id9">
