@@ -1,0 +1,538 @@
+处理气象数据常用的插值方法
+===========================
+
+    注：
+
+    这篇文章与 `气象数据的各种插值问题`_ 内容大致相同，是它的重构版。相比旧版，修改了 IDW 插值的代码，删掉了一些与主题关联不大的段落。
+    这个版本的 IDW 插值函数无须安装第三方库，仅依赖基础的 `Scipy`_ 库即可使用。
+    实际工作时，有时不太方便因为要使用一个功能，而在已有的 Python 中环境继续安装其他扩展库，一是 conda 环境中安装的库越多，
+    再新增库就越慢；二是有可能会连带修改其他库的版本，导致业务中有些代码不能使用。
+    所以针对单一功能以提取出仅依赖基础库就能使用的版本为宜。
+
+.. _气象数据的各种插值问题: https://junsircoding.github.io/post_20230529.html
+
+气象业务当中，比较常见的数据形式有 **站点数据** 和 **网格数据**  。
+
+站点数据
+---------------
+
+**站点数据** 就是个二维数据表，一般是 CSV、TXT、或者 Excel 等格式，这里我们用一个 CSV 数据（ *UPA_obs.csv* [1]_ ）举例。
+
+用 `Pandas`_ 读取：
+
+.. _Pandas: https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html
+
+.. code-block:: python
+    :linenos:
+
+    import pandas as pd
+
+    df = pd.read_csv("UPA_obs.csv", sep=",", encoding="utf-8")
+    df = df[["latitude", "longitude", "temperature"]]
+    df = df.dropna(subset=["latitude", "longitude"], how="any")
+    df.index = range(len(df))
+    df["temperature"] = df["temperature"].astype(float)
+    df = df.rename(columns={"latitude": "lat", "longitude": "lon", "temperature": "value"})
+
+结构就像这样：
+
+::
+
+            lat         lon  value
+    0    51.466667  -90.200000  -43.5
+    1    51.466667  -90.200000  -53.9
+    2    53.533333 -114.083333  -28.3
+    3    53.533333 -114.083333  -53.5
+    4    53.750000  -73.666667  -41.7
+    ..         ...         ...    ...
+    177  34.733333 -120.583333  -42.3
+    178  40.900000 -117.800000  -16.8
+    179  40.900000 -117.800000  -44.2
+    180  46.466667  -84.366667  -39.1
+    181  46.466667  -84.366667  -48.1
+
+    [182 rows x 3 columns]
+
+其中 ``lat`` 表示纬度， ``lon`` 表示经度， ``value`` 表示站点观测值。
+
+把这个数据在地图上以打点的形式画出来，点的颜色对应数值大小：
+
+.. figure:: /_images/20250309/00.png
+   :alt: 站点数据原始绘图
+
+可以看到，这个数据内容是北美的气温数据，每个点的颜色代表了温度的大小，温度单位是摄氏度（℃）。
+我们把温度的显示范围设定在了 -60 ~ -30 ℃ 之间，以便让各个颜色区域都有值。
+
+画图脚本如下：
+
+.. code-block:: python
+    :linenos:
+
+    # -*- coding: utf-8 -*-
+
+    import numpy as np
+    import pandas as pd
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+
+    mpl.rcParams['font.sans-serif'] = ['Microsoft YaHei']
+    mpl.rcParams['axes.unicode_minus'] = False
+
+    # 读取数据
+    df = pd.read_csv("UPA_obs.csv", sep=",", encoding="utf-8")
+    df = df[["latitude", "longitude", "temperature"]]
+    df = df.dropna(subset=["latitude", "longitude"], how="any")
+    df.index = range(len(df))
+    df["temperature"] = df["temperature"].astype(float)
+    df = df.rename(columns={"latitude": "lat", "longitude": "lon", "temperature": "value"})
+    # 计算经纬度范围
+    lon_min, lon_max, lat_min, lat_max = df.lon.min(), df.lon.max(), df.lat.min(), df.lat.max()
+    lon_buffer = abs(lon_max - lon_min) * 0.1
+    lat_buffer = abs(lat_max - lat_min) * 0.1
+    map_extent = [lon_min - lon_buffer, lon_max + lon_buffer, lat_min - lat_buffer, lat_max + lat_buffer]
+
+    # 绘图
+    proj = ccrs.PlateCarree()
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111, projection=proj)
+
+    cmap = mpl.colormaps.get_cmap('jet')
+    img = ax.scatter(df.lon, df.lat, s=200, c=df.value, marker='.', cmap=cmap, transform=proj, vmax=-30, vmin=-60)
+
+    # 设置绘图经纬度区域
+    ax.set_extent(map_extent, crs=proj) # type: ignore
+
+    # 添加海岸线、国界
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), edgecolor='black', linewidth=0.5)
+    ax.add_feature(cfeature.BORDERS.with_scale('50m'), linestyle='-', edgecolor='black', linewidth=0.5)
+
+    # 添加经纬度坐标
+    ax.set_yticks(np.arange(map_extent[2], map_extent[3], 10).round(2), crs=proj)
+    ax.set_xticks(np.arange(map_extent[0], map_extent[1], 10).round(2), crs=proj)
+    lon_formatter = LongitudeFormatter(degree_symbol='', dateline_direction_label=True)
+    lat_formatter = LatitudeFormatter(degree_symbol='')
+    ax.yaxis.set_major_formatter(lat_formatter)
+    ax.xaxis.set_major_formatter(lon_formatter)
+
+    # 获取画布位置大小参数
+    l, b, w, h = ax.get_position().bounds
+
+    # 添加色带
+    cax = plt.axes([l, b - h * 0.06 - 0, w, h * 0.02])  # type: ignore
+    cb = fig.colorbar(img, cax=cax, ticks=None, orientation='horizontal', extend="both")
+    cb.ax.tick_params(labelsize=15)
+    cb.set_label(r"$^{\circ}$C", size=20)
+
+    # 标题
+    title = '站点数据原始绘图'
+    ax.set_title(title, fontsize=18, loc="left")
+
+    # 保存图片
+    fig.savefig('站点数据原始绘图.png', dpi=200, bbox_inches='tight')
+    plt.cla()
+    plt.close(fig)
+    plt.close("all")
+
+
+网格数据
+----------------------
+
+**网格数据** 通常用 `Xarray`_ 库读取，这里我们使用 *GFS_test.nc*  [2]_：
+
+.. _Xarray: https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html
+
+.. code-block:: python
+    :linenos:
+
+    with xr.open_dataset("GFS_test.nc") as ds:
+        ds = ds.assign_coords(lon=((ds.lon + 180) % 360 - 180)) # 将经度范围从[0, 360]转换为[-180, 180]
+        dr = ds["Temperature_isobaric"]
+        dr = dr.isel(time=0) # first time step
+        dr = dr.sel(isobaric3=85000) # 850 hPa
+        dr = dr - 273.15 # K to °C
+
+
+结构就像这样：
+
+::
+
+    <xarray.DataArray 'Temperature_isobaric' (lat: 46, lon: 101)>
+    [4646 values with dtype=float32]
+    Coordinates:
+        time       datetime64[ns] 2010-10-26T12:00:00
+        isobaric3  float32 8.5e+04
+      * lat        (lat) float32 65.0 64.0 63.0 62.0 61.0 ... 23.0 22.0 21.0 20.0
+      * lon        (lon) float32 -150.0 -149.0 -148.0 -147.0 ... -52.0 -51.0 -50.0
+    Attributes:
+        long_name:  Temperature @ Isobaric surface
+        units:      K
+
+其中， ``lat`` 和 ``lon`` 是这个数据的两个维度，即纬度和经度， ``Coordinates`` 展示了这各个维度对应的坐标信息， 
+``Attributes`` 是一些属性信息，是个 ``Dict`` 。可以看到这个气温数据的单位是开尔文（K），将它减去 273.15 就是摄氏度的值。
+
+把这个数据用网格填色的方式画在地图上：
+
+.. figure:: /_images/20250309/01.png
+   :alt: 网格数据原始绘图
+
+画图脚本如下：
+
+.. code-block:: python
+    :linenos:
+
+    # -*- coding: utf-8 -*-
+
+    import numpy as np
+    import pandas as pd
+    import xarray as xr
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+
+    mpl.rcParams['font.sans-serif'] = ['Microsoft YaHei']
+    mpl.rcParams['axes.unicode_minus'] = False
+
+    # 读取数据
+    with xr.open_dataset("GFS_test.nc") as ds:
+        ds = ds.assign_coords(lon=((ds.lon + 180) % 360 - 180)) # 将经度范围从[0, 360]转换为[-180, 180]
+        dr = ds["Temperature_isobaric"]
+        dr = dr.isel(time=0) # first time step
+        dr = dr.sel(isobaric3=85000) # 850 hPa
+        dr = dr - 273.15 # K to °C
+
+    # 计算经纬度范围
+    lon_min, lon_max, lat_min, lat_max = dr.lon.min(), dr.lon.max(), dr.lat.min(), dr.lat.max()
+    lon_buffer = abs(lon_max - lon_min) * 0.0
+    lat_buffer = abs(lat_max - lat_min) * 0.0
+    map_extent = [lon_min - lon_buffer, lon_max + lon_buffer, lat_min - lat_buffer, lat_max + lat_buffer]
+
+    # 绘图
+    proj = ccrs.PlateCarree()
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111, projection=proj)
+
+    cmap = mpl.colormaps.get_cmap('jet')
+    LON, LAT = np.meshgrid(dr.lon, dr.lat)
+    img = ax.pcolormesh(LON, LAT, dr, cmap=cmap, transform=proj, alpha=1)
+
+    # 设置绘图经纬度区域
+    ax.set_extent(map_extent, crs=proj) # type: ignore
+
+    # 添加海岸线、国界
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), edgecolor='black', linewidth=0.5)
+    ax.add_feature(cfeature.BORDERS.with_scale('50m'), linestyle='-', edgecolor='black', linewidth=0.5)
+
+    # 添加经纬度坐标
+    ax.set_yticks(np.arange(map_extent[2], map_extent[3], 10).round(2), crs=proj)
+    ax.set_xticks(np.arange(map_extent[0], map_extent[1], 10).round(2), crs=proj)
+    lon_formatter = LongitudeFormatter(degree_symbol='', dateline_direction_label=True)
+    lat_formatter = LatitudeFormatter(degree_symbol='')
+    ax.yaxis.set_major_formatter(lat_formatter)
+    ax.xaxis.set_major_formatter(lon_formatter)
+
+    # 获取画布位置大小参数
+    l, b, w, h = ax.get_position().bounds
+
+    # 添加色带
+    cax = plt.axes([l, b - h * 0.085, w, h * 0.03])  # type: ignore
+    cb = fig.colorbar(img, cax=cax, ticks=None, orientation='horizontal', extend="both")
+    cb.ax.tick_params(labelsize=15)
+    cb.set_label(r"$^{\circ}$C", size=20)
+
+    # 标题
+    title = '网格数据原始绘图'
+    ax.set_title(title, fontsize=18, loc="left")
+
+    # 保存图片
+    fig.savefig('网格数据原始绘图.png', dpi=200, bbox_inches='tight')
+    plt.cla()
+    plt.close(fig)
+    plt.close("all")
+
+
+在实际使用过程中，经常会有这样的需求：
+
+-  将\ **网格数据**\ 插值到另一个分辨率不同的\ **网格坐标**\ 上
+-  将\ **网格数据**\ 插值到\ **站点数据**\ 的坐标上
+-  将\ **站点数据**\ 插值到\ **网格数据**\ 的坐标上
+-  …
+
+下面逐一说明。
+
+
+将网格数据插值到另一个坐标、分辨率不同的网格坐标上
+---------------------------------------------------------------
+
+我们上面用到的 *GFS_test.nc* 的经纬度坐标 shape 为 ``(lon: 101, lat: 46)`` ，
+lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨率是 1 度。
+现在我们要将这个数据插值到一个分辨率是 0.1 度的网格坐标上，范围不变。
+
+.. code-block:: python
+    :linenos:
+
+    with xr.open_dataset("GFS_test.nc") as ds:
+        ds = ds.assign_coords(lon=((ds.lon + 180) % 360 - 180)) # 将经度范围从[0, 360]转换为[-180, 180]
+        dr = ds["Temperature_isobaric"]
+        dr = dr.isel(time=0) # first time step
+        dr = dr.sel(isobaric3=85000) # 850 hPa
+        dr = dr - 273.15 # K to °C
+
+    # 分辨率为 0.1 度的网格
+    new_lat = np.arange(dr.lat.min(), dr.lat.max()+0.1, 0.1)
+    new_lon = np.arange(dr.lon.min(), dr.lon.max()+0.1, 0.1)
+    dr = dr.interp(lat=new_lat, lon=new_lon) # 插值
+    dr.to_netcdf("GFS_test_850hPa_Temperature_0.1deg.nc")
+
+插值后的数据预览如下：
+
+::
+
+    <xarray.DataArray 'Temperature_isobaric' (lat: 451, lon: 1001)>
+    Coordinates:
+        time       datetime64[ns] 2010-10-26T12:00:00
+        isobaric3  float32 8.5e+04
+      * lat        (lat) float64 20.0 20.1 20.2 20.3 20.4 ... 64.7 64.8 64.9 65.0
+      * lon        (lon) float64 -150.0 -149.9 -149.8 -149.7 ... -50.2 -50.1 -50.0
+
+可以看到数据的分辨率已经变成 0.1 度了，那么我们把这个插值后的数据画在地图上：
+
+.. figure:: /_images/20250309/02.png
+   :alt: 网格数据插值绘图
+
+和之前的图相比，插值后的数据明显更密集，没有了原来的网格状，而是更加平滑的分布。
+
+.. figure:: /_images/20250309/06.png
+   :alt: 网格数据原始插值对比绘图
+
+
+将网格数据插值到站点数据上
+------------------------------------------
+
+我们可以用 `Scipy`_ 的插值函数方法一次性得到所有的插值结果：
+
+.. _Scipy: https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py
+
+.. code-block:: python
+    :linenos:
+
+    import xarray as xr
+    import numpy as np
+    import pandas as pd
+    import scipy.interpolate as interpolate
+
+
+    def grid_to_station(station_df: pd.DataFrame, grid_dr: xr.DataArray):
+        """三维格点转插值到二维站点, 快速
+
+        Args:
+            station_df(pd.DataFrame): 站点数据
+            grid_dr: 格点数据
+
+        Returns:
+            (pd.DataFrame): 插值后的数据
+
+        """
+        grid_dr_lat, grid_dr_lon = np.meshgrid(grid_dr.lat, grid_dr.lon)
+        grid_dr_points = np.transpose(np.array([grid_dr_lat.flatten(), grid_dr_lon.flatten()]))
+        grid_dr_values = np.array(grid_dr.values).transpose().reshape(-1, 1)
+        xi = (station_df.lat, station_df.lon)
+        nc_interp_values = interpolate.griddata(
+            grid_dr_points, grid_dr_values, xi, fill_value=np.nan, method='linear').squeeze()
+        nc_interp_values = pd.Series(nc_interp_values)
+        df_nc_interp = pd.DataFrame({"lat":station_df.lat, "lon":station_df.lon, "value":nc_interp_values})
+        return df_nc_interp
+
+
+    df = pd.read_csv("UPA_obs.csv", sep=",", encoding="utf-8")
+    df = df[["latitude", "longitude", "temperature"]]
+    df = df.dropna(subset=["latitude", "longitude"], how="any")
+    df.index = range(len(df))
+    df["temperature"] = df["temperature"].astype(float)
+    df = df.rename(columns={"latitude": "lat", "longitude": "lon", "temperature": "value"})
+
+
+
+    with xr.open_dataset("GFS_test.nc") as ds:
+        ds = ds.assign_coords(lon=((ds.lon + 180) % 360 - 180)) # 将经度范围从[0, 360]转换为[-180, 180]
+        dr = ds["Temperature_isobaric"]
+        dr = dr.isel(time=0) # first time step
+        dr = dr.sel(isobaric3=85000) # 850 hPa
+        dr = dr - 273.15 # K to °C
+
+
+    df_interp = grid_to_station(df, dr)
+    df_interp.to_csv("grid_to_station.csv", index=False)
+
+
+将插值后的数据打点画图：
+
+.. figure:: /_images/20250309/03.png
+   :alt: 网格数据插值到站点绘图
+
+可以看到，点的位置和 ``UPA_obs.csv`` 中的点位置是相同的，但数值是数据 ``GFS_test.nc`` 中的值。 
+
+
+将站点数据插值到网格数据上（反距离权重插值）
+---------------------------------------------------------------
+
+还会有一种需求，是将站点数据插值到指定精度的网格上。 
+原本为 ``np.nan`` 的数据要运用反距离权重插值预测出对应的值。
+反距离权重插值的原理，简单讲就是被预测的值由它附近的点决定，与它距离越近的点权重越大，对它的影响就越大。
+
+这里整理了国家气象信息中心开发的 `meteva`_ 库中提供的代码：
+
+.. _meteva: https://github.com/nmcdev/meteva/blob/master/meteva/base/fun/interpolating.py
+
+.. code-block:: python
+    :linenos:
+
+    import math
+    import pandas as pd
+    import numpy as np
+    import xarray as xr
+    from scipy.spatial import cKDTree
+
+
+    # 地球半径
+    ER = 6371.229
+
+
+    def lon_lat_to_cartesian(lon, lat, R=1):
+        """
+        经度纬度信息转换为直角坐标系
+
+        calculates lon, lat coordinates of a point on a sphere with
+        radius R
+        """
+        lon_r = np.radians(lon)
+        lat_r = np.radians(lat)
+        xyz = np.zeros((len(lon), 3))
+        xyz[:, 0] = R * np.cos(lat_r) * np.cos(lon_r)
+        xyz[:, 1] = R * np.cos(lat_r) * np.sin(lon_r)
+        xyz[:, 2] = R * np.sin(lat_r)
+        return xyz
+
+
+    def grid_data(lon_min, lon_len, lon_res, lat_min, lat_len, lat_res, data=None):
+        """
+        返回一个DataArray，其维度信息和grid描述一致，数组里面的值为0.
+        """
+        # 通过起始经纬度和格距计算经纬度格点数
+        lon = np.arange(lon_len) * lon_res + lon_min
+        lat = np.arange(lat_len) * lat_res + lat_min
+        if data is None:
+            data = np.zeros((lat_len, lon_len))
+        else:
+            data = data.reshape(lat_len, lon_len)
+
+        return xr.DataArray(
+            data, 
+            coords={
+                'lat': lat, 'lon': lon},
+            dims=['lat', 'lon']
+        )
+
+
+    def grd_info(vmin, vmax, vres):
+        vlen = 1 + (vmax - vmin) / vres
+        error = abs(round(vlen) - vlen)/vlen
+        if (error > 0.01):
+            vlen = int(math.ceil(vlen))
+        else:
+            vlen = int(round(vlen))
+        return (vmin, vlen, vres)
+
+
+    def interp_sg_idw(sta, lon_info, lat_info, effectR=1000, nearNum=8, decrease=2):
+        """站点到格点IDW插值
+        
+        Args:
+            sta(pd.Dataframe): 站点数据, lat, lon, data
+            lon_info(tuple): 目标网格的经度信息, (起始经度, 结束经度, 分辨率)
+            lat_info(tuple): 目标网格的纬度信息, (起始纬度, 结束纬度, 分辨率)
+            effectR(float): 最大的插值半径, 单位km
+            nearNum(int): 插值选择的临近站点的个数, nearNum =1时即为临近点插值
+            decrease(int): 站点权重随距离幂次衰减，即 站点权重 = 1 /(距离 ** decrease), 其中decrease是幂函数的指数部分参数
+
+        Returns:
+            (xr.DataArray): 插值后的网格
+        """
+        lon_min, lon_len, lon_res = grd_info(*lon_info)
+        lat_min, lat_len, lat_res = grd_info(*lat_info)
+        xyz_sta = lon_lat_to_cartesian(sta['lon'].values, sta['lat'].values, R=ER)
+        lon = np.arange(lon_len) * lon_res + lon_min
+        lat = np.arange(lat_len) * lat_res + lat_min
+        grid_lon, grid_lat = np.meshgrid(lon, lat)
+        xyz_grid = lon_lat_to_cartesian(grid_lon.flatten(), grid_lat.flatten(), R=ER)
+        tree = cKDTree(xyz_sta)
+        # d,inds 分别是站点到格点的距离和id
+        if nearNum > len(sta.index):
+            nearNum = len(sta.index)
+        d, inds = tree.query(xyz_grid, k=nearNum)
+        if nearNum > 1:
+            d += 1e-6
+            w = 1.0 / d ** decrease
+            input_dat = sta.values[:,-1]
+            dat = np.sum(w * input_dat[inds], axis=1) / np.sum(w, axis=1)
+            bg = grid_data(lon_min, lon_len, lon_res, lat_min, lat_len, lat_res)
+            bg_dat = bg.values.flatten()
+            dat = np.where(d[:, 0] > effectR, bg_dat, dat)
+        else:
+            input_dat = sta.iloc[:,-1].values
+            dat = input_dat[inds]
+            bg = grid_data(lon_min, lon_len, lon_res, lat_min, lat_len, lat_res)
+            bg_dat = bg.values.flatten()
+            dat = np.where(d[:] > effectR, bg_dat, dat)
+        dat = dat.astype(np.float32)
+        grd = grid_data(lon_min, lon_len, lon_res, lat_min, lat_len, lat_res, dat)
+        return grd
+
+
+    # 站点数据
+    df = pd.read_csv("UPA_obs.csv", sep=",", encoding="utf-8")
+    df = df[["latitude", "longitude", "temperature"]]
+    df = df.dropna(subset=["latitude", "longitude"], how="any")
+    df.index = range(len(df))
+    df["temperature"] = df["temperature"].astype(float)
+    df = df.rename(columns={"latitude": "lat", "longitude": "lon", "temperature": "value"})
+    lon_min, lon_max, lat_min, lat_max = df.lon.min(), df.lon.max(), df.lat.min(), df.lat.max()
+    lon_buffer = abs(lon_max - lon_min) * 0.1
+    lat_buffer = abs(lat_max - lat_min) * 0.1
+    nc_interp = interp_sg_idw(
+        df, 
+        (df.lon.min()-lon_buffer, df.lon.max()+lon_buffer, 0.1), 
+        (df.lat.min()-lat_buffer, df.lat.max()+lat_buffer, 0.1),
+        effectR=10000
+    )
+    xr.Dataset({"data": nc_interp}).to_netcdf("station_to_grid.nc")
+
+
+插值后的数据填色绘图如下：
+
+.. figure:: /_images/20250309/04.png
+   :alt: 站点IDW插值到网格
+
+站点数据和插值后的对比图如下：
+
+.. figure:: /_images/20250309/05.png
+   :alt: 站点数据插值到网格对比图
+
+从这个对比图可以看到原站点数值和插值后的数值之间的对应情况。
+
+    注：
+
+    从颜色分布来看，我注意到这个插值结果的数值似乎有些偏大，不知道是这个插值算法就该如此还是代码有问题，待后续研究。
+
+示例数据下载
+---------------------
+
+.. [1]
+   `UPA_obs.csv <https://github.com/Unidata/MetPy/blob/main/staticdata/UPA_obs.csv>`__
+
+.. [2]
+   `GFS_test.nc <https://github.com/Unidata/MetPy/blob/main/staticdata/GFS_test.nc>`__
