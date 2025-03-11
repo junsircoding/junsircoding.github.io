@@ -12,7 +12,8 @@ Matplotlib 等值线图自定义 label 标签位置
 
 比如下面这个代码：
 
-.. code:: python
+.. code-block:: python
+   :linenos:
 
    # -*- coding: utf-8 -*-
    import numpy as np
@@ -59,7 +60,8 @@ Matplotlib 等值线图自定义 label 标签位置
 
 修改后代码如下：
 
-.. code:: python
+.. code-block:: python
+   :linenos:
 
    # -*- coding: utf-8 -*-
    import numpy as np

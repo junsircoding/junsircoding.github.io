@@ -1,0 +1,129 @@
+用 QEMU 在 x86 架构的电脑上安装 ARM 系统
+==================================================
+
+最近工作中需要给 ARM 架构的服务器安装 Python 的 Conda 开发环境，而且服务器不能连接外网。
+手动安装有些繁琐，最方便的方式是在另一台相同配置的机器上安装好，然后将环境整体打包上传到服务器。
+
+但是我手头的电脑都是 x86 架构，在不购买云服务器的情况下，怎样才能弄一台 ARM 的机器呢？
+查了一下有一个虚拟机软件叫 QEMU，可以安装 ARM 的镜像，虽然性能有很大的折扣，但是是完全能用的，可以满足我测试环境的需求。
+下面就把这一过程记录一下。
+
+安装步骤
+-------------
+
+下载前置所需文件：
+
+- CentOS7 系统镜像：https://mirrors.bfsu.edu.cn/centos-altarch/7.9.2009/isos/aarch64/CentOS-7-aarch64-Minimal-2009.iso
+- Miniforge 安装包：https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
+- UEFI 固件：http://releases.linaro.org/components/kernel/uefi-linaro/16.02/release/qemu64/
+
+我使用的操作系统是基于 Ubuntu 的 Linux Mint 21 Cinnamon，首先使用 APT 自动安装 QEMU：
+
+.. code-block:: shell
+    :linenos:
+
+    sudo apt install -y qemu-system-arm
+
+创建一个 ``.img`` 的虚拟机文件，类似使用 VMware 时创建的 ``.vmdx`` 文件：
+
+.. code-block:: shell
+    :linenos:
+
+    qemu-img create -f raw -o size=30G CentOS_7_aarch64.img
+
+开始安装虚拟机：
+
+.. code-block:: shell
+    :linenos:
+
+
+    qemu-system-aarch64 \
+    -m 2048 \
+    -cpu cortex-a57 \
+    -smp 2 \
+    -M virt \
+    -bios QEMU_EFI.fd \
+    -nographic \
+    -drive if=none,file=CentOS-7-aarch64-Minimal-2009.iso,id=cdrom,media=cdrom \
+    -device virtio-scsi-device \
+    -device scsi-cd,drive=cdrom \
+    -drive if=none,file=CentOS_7_aarch64.img,id=hd0 \
+    -device virtio-blk-device,drive=hd0
+
+因为要指定虚拟机的各项配置信息，所以这个命令非常冗长。为了阅读方便，每个参数结束后后换行一次。这个安装界面全部是基于文字的，但设计思路与图形界面类似，根据提示操作即可。
+
+开启 sshd 服务：
+
+安装好之后，默认命令行界面比较小，无法显示完整的命令，开启 sshd 服务会方便一些。
+
+使用 sudo 权限编辑 ``/etc/ssh/sshd_config`` 文件，解除以下内容的注释：
+
+.. code-block:: shell
+    :linenos:
+
+    Port 22
+    ListenAddress 0.0.0.0
+    ListenAddress ::
+    PermitRootLogin yes
+    PasswordAuthentication yes
+
+开启 ssh 服务：
+
+.. code-block:: shell
+    :linenos:
+
+    sudo service sshd start
+
+验证 sshd 服务是否开启：
+
+.. code-block:: shell
+    :linenos:
+
+    ps -e | grep sshd
+    netstat -an | grep 22
+
+使用 ``sudo poweroff`` 关机后启动系统，需要添加转发 22 端口的配置：
+
+.. code-block:: shell
+    :linenos:
+
+    qemu-system-aarch64 \
+    -m 2048 \
+    -cpu cortex-a57  \
+    -smp 2 \
+    -M virt \
+    -bios QEMU_EFI.fd \
+    -nographic \
+    -drive if=none,id=system,format=raw,media=disk,file=CentOS_7_aarch64.img \
+    -device ramfb \
+    -device qemu-xhci,id=xhci -usb \
+    -device usb-kbd \
+    -device usb-mouse \
+    -device usb-tablet \
+    -k en-us \
+    -device virtio-blk,drive=system,bootindex=0 \
+    -net user,hostfwd=tcp::10021-:22 \
+    -net nic
+
+在本机使用 ssh 连接虚拟机：
+
+.. code-block:: shell
+    :linenos:
+
+    ssh -p 10021 tom@127.0.0.1
+
+参考资料
+----------------------
+
+1. X86 平台安装 ARM 虚拟机：https://www.cnblogs.com/linuxxl/p/11658387.html
+2. Centos7 开启 SSH 服务：https://www.cnblogs.com/kinwing/p/11134179.html
+3. Miniforge Github 仓库：https://github.com/conda-forge/miniforge
+4. QEMU 官网：https://www.qemu.org/
+5. Linux Mint 官网：https://www.linuxmint.com/
+
+视频讲解
+---------------------
+
+`在 x86 架构的电脑上安装 ARM 系统`_
+
+.. _在 x86 架构的电脑上安装 ARM 系统: https://www.bilibili.com/video/BV1VK411o7KT/

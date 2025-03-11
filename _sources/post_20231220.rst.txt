@@ -6,7 +6,6 @@ Matplotlib Axes 的位置参数到底如何设置？
 .. code-block:: python
     :linenos:
     
-
     import os
     import matplotlib as mpl
     import matplotlib.pyplot as plt

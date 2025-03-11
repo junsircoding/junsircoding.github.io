@@ -74,7 +74,7 @@ AWK 基本使用
     awk '1 { print }' file.txt
 
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -107,7 +107,7 @@ AWK 程序由一个或多个 ``pattern { action }`` 语句构成。
     # 或
     awk '1' file.txt
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -135,7 +135,7 @@ AWK 程序由一个或多个 ``pattern { action }`` 语句构成。
     # 与这样等效
     awk 'NR>1 { print }' file.txt
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -160,7 +160,7 @@ Record 切片
 
     awk 'NR>1 && NR<4' file.txt
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -186,7 +186,7 @@ Record 切片
 
     awk '/\S+/ { print }' file.txt
 
-.. code-block::
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -213,7 +213,7 @@ Record 切片
 对于仅含空白字符的 Record 或者仅含 *换行符* 的 Record ，当然就拆分不出 Field ，所以它们的 ``NF`` 就是 0，会被过滤掉。
 那么这个程序的输出为：
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -244,7 +244,7 @@ Record 切片
 
     awk '/[^\n]+/ { print }' file.txt
 
-.. code-block::
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -270,7 +270,7 @@ Record 切片
 也就是说对于每个 Record 的匹配规则是：每个 Record 用 *空字符串* 分隔后输出，每个 Record 的 pattern 都为 true，都会输出结果。
 运行结果是这样：
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -307,7 +307,7 @@ Record 切片
     因为在 action 的引号中的部分，加不加空格都是可以的，并没有严格的格式要求，
     换言之在里面指定输出的分隔符当然就是无效的。
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -345,7 +345,7 @@ Record 切片
 我们指定 Field 用逗号分隔，然后输出 Field 数量不为 0 的 Record，
 这样就会包含那个空格行。
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -366,7 +366,7 @@ Record 切片
 
     awk 'BEGIN { FS=OFS="," } NF { print $1,$3 }' file.txt
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -389,7 +389,7 @@ Record 切片
 
 输出为这样：
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     CREDITS,USER
@@ -414,7 +414,7 @@ AWK 可以编程，从而实现数学运算。现在我们将第一列中的数�
     # 运算符也可以这样写
     awk '{ SUM+=$1 } END { print SUM }' FS=, OFS=, file.txt
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -436,7 +436,7 @@ AWK 变量在使用前不需要声明，一个未定义的新变量的默认值�
 
     awk '/./ { COUNT+=1 } END { print COUNT }' file.txt
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -458,7 +458,7 @@ AWK 变量在使用前不需要声明，一个未定义的新变量的默认值�
 
     awk 'NF { COUNT+=1 } END { print COUNT }' file.txt
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -504,7 +504,7 @@ AWK 变量在使用前不需要声明，一个未定义的新变量的默认值�
         print(name, credit)
 
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出
@@ -521,7 +521,7 @@ AWK 变量在使用前不需要声明，一个未定义的新变量的默认值�
     awk '+$1 { CREDITS[$3]+=$1 }
     END { for (NAME in CREDITS) print NAME, CREDITS[NAME] }' FS=, file.txt
 
-.. code-block:: 
+.. code-block:: shell
     :linenos:
 
     # 输出

@@ -25,6 +25,8 @@
 
 
 
+
+
 <meta name='description' content='常用的AWK命令,AWK教程,AWK入门教程,AWK使用,常用的几个AWK命令,AWK变量,AWK切片,AWK计算非空行数'>
 
 
@@ -252,18 +254,18 @@
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;1 { print }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
-<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
-<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
-<span class="linenos"> 9</span><span class="n">这里有8个空格</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span>CREDITS,EXPDATE,USER,GROUPS
+<span class="linenos"> 3</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos"> 4</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 5</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 6</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
+<span class="linenos"> 7</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
+<span class="linenos"> 8</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
+<span class="linenos"> 9</span>这里有8个空格
 <span class="linenos">10</span>
 <span class="linenos">11</span>
-<span class="linenos">12</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+<span class="linenos">12</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
 </pre></div>
 </div>
 <p>AWK 程序由一个或多个 <code class="docutils literal notranslate"><span class="pre">pattern</span> <span class="pre">{</span> <span class="pre">action</span> <span class="pre">}</span></code> 语句构成。
@@ -277,18 +279,18 @@
 <span class="linenos">3</span>awk<span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
-<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
-<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
-<span class="linenos"> 9</span><span class="n">这里有8个空格</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span>CREDITS,EXPDATE,USER,GROUPS
+<span class="linenos"> 3</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos"> 4</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 5</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 6</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
+<span class="linenos"> 7</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
+<span class="linenos"> 8</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
+<span class="linenos"> 9</span>这里有8个空格
 <span class="linenos">10</span>
 <span class="linenos">11</span>
-<span class="linenos">12</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+<span class="linenos">12</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
 </pre></div>
 </div>
 </section>
@@ -300,17 +302,17 @@
 <span class="linenos">3</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1 { print }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
-<span class="linenos"> 2</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 3</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 5</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 6</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 7</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
-<span class="linenos"> 8</span><span class="n">这里有8个空格</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos"> 3</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 4</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 5</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
+<span class="linenos"> 6</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
+<span class="linenos"> 7</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
+<span class="linenos"> 8</span>这里有8个空格
 <span class="linenos"> 9</span>
 <span class="linenos">10</span>
-<span class="linenos">11</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+<span class="linenos">11</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
 </pre></div>
 </div>
 </section>
@@ -320,9 +322,9 @@
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1 &amp;&amp; NR&lt;4&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
-<span class="linenos">2</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos">3</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos">3</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
 </pre></div>
 </div>
 <p>可以看到只打印出了第 2、3 行。</p>
@@ -338,15 +340,15 @@
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;/\S+/ { print }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
-<span class="linenos">2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
-<span class="linenos">3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos">4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos">5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos">6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos">7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos">8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
-<span class="linenos">9</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span>CREDITS,EXPDATE,USER,GROUPS
+<span class="linenos">3</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos">4</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos">5</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos">6</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
+<span class="linenos">7</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
+<span class="linenos">8</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
+<span class="linenos">9</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
 </pre></div>
 </div>
 <p>可以看到，这样不仅把第 8 行的仅含空格的 Record 移除，也把第 9、10 行的仅含 <em>换行符</em> 的 Record 也移除掉了。</p>
@@ -358,15 +360,15 @@
 而我们知道 Field 是由 Record 拆分出来的，如果不特别指定，分隔符是 <code class="docutils literal notranslate"><span class="pre">FS</span></code> ，也就是 <em>空格</em> 。
 对于仅含空白字符的 Record 或者仅含 <em>换行符</em> 的 Record ，当然就拆分不出 Field ，所以它们的 <code class="docutils literal notranslate"><span class="pre">NF</span></code> 就是 0，会被过滤掉。
 那么这个程序的输出为：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
-<span class="linenos">2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
-<span class="linenos">3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos">4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos">5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos">6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos">7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos">8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
-<span class="linenos">9</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span>CREDITS,EXPDATE,USER,GROUPS
+<span class="linenos">3</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos">4</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos">5</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos">6</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
+<span class="linenos">7</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
+<span class="linenos">8</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
+<span class="linenos">9</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
 </pre></div>
 </div>
 </section>
@@ -381,17 +383,17 @@
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;/[^\n]+/ { print }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
 <span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
-<span class="linenos"> 4</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 6</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 7</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 8</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 9</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
-<span class="linenos">10</span><span class="n">这里有8个空格</span>
-<span class="linenos">11</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+<span class="linenos"> 3</span>CREDITS,EXPDATE,USER,GROUPS
+<span class="linenos"> 4</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos"> 5</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 6</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 7</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
+<span class="linenos"> 8</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
+<span class="linenos"> 9</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
+<span class="linenos">10</span>这里有8个空格
+<span class="linenos">11</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
 </pre></div>
 </div>
 <p>我们再看另一种写法：</p>
@@ -401,16 +403,16 @@
 <p>这个程序指定了 Record 的分隔符为 <em>空字符串</em> 。
 也就是说对于每个 Record 的匹配规则是：每个 Record 用 <em>空字符串</em> 分隔后输出，每个 Record 的 pattern 都为 true，都会输出结果。
 运行结果是这样：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
-<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">EXPDATE</span><span class="p">,</span><span class="n">USER</span><span class="p">,</span><span class="n">GROUPS</span>
-<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="mi">01</span> <span class="n">jun</span> <span class="mi">2018</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="mi">01</span>    <span class="n">dec</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="mi">01</span>    <span class="n">jan</span>   <span class="mi">2019</span><span class="p">,</span><span class="n">sonia</span><span class="p">,</span><span class="n">team</span>
-<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="mi">01</span> <span class="n">jan</span> <span class="mi">2019</span><span class="p">,</span><span class="n">sylvain</span><span class="p">,</span><span class="n">team</span><span class="p">:::</span><span class="n">admin</span>
-<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span>    <span class="n">jun</span>   <span class="mi">2018</span><span class="p">,</span><span class="n">öle</span><span class="p">,</span><span class="n">team</span><span class="p">:</span><span class="n">support</span>
-<span class="linenos"> 9</span><span class="n">这里有8个空格</span>
-<span class="linenos">10</span><span class="mi">17</span><span class="p">,</span><span class="mi">05</span> <span class="n">apr</span> <span class="mi">2019</span><span class="p">,</span><span class="n">abhishek</span><span class="p">,</span><span class="n">guest</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span>CREDITS,EXPDATE,USER,GROUPS
+<span class="linenos"> 3</span><span class="m">99</span>,01<span class="w"> </span>jun<span class="w"> </span><span class="m">2018</span>,sylvain,team:::admin
+<span class="linenos"> 4</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 5</span><span class="m">52</span>,01<span class="w">    </span>dec<span class="w">   </span><span class="m">2018</span>,sonia,team
+<span class="linenos"> 6</span><span class="m">25</span>,01<span class="w">    </span>jan<span class="w">   </span><span class="m">2019</span>,sonia,team
+<span class="linenos"> 7</span><span class="m">10</span>,01<span class="w"> </span>jan<span class="w"> </span><span class="m">2019</span>,sylvain,team:::admin
+<span class="linenos"> 8</span><span class="m">8</span>,12<span class="w">    </span>jun<span class="w">   </span><span class="m">2018</span>,öle,team:support
+<span class="linenos"> 9</span>这里有8个空格
+<span class="linenos">10</span><span class="m">17</span>,05<span class="w"> </span>apr<span class="w"> </span><span class="m">2019</span>,abhishek,guest
 </pre></div>
 </div>
 <p>可以看到也可以达到目的，
@@ -432,18 +434,18 @@
 因为在 action 的引号中的部分，加不加空格都是可以的，并没有严格的格式要求，
 换言之在里面指定输出的分隔符当然就是无效的。</p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
-<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">USER</span>
-<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="n">sylvain</span>
-<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="n">sylvain</span>
-<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="n">öle</span>
-<span class="linenos"> 9</span>        <span class="p">,</span>
-<span class="linenos">10</span><span class="p">,</span>
-<span class="linenos">11</span><span class="p">,</span>
-<span class="linenos">12</span><span class="mi">17</span><span class="p">,</span><span class="n">abhishek</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span>CREDITS,USER
+<span class="linenos"> 3</span><span class="m">99</span>,sylvain
+<span class="linenos"> 4</span><span class="m">52</span>,sonia
+<span class="linenos"> 5</span><span class="m">52</span>,sonia
+<span class="linenos"> 6</span><span class="m">25</span>,sonia
+<span class="linenos"> 7</span><span class="m">10</span>,sylvain
+<span class="linenos"> 8</span><span class="m">8</span>,öle
+<span class="linenos"> 9</span><span class="w">        </span>,
+<span class="linenos">10</span>,
+<span class="linenos">11</span>,
+<span class="linenos">12</span><span class="m">17</span>,abhishek
 </pre></div>
 </div>
 <p>现在我们可以看到，已经把第一列和第三列提取出来了，并且以逗号为分隔符。
@@ -459,32 +461,32 @@
 </div>
 <p>我们指定 Field 用逗号分隔，然后输出 Field 数量不为 0 的 Record，
 这样就会包含那个空格行。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
-<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">USER</span>
-<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="n">sylvain</span>
-<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="n">sylvain</span>
-<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="n">öle</span>
-<span class="linenos"> 9</span>        <span class="p">,</span>
-<span class="linenos">10</span><span class="mi">17</span><span class="p">,</span><span class="n">abhishek</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span>CREDITS,USER
+<span class="linenos"> 3</span><span class="m">99</span>,sylvain
+<span class="linenos"> 4</span><span class="m">52</span>,sonia
+<span class="linenos"> 5</span><span class="m">52</span>,sonia
+<span class="linenos"> 6</span><span class="m">25</span>,sonia
+<span class="linenos"> 7</span><span class="m">10</span>,sylvain
+<span class="linenos"> 8</span><span class="m">8</span>,öle
+<span class="linenos"> 9</span><span class="w">        </span>,
+<span class="linenos">10</span><span class="m">17</span>,abhishek
 </pre></div>
 </div>
 <p>这个例子里我们是手动指定的 FS 和 OFS 值，还有一种更具有编程风格的写法，可以把变量赋值写在一个 BEGIN 块中：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;BEGIN { FS=OFS=&quot;,&quot; } NF { print $1,$3 }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
-<span class="linenos"> 2</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">USER</span>
-<span class="linenos"> 3</span><span class="mi">99</span><span class="p">,</span><span class="n">sylvain</span>
-<span class="linenos"> 4</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 5</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 6</span><span class="mi">25</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos"> 7</span><span class="mi">10</span><span class="p">,</span><span class="n">sylvain</span>
-<span class="linenos"> 8</span><span class="mi">8</span><span class="p">,</span><span class="n">öle</span>
-<span class="linenos"> 9</span>        <span class="p">,</span>
-<span class="linenos">10</span><span class="mi">17</span><span class="p">,</span><span class="n">abhishek</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 输出</span>
+<span class="linenos"> 2</span>CREDITS,USER
+<span class="linenos"> 3</span><span class="m">99</span>,sylvain
+<span class="linenos"> 4</span><span class="m">52</span>,sonia
+<span class="linenos"> 5</span><span class="m">52</span>,sonia
+<span class="linenos"> 6</span><span class="m">25</span>,sonia
+<span class="linenos"> 7</span><span class="m">10</span>,sylvain
+<span class="linenos"> 8</span><span class="m">8</span>,öle
+<span class="linenos"> 9</span><span class="w">        </span>,
+<span class="linenos">10</span><span class="m">17</span>,abhishek
 </pre></div>
 </div>
 <p>这个例子也可以这样写：</p>
@@ -492,14 +494,14 @@
 </pre></div>
 </div>
 <p>输出为这样：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">CREDITS</span><span class="p">,</span><span class="n">USER</span>
-<span class="linenos">2</span><span class="mi">99</span><span class="p">,</span><span class="n">sylvain</span>
-<span class="linenos">3</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos">4</span><span class="mi">52</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos">5</span><span class="mi">25</span><span class="p">,</span><span class="n">sonia</span>
-<span class="linenos">6</span><span class="mi">10</span><span class="p">,</span><span class="n">sylvain</span>
-<span class="linenos">7</span><span class="mi">8</span><span class="p">,</span><span class="n">öle</span>
-<span class="linenos">8</span><span class="mi">17</span><span class="p">,</span><span class="n">abhishek</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>CREDITS,USER
+<span class="linenos">2</span><span class="m">99</span>,sylvain
+<span class="linenos">3</span><span class="m">52</span>,sonia
+<span class="linenos">4</span><span class="m">52</span>,sonia
+<span class="linenos">5</span><span class="m">25</span>,sonia
+<span class="linenos">6</span><span class="m">10</span>,sylvain
+<span class="linenos">7</span><span class="m">8</span>,öle
+<span class="linenos">8</span><span class="m">17</span>,abhishek
 </pre></div>
 </div>
 </section>
@@ -511,8 +513,8 @@
 <span class="linenos">3</span>awk<span class="w"> </span><span class="s1">&#39;{ SUM+=$1 } END { print SUM }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
-<span class="linenos">2</span><span class="mi">263</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="m">263</span>
 </pre></div>
 </div>
 <p>AWK 变量在使用前不需要声明，一个未定义的新变量的默认值是 <em>空字符串</em> ，等效于数字 <code class="docutils literal notranslate"><span class="pre">0</span></code> 。
@@ -525,8 +527,8 @@
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;/./ { COUNT+=1 } END { print COUNT }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
-<span class="linenos">2</span><span class="mi">9</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="m">9</span>
 </pre></div>
 </div>
 <p>这个程序中，我们逐 Record 遍历输入数据流，如果 Record 能够匹配正则 <code class="docutils literal notranslate"><span class="pre">/./</span></code> ，那么变量 COUNT 就加 <code class="docutils literal notranslate"><span class="pre">1</span></code> 。
@@ -538,8 +540,8 @@
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NF { COUNT+=1 } END { print COUNT }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
-<span class="linenos">2</span><span class="mi">8</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span><span class="m">8</span>
 </pre></div>
 </div>
 <p>如果想把第一行的表头也忽略，可以这样写：</p>
@@ -575,11 +577,11 @@
 <span class="linenos">20</span>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">credit</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
-<span class="linenos">2</span><span class="n">sylvain</span> <span class="mi">109</span>
-<span class="linenos">3</span><span class="n">sonia</span> <span class="mi">129</span>
-<span class="linenos">4</span><span class="n">öle</span> <span class="mi">8</span>
-<span class="linenos">5</span><span class="n">abhishek</span> <span class="mi">17</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span>sylvain<span class="w"> </span><span class="m">109</span>
+<span class="linenos">3</span>sonia<span class="w"> </span><span class="m">129</span>
+<span class="linenos">4</span>öle<span class="w"> </span><span class="m">8</span>
+<span class="linenos">5</span>abhishek<span class="w"> </span><span class="m">17</span>
 </pre></div>
 </div>
 <p>用 AWK 可以这样写：</p>
@@ -587,11 +589,11 @@
 <span class="linenos">2</span><span class="s1">END { for (NAME in CREDITS) print NAME, CREDITS[NAME] }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span>file.txt
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
-<span class="linenos">2</span><span class="n">abhishek</span> <span class="mi">1</span>
-<span class="linenos">3</span><span class="n">sonia</span> <span class="mi">3</span>
-<span class="linenos">4</span><span class="n">öle</span> <span class="mi">1</span>
-<span class="linenos">5</span><span class="n">sylvain</span> <span class="mi">2</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 输出</span>
+<span class="linenos">2</span>abhishek<span class="w"> </span><span class="m">1</span>
+<span class="linenos">3</span>sonia<span class="w"> </span><span class="m">3</span>
+<span class="linenos">4</span>öle<span class="w"> </span><span class="m">1</span>
+<span class="linenos">5</span>sylvain<span class="w"> </span><span class="m">2</span>
 </pre></div>
 </div>
 <p>简洁是很简洁，但是开始还是有些不好理解。

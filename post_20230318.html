@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<title>用 QEMU 在 x86 架构的电脑上安装 ARM 系统
+    
+    -小骏的博客
+    
+</title>
+
+
+
+
+<meta name='description' content='qemu,x86,arm,虚拟环境,虚拟机'>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=23252803" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=3d2a89a3" />
+    
+    <script src="_static/documentation_options.js?v=91bfbbb6"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/custom.js?v=b7a94a21"></script>
+    
+    <link rel="canonical" href="https://junsircoding.github.io/post_20230318.html" />
+    <link rel="icon" href="_static/favicon.ico"/>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="prev" title="用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar" href="post_20230527.html" />
+<link rel="stylesheet" href="_static/pydoctheme_dark.css" media="(prefers-color-scheme: dark)" id="pydoctheme_dark_css">
+    <link rel="shortcut icon" type="image/png" href="_static/favicon.svg" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4178487904865687" crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-4178487904865687">
+            <script type="text/javascript" src="_static/copybutton.js"></script>
+            <script type="text/javascript" src="_static/menu.js"></script>
+            <script type="text/javascript" src="_static/search-focus.js"></script> 
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "kb72rmcxcn");
+</script>
+
+  </head>
+<body>
+<div class="mobile-nav">
+    <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+    <nav class="nav-content" role="navigation">
+        <label for="menuToggler" class="toggler__label">
+            <span></span>
+        </label>
+        <span class="nav-items-wrapper">
+            <a href="https://junsircoding.github.io" class="nav-logo">
+                <img src="_static/favicon.svg" alt="小骏的博客"/>
+            </a>
+            <span class="version_switcher_placeholder"></span>
+            <form role="search" class="search" action="search.html" method="get">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="search-icon">
+                    <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+                <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" />
+                <input type="submit" value="提交"/>
+            </form>
+        </span>
+    </nav>
+    <div class="menu-wrapper">
+        <nav class="menu" role="navigation" aria-label="main navigation">
+            <div class="language_switcher_placeholder"></div>
+            
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="changeTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label>
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">用 QEMU 在 x86 架构的电脑上安装 ARM 系统</a><ul>
+<li><a class="reference internal" href="#id1">安装步骤</a></li>
+<li><a class="reference internal" href="#id2">参考资料</a></li>
+<li><a class="reference internal" href="#id3">视频讲解</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="post_20230527.html"
+                          title="上一章">用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar</a></p>
+  </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </nav>
+    </div>
+</div>
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>导航</h3>
+      <ul>
+          <li><img src="_static/favicon.svg" alt="小骏的博客" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://junsircoding.github.io">小骏的博客</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+          </li>
+
+            <li class="nav-item nav-item-this"><a href="">用 QEMU 在 x86 架构的电脑上安装 ARM 系统</a></li>
+
+            
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
+          <input type="submit" value="提交" />
+        </form>
+    </div>
+                </li>
+            <li class="right">
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="changeTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label> |</li>
+            
+      </ul>
+    </div>  
+  
+
+<div class="document">
+  <div class="documentwrapper">
+    
+    <div class="bodywrapper">
+            
+            <div class="body" role="main">
+                
+  <section id="qemu-x86-arm">
+<h1>用 QEMU 在 x86 架构的电脑上安装 ARM 系统<a class="headerlink" href="#qemu-x86-arm" title="Link to this heading">¶</a></h1>
+<p>最近工作中需要给 ARM 架构的服务器安装 Python 的 Conda 开发环境，而且服务器不能连接外网。
+手动安装有些繁琐，最方便的方式是在另一台相同配置的机器上安装好，然后将环境整体打包上传到服务器。</p>
+<p>但是我手头的电脑都是 x86 架构，在不购买云服务器的情况下，怎样才能弄一台 ARM 的机器呢？
+查了一下有一个虚拟机软件叫 QEMU，可以安装 ARM 的镜像，虽然性能有很大的折扣，但是是完全能用的，可以满足我测试环境的需求。
+下面就把这一过程记录一下。</p>
+<section id="id1">
+<h2>安装步骤<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<p>下载前置所需文件：</p>
+<ul class="simple">
+<li><p>CentOS7 系统镜像：<a class="reference external" href="https://mirrors.bfsu.edu.cn/centos-altarch/7.9.2009/isos/aarch64/CentOS-7-aarch64-Minimal-2009.iso">https://mirrors.bfsu.edu.cn/centos-altarch/7.9.2009/isos/aarch64/CentOS-7-aarch64-Minimal-2009.iso</a></p></li>
+<li><p>Miniforge 安装包：<a class="reference external" href="https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh">https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh</a></p></li>
+<li><p>UEFI 固件：<a class="reference external" href="http://releases.linaro.org/components/kernel/uefi-linaro/16.02/release/qemu64/">http://releases.linaro.org/components/kernel/uefi-linaro/16.02/release/qemu64/</a></p></li>
+</ul>
+<p>我使用的操作系统是基于 Ubuntu 的 Linux Mint 21 Cinnamon，首先使用 APT 自动安装 QEMU：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>qemu-system-arm
+</pre></div>
+</div>
+<p>创建一个 <code class="docutils literal notranslate"><span class="pre">.img</span></code> 的虚拟机文件，类似使用 VMware 时创建的 <code class="docutils literal notranslate"><span class="pre">.vmdx</span></code> 文件：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>qemu-img<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>raw<span class="w"> </span>-o<span class="w"> </span><span class="nv">size</span><span class="o">=</span>30G<span class="w"> </span>CentOS_7_aarch64.img
+</pre></div>
+</div>
+<p>开始安装虚拟机：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>qemu-system-aarch64<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 2</span>-m<span class="w"> </span><span class="m">2048</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 3</span>-cpu<span class="w"> </span>cortex-a57<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 4</span>-smp<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 5</span>-M<span class="w"> </span>virt<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 6</span>-bios<span class="w"> </span>QEMU_EFI.fd<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 7</span>-nographic<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 8</span>-drive<span class="w"> </span><span class="k">if</span><span class="o">=</span>none,file<span class="o">=</span>CentOS-7-aarch64-Minimal-2009.iso,id<span class="o">=</span>cdrom,media<span class="o">=</span>cdrom<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 9</span>-device<span class="w"> </span>virtio-scsi-device<span class="w"> </span><span class="se">\</span>
+<span class="linenos">10</span>-device<span class="w"> </span>scsi-cd,drive<span class="o">=</span>cdrom<span class="w"> </span><span class="se">\</span>
+<span class="linenos">11</span>-drive<span class="w"> </span><span class="k">if</span><span class="o">=</span>none,file<span class="o">=</span>CentOS_7_aarch64.img,id<span class="o">=</span>hd0<span class="w"> </span><span class="se">\</span>
+<span class="linenos">12</span>-device<span class="w"> </span>virtio-blk-device,drive<span class="o">=</span>hd0
+</pre></div>
+</div>
+<p>因为要指定虚拟机的各项配置信息，所以这个命令非常冗长。为了阅读方便，每个参数结束后后换行一次。这个安装界面全部是基于文字的，但设计思路与图形界面类似，根据提示操作即可。</p>
+<p>开启 sshd 服务：</p>
+<p>安装好之后，默认命令行界面比较小，无法显示完整的命令，开启 sshd 服务会方便一些。</p>
+<p>使用 sudo 权限编辑 <code class="docutils literal notranslate"><span class="pre">/etc/ssh/sshd_config</span></code> 文件，解除以下内容的注释：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>Port<span class="w"> </span><span class="m">22</span>
+<span class="linenos">2</span>ListenAddress<span class="w"> </span><span class="m">0</span>.0.0.0
+<span class="linenos">3</span>ListenAddress<span class="w"> </span>::
+<span class="linenos">4</span>PermitRootLogin<span class="w"> </span>yes
+<span class="linenos">5</span>PasswordAuthentication<span class="w"> </span>yes
+</pre></div>
+</div>
+<p>开启 ssh 服务：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>start
+</pre></div>
+</div>
+<p>验证 sshd 服务是否开启：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>ps<span class="w"> </span>-e<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>sshd
+<span class="linenos">2</span>netstat<span class="w"> </span>-an<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">22</span>
+</pre></div>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">poweroff</span></code> 关机后启动系统，需要添加转发 22 端口的配置：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>qemu-system-aarch64<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 2</span>-m<span class="w"> </span><span class="m">2048</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 3</span>-cpu<span class="w"> </span>cortex-a57<span class="w">  </span><span class="se">\</span>
+<span class="linenos"> 4</span>-smp<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 5</span>-M<span class="w"> </span>virt<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 6</span>-bios<span class="w"> </span>QEMU_EFI.fd<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 7</span>-nographic<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 8</span>-drive<span class="w"> </span><span class="k">if</span><span class="o">=</span>none,id<span class="o">=</span>system,format<span class="o">=</span>raw,media<span class="o">=</span>disk,file<span class="o">=</span>CentOS_7_aarch64.img<span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 9</span>-device<span class="w"> </span>ramfb<span class="w"> </span><span class="se">\</span>
+<span class="linenos">10</span>-device<span class="w"> </span>qemu-xhci,id<span class="o">=</span>xhci<span class="w"> </span>-usb<span class="w"> </span><span class="se">\</span>
+<span class="linenos">11</span>-device<span class="w"> </span>usb-kbd<span class="w"> </span><span class="se">\</span>
+<span class="linenos">12</span>-device<span class="w"> </span>usb-mouse<span class="w"> </span><span class="se">\</span>
+<span class="linenos">13</span>-device<span class="w"> </span>usb-tablet<span class="w"> </span><span class="se">\</span>
+<span class="linenos">14</span>-k<span class="w"> </span>en-us<span class="w"> </span><span class="se">\</span>
+<span class="linenos">15</span>-device<span class="w"> </span>virtio-blk,drive<span class="o">=</span>system,bootindex<span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">16</span>-net<span class="w"> </span>user,hostfwd<span class="o">=</span>tcp::10021-:22<span class="w"> </span><span class="se">\</span>
+<span class="linenos">17</span>-net<span class="w"> </span>nic
+</pre></div>
+</div>
+<p>在本机使用 ssh 连接虚拟机：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>ssh<span class="w"> </span>-p<span class="w"> </span><span class="m">10021</span><span class="w"> </span>tom@127.0.0.1
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>参考资料<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>X86 平台安装 ARM 虚拟机：<a class="reference external" href="https://www.cnblogs.com/linuxxl/p/11658387.html">https://www.cnblogs.com/linuxxl/p/11658387.html</a></p></li>
+<li><p>Centos7 开启 SSH 服务：<a class="reference external" href="https://www.cnblogs.com/kinwing/p/11134179.html">https://www.cnblogs.com/kinwing/p/11134179.html</a></p></li>
+<li><p>Miniforge Github 仓库：<a class="reference external" href="https://github.com/conda-forge/miniforge">https://github.com/conda-forge/miniforge</a></p></li>
+<li><p>QEMU 官网：<a class="reference external" href="https://www.qemu.org/">https://www.qemu.org/</a></p></li>
+<li><p>Linux Mint 官网：<a class="reference external" href="https://www.linuxmint.com/">https://www.linuxmint.com/</a></p></li>
+</ol>
+</section>
+<section id="id3">
+<h2>视频讲解<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://www.bilibili.com/video/BV1VK411o7KT/">在 x86 架构的电脑上安装 ARM 系统</a></p>
+</section>
+</section>
+
+
+
+        <script>
+            function loadUtterances(theme) {
+                const script = document.createElement('script');
+                script.src = 'https://utteranc.es/client.js';
+                script.setAttribute('repo', 'junsircoding/blog_comments');
+                script.setAttribute('label', 'blog comments');
+                script.setAttribute('issue-term', 'title');
+                script.setAttribute('theme', theme === 'dark' ? 'github-dark' : 'github-light');
+                script.setAttribute('crossorigin', 'anonymous');
+                script.async = true;
+                const utterancesContainer = document.getElementById('utterances-container');
+                utterancesContainer.innerHTML = '';
+                utterancesContainer.appendChild(script);
+            }
+        
+            const pydocthemeDark = document.getElementById('pydoctheme_dark_css')
+            const pygmentsDark = document.getElementById('pygments_dark_css')
+            const themeSelectors = document.getElementsByClassName('theme-selector')
+
+            function activateTheme(theme) {
+                localStorage.setItem('currentTheme', theme);
+                [...themeSelectors].forEach(e => e.value = theme)
+                switch (theme) {
+                    case 'light':
+                    pydocthemeDark.media = 'not all'
+                    pygmentsDark.media = 'not all'
+                    break;
+                    case 'dark':
+                    pydocthemeDark.media = 'all'
+                    pygmentsDark.media = 'all'
+                    break;
+                    default:
+                    // auto
+                    pydocthemeDark.media = '(prefers-color-scheme: dark)'
+                    pygmentsDark.media = '(prefers-color-scheme: dark)'
+                }
+            }
+
+            function changeTheme(value) {
+                const theme = value === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : value;
+                document.documentElement.setAttribute('data-theme', theme);
+                activateTheme(value)
+                loadUtterances(theme);
+            }
+            
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize theme on page load
+                const initialTheme = document.documentElement.getAttribute('data-theme') || 'auto';
+                const currentTheme = initialTheme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
+                loadUtterances(currentTheme);
+                activateTheme(initialTheme);
+            });
+        </script>
+        
+        <hr/>
+        <h1>欢迎评论：</h1>
+        <!-- Utterances comments section -->
+        <div id="utterances-container"></div>
+        
+
+        <div class="clearer"></div>
+      </div>
+    </div>
+    
+
+  </div>
+  
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">用 QEMU 在 x86 架构的电脑上安装 ARM 系统</a><ul>
+<li><a class="reference internal" href="#id1">安装步骤</a></li>
+<li><a class="reference internal" href="#id2">参考资料</a></li>
+<li><a class="reference internal" href="#id3">视频讲解</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+  
+  
+
+    <div class="clearer"></div>
+</div> 
+<div class="related">
+    <ul>
+        <li class="nav-item nav-item-this">
+            &copy; 
+            版权所有
+             2023-2025, 小骏不抬杠.
+        </li>
+        &nbsp;&nbsp;&nbsp;
+        <li class="nav-item nav-item-this"><a href="mailto:junsircoding@foxmail.com" target="_blank">Email</a></li>
+        &nbsp;&nbsp;&nbsp;
+        <li class="nav-item nav-item-this"><a href="https://space.bilibili.com/39994473/video" target="_blank">Bilibili</a></li>
+    </ul>
+</div>
+
+  </body>
+</html>
