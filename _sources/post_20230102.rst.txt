@@ -1,0 +1,127 @@
+在 M1 芯片的 Mac 上部署本地 Stable Diffusion
+========================================================
+
+最近这几个月，互联网上有关 AI 的消息非常热门，不管是 AI 绘图还是 ChatGPT AI 问答机器人都非常有意思。
+但是好像涉及这种人工智能的项目都需要比较好的显卡来进行模型的运算，我们普通的 PC 一般只有内置的显卡，性能比较拉跨，大概是支持不了这样的项目。
+
+但是 Mac 的 M1/M2 系列芯片性能提升了那么多，能不能运行这样的 AI 绘图项目呢？
+查了一下还真可以，下面记录一下部署过程。
+我的电脑是 M1 芯片的 MacBook Air 8GB 版本，如果你的电脑是 Apple 芯片的 Mac，那么这个教程对于你应该是适用的。
+内存 16 GB 比较好，8 GB 也勉强能运行，只是绘图的时候电脑会有点卡，没法运行别的程序。
+
+部署步骤
+---------------------
+
+
+AI 绘图的项目有很多，我查到的案例是部署 Stable Diffusion，项目的 Github 仓库地址是：
+
+.. code-block:: shell
+    :linenos:
+
+    https://github.com/bfirsh/stable-diffusion.git
+
+.. figure:: /_images/20230102/00.avif
+   :alt: Stable Diffusion 项目的 README
+
+首先将项目克隆下来，并直接切到 
+
+
+.. code-block:: shell
+    :linenos:
+
+    # 克隆仓库
+    git clone git@github.com:bfirsh/stable-diffusion.git
+    # 切换分支
+    git checkout apple-silicon-mps-support
+
+然后根据项目提供的 ``enviroment-mac.yaml`` 创建虚拟环境，环境的名称是 ``ldm`` ：
+
+
+.. code-block:: shell
+    :linenos:
+
+    # 创建虚拟环境
+    conda env create -f environment-mac.yaml
+    # 激活虚拟环境
+    conda activate ldm
+
+因为 AI 绘图的核心是要读取预先训练好的模型，而这个模型文件比较大（4GB左右），没有附带在项目中，需要另外下载。
+我们进入 Hugging Face 网站，下载最新的模型文件 ``sd-v1-4.ckpt`` 。
+
+.. figure:: /_images/20230102/01.avif
+   :alt: Hugging Face 网站，在这里下载模型
+
+下载完毕后，将模型文件放到项目的 ``models/ldm/stable-diffusion-v1`` 目录下，重命名为 ``model.ckpt`` 。
+
+
+仔细看过 README 文件后我们可以知道，这个项目可以将「文字转图片」，也可以将「图片转图片」。
+但是我试了一下我的电脑没法运行「图片转图片」，应该是需要更大的内存。
+
+「文字转图片」中，关键的参数就是图片的描述语句，即 ``prompt`` 。
+现在我们就可以开始绘图了，我从网上搜了几条比较简单的 ``prompt`` 试了一下：
+
+.. code-block:: shell
+    :linenos:
+
+    python scripts/txt2img.py \
+    --prompt &quot;Pretty Young Girl, Lying down, acrylic painting.&quot; \
+    --n_samples 1 --n_iter 1 --plms
+
+注意：
+
+首次运行可能会报这样的错：
+
+
+.. code-block:: shell
+    :linenos:
+
+    RuntimeError: MPS backend out of memory (MPS allocated: 5.16 GB, other allocations: 3.49 GB, max allowed: 9.07 GB). 
+    Tried to allocate 1024.00 MB on private pool. 
+    Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+
+这应该是内存太小导致的，我们在终端设置一个环境变量可以忽略这个限制：
+
+
+.. code-block:: shell
+    :linenos:
+
+    export PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0
+
+设置完毕后，再次尝试绘图。
+
+.. figure:: /_images/20230102/02.avif
+   :alt: Stable Diffusion 绘图示例 1
+
+稍微改一下 prompt：
+
+.. code-block:: shell
+    :linenos:
+
+    python scripts/txt2img.py \
+    --prompt &quot;Cute Blue Cat, acrylic painting.&quot; \
+    --n_samples 1 --n_iter 1 --plms
+
+.. figure:: /_images/20230102/03.avif
+   :alt: Stable Diffusion 绘图示例 2
+
+是不是还蛮好看的。
+
+理论上 prompt 应该小于等于 400 个单词，我们可以参考网上写的比较好的 prompt，然后自行修改进行绘图。
+用这样的方式得到的图片很精美，暂时也不会有版权问题，非常适合给你的原创作品锦上添花。
+如果你的英文不错，还有一些艺术鉴赏相关的知识，可能会画出意想不到的作品，快来试试吧。
+
+参考资料
+---------------------
+
+1. Stable Diffusion Github 仓库：https://github.com/bfirsh/stable-diffusion
+2. 英文版参考博客：https://replicate.com/blog/run-stable-diffusion-on-m1-mac
+3. 模型下载：https://huggingface.co/CompVis/stable-diffusion-v-1-4-original
+
+
+视频讲解
+---------------------
+
+`在 M1 芯片的 Mac 上部署 Stable Diffusion AI 绘图`_
+
+.. _在 M1 芯片的 Mac 上部署 Stable Diffusion AI 绘图: https://www.bilibili.com/video/BV1qP4y1i7BQ/
+
