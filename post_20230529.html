@@ -207,7 +207,10 @@
   <section id="id1">
 <h1>气象数据的各种插值问题<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>到目前为止，我接触到的气象相关数据有 <strong>等经纬度网格数据</strong> 和 <strong>站点数据</strong>。</p>
-<p>注：为叙述简便，<strong>等经纬度网格数据</strong> 以下简称 <strong>网格数据</strong> 。数据下载来源点击这里： <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">站点数据</a> （搜索 <code class="docutils literal notranslate"><span class="pre">station</span></code> ）， <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">网格数据</a> 。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>为叙述简便，<strong>等经纬度网格数据</strong> 以下简称 <strong>网格数据</strong> 。数据下载来源点击这里： <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">站点数据</a> （搜索 <code class="docutils literal notranslate"><span class="pre">station</span></code> ）， <a class="reference external" href="https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset">网格数据</a> 。</p>
+</div>
 <p><strong>站点数据</strong> 就是个二维数据表，一般是 CSV 或者其他文本格式，这里我使用 <em>test_station.csv</em> <a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> 文件。</p>
 <p>通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Pandas</a> 读取：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -512,9 +515,10 @@
 就是二维的站点数据转为三维的网格数据。</p>
 <p><strong>这一步骤不是必须的</strong> ，只是为了能直观的用 Panoply 快速查看站点数据的分布情况。当然你也可以用 <a class="reference external" href="https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py">Matplotlib</a> 绘制站点数据的散点图。</p>
 <p>代码最后注释标出的快速版的时间比慢速版的还要慢，这是正常的，这是因为示例数据数据量较少。当数据量很大，数据精度很高时，耗时的区别就非常明显了，可以自行尝试。</p>
-<blockquote>
-<div><p>注：站点数据要保证同一经纬度是唯一的，这里的示例数据因为源数据有其他维度，所以同一经纬度的数据不唯一，我在读取的时候手动去重了。</p>
-</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>站点数据要保证同一经纬度是唯一的，这里的示例数据因为源数据有其他维度，所以同一经纬度的数据不唯一，我在读取的时候手动去重了。</p>
+</div>
 <p>这个数据用 Panoply 预览是这样：</p>
 <figure class="align-default" id="id23">
 <img alt="站点数据转为三维网格数据预览" src="_images/04.png" />

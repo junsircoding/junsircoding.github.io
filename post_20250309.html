@@ -202,14 +202,14 @@
                 
   <section id="id1">
 <h1>处理气象数据常用的插值方法<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
-<blockquote>
-<div><p>注：</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
 <p>这篇文章与 <a class="reference external" href="https://junsircoding.github.io/post_20230529.html">气象数据的各种插值问题</a> 内容大致相同，是它的重构版。相比旧版，修改了 IDW 插值的代码，删掉了一些与主题关联不大的段落。
 这个版本的 IDW 插值函数无须安装第三方库，仅依赖基础的 <a class="reference external" href="https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py">Scipy</a> 库即可使用。
 实际工作时，有时不太方便因为要使用一个功能，而在已有的 Python 中环境继续安装其他扩展库，一是 conda 环境中安装的库越多，
 再新增库就越慢；二是有可能会连带修改其他库的版本，导致业务中有些代码不能使用。
 所以针对单一功能以提取出仅依赖基础库就能使用的版本为宜。</p>
-</div></blockquote>
+</div>
 <p>气象业务当中，比较常见的数据形式有 <strong>站点数据</strong> 和 <strong>网格数据</strong>  。</p>
 <section id="id3">
 <h2>站点数据<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
@@ -663,10 +663,10 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 <img alt="站点数据插值到网格对比图" src="_images/051.png" />
 </figure>
 <p>从这个对比图可以看到原站点数值和插值后的数值之间的对应情况。</p>
-<blockquote>
-<div><p>注：</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
 <p>从颜色分布来看，我注意到这个插值结果的数值似乎有些偏大，不知道是这个插值算法就该如此还是代码有问题，待后续研究。</p>
-</div></blockquote>
+</div>
 </section>
 <section id="id10">
 <h2>示例数据下载<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h2>
