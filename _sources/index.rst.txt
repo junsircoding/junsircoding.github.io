@@ -1,9 +1,9 @@
-.. 小骏的博客 documentation master file, created by
+.. 小骏不抬杠 documentation master file, created by
    sphinx-quickstart on Mon Oct  9 13:33:09 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-小骏的博客
+小骏不抬杠
 =======================================
 
 Get busy living, or get busy dying. 💪
