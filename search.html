@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="_static/pydoctheme_dark.css" media="(prefers-color-scheme: dark)" id="pydoctheme_dark_css">
     <link rel="shortcut icon" type="image/png" href="_static/favicon.svg" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4178487904865687" crossorigin="anonymous"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
     <meta name="google-adsense-account" content="ca-pub-4178487904865687">
             <script type="text/javascript" src="_static/copybutton.js"></script>
             <script type="text/javascript" src="_static/menu.js"></script>
@@ -146,59 +147,6 @@
   
 
 
-        <script>
-            function loadUtterances(theme) {
-                const script = document.createElement('script');
-                script.src = 'https://utteranc.es/client.js';
-                script.setAttribute('repo', 'junsircoding/blog_comments');
-                script.setAttribute('label', 'blog comments');
-                script.setAttribute('issue-term', 'title');
-                script.setAttribute('theme', theme === 'dark' ? 'github-dark' : 'github-light');
-                script.setAttribute('crossorigin', 'anonymous');
-                script.async = true;
-                const utterancesContainer = document.getElementById('utterances-container');
-                utterancesContainer.innerHTML = '';
-                utterancesContainer.appendChild(script);
-            }
-        
-            const pydocthemeDark = document.getElementById('pydoctheme_dark_css')
-            const pygmentsDark = document.getElementById('pygments_dark_css')
-            const themeSelectors = document.getElementsByClassName('theme-selector')
-
-            function activateTheme(theme) {
-                localStorage.setItem('currentTheme', theme);
-                [...themeSelectors].forEach(e => e.value = theme)
-                switch (theme) {
-                    case 'light':
-                    pydocthemeDark.media = 'not all'
-                    pygmentsDark.media = 'not all'
-                    break;
-                    case 'dark':
-                    pydocthemeDark.media = 'all'
-                    pygmentsDark.media = 'all'
-                    break;
-                    default:
-                    // auto
-                    pydocthemeDark.media = '(prefers-color-scheme: dark)'
-                    pygmentsDark.media = '(prefers-color-scheme: dark)'
-                }
-            }
-
-            function changeTheme(value) {
-                const theme = value === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : value;
-                document.documentElement.setAttribute('data-theme', theme);
-                activateTheme(value)
-                loadUtterances(theme);
-            }
-            
-            document.addEventListener('DOMContentLoaded', function () {
-                // Initialize theme on page load
-                const initialTheme = document.documentElement.getAttribute('data-theme') || 'auto';
-                const currentTheme = initialTheme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
-                loadUtterances(currentTheme);
-                activateTheme(initialTheme);
-            });
-        </script>
         
 
         <div class="clearer"></div>
