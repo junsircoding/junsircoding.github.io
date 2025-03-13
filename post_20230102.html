@@ -200,6 +200,11 @@
     <div class="bodywrapper">
             
             <div class="body" role="main">
+                <!-- id 将作为查询条件 -->
+                <span id="post_20230102" class="leancloud_visitors" data-flag-title="post_20230102">
+                    <em class="post-meta-item-text">阅读量 </em>
+                    <i class="leancloud-visitors-count">0</i>
+                </span>
                 
   <section id="m1-mac-stable-diffusion">
 <h1>在 M1 芯片的 Mac 上部署本地 Stable Diffusion<a class="headerlink" href="#m1-mac-stable-diffusion" title="Link to this heading">¶</a></h1>
@@ -339,7 +344,8 @@
             new Valine({
                 el: '#vcomments',
                 appId: 'vZDTYY4Oooj3Gin7gdykS7ir-gzGzoHsz',
-                appKey: '6vrG1UEGkpc3jQY6vUdf4trp'
+                appKey: '6vrG1UEGkpc3jQY6vUdf4trp',
+                visitor: true // 阅读量统计
             })
         </script>
         

@@ -218,6 +218,11 @@
     <div class="bodywrapper">
             
             <div class="body" role="main">
+                <!-- id 将作为查询条件 -->
+                <span id="post_20231221" class="leancloud_visitors" data-flag-title="post_20231221">
+                    <em class="post-meta-item-text">阅读量 </em>
+                    <i class="leancloud-visitors-count">0</i>
+                </span>
                 
   <section id="awk">
 <h1>常用的几个 AWK 命令<a class="headerlink" href="#awk" title="Link to this heading">¶</a></h1>
@@ -671,7 +676,8 @@ Field 分隔符是逗号。
             new Valine({
                 el: '#vcomments',
                 appId: 'vZDTYY4Oooj3Gin7gdykS7ir-gzGzoHsz',
-                appKey: '6vrG1UEGkpc3jQY6vUdf4trp'
+                appKey: '6vrG1UEGkpc3jQY6vUdf4trp',
+                visitor: true // 阅读量统计
             })
         </script>
         
