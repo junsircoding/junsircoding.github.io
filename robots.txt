@@ -1,0 +1,21 @@
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: *
+Disallow: /
+Allow: /sitemap.xml
+Allow: post_20250309.html
+Allow: post_20250302.html
+Allow: post_20240711.html
+Allow: post_20240613.html
+Allow: post_20231222.html
+Allow: post_20231221.html
+Allow: post_20231220.html
+Allow: post_20230723.html
+Allow: post_20230722.html
+Allow: post_20230529.html
+Allow: post_20230527.html
+Allow: post_20230318.html
+Allow: post_20230102.html
+Sitemap: https://junsircoding.github.io/sitemap.xml
+
