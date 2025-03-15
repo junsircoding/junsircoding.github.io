@@ -293,3 +293,10 @@ ChatGPT 的解释是这样：
 7. Panoply 下载页面：https://www.giss.nasa.gov/tools/panoply/download/
 8. ERA 数据下载：https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset
 9. frykit 库 GitHub 仓库：https://github.com/ZhaJiMan/frykit
+
+视频讲解
+---------------------
+
+`使用 Cartopy 绘制地图，创建掩膜数据绘制指定区域`_
+
+.. _使用 Cartopy 绘制地图，创建掩膜数据绘制指定区域: https://www.bilibili.com/video/BV1Zo4y1Y7KU/
