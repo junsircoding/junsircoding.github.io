@@ -1,0 +1,295 @@
+使用 Cartopy 绘制地图
+================================
+
+从事气象绘图相关工作的朋友应该知道 Cartopy 这个 Python 库，它可以用来绘制各种投影的地图。
+
+.. figure:: /_images/20230226/00.avif
+   :alt: Cartopy LOGO
+
+它默认采用 `Natural Earth`_ 提供的丰富的底图文件，其中包含了地球上的海洋、陆地、河流、湖泊、海岸线、国界等等，绘制地图时所需要的各种特征文件。
+
+.. _Natural Earth: https://www.naturalearthdata.com/
+
+.. figure:: /_images/20230226/01.avif
+   :alt: Natural Earth 官网
+
+.. figure:: /_images/20230226/02.avif
+   :alt: 用 Cartopy 绘制出的各种特征叠加图
+
+Cartopy 绘图部份依赖 Matplotlib 库，因此配合 Matplotlib 的各种绘图方法，基本上可以画出任何样式的图。
+
+.. figure:: /_images/20230226/03.avif
+   :alt: Matplotlib LOGO
+
+
+下面就简单介绍一下如何用 Cartopy 绘制地图。
+
+我们可能见过很多种地图，它们显示的形状好像不太一样，这是因为地图有「投影」的区别。
+Cartopy 中常用的投影有圆柱投影、兰伯特投影、罗宾逊投影、墨卡托投影、正射投影等等，我工作中常用的也就圆柱投影和兰伯特投影这两种。
+
+下图就是一张圆柱投影的图，横坐标是经度，纵坐标是纬度。
+这种投影好比把地球仪上的那层纸揭了下来，强行摊平成了一个长方形。
+所以越靠近 0 度纬线，也就是赤道的部分，越接近真实的大小；
+越靠近两极，相较于真实形状，拉伸程度越高。
+
+
+.. figure:: /_images/20230226/04.avif
+   :alt: 圆柱投影
+
+
+下图是一张兰伯特投影的图，这种投影我觉得看起来更舒服一点。
+感觉上是只把局部的半球面做了拉平处理，所以看起来形变的程度不是很大。
+
+.. figure:: /_images/20230226/05.avif
+   :alt: 兰伯特投影
+
+
+运行下面的代码，就可以画出一幅圆柱投影的图。
+
+.. code-block:: python
+    :linenos:
+
+    # -*- coding: utf-8 -*-
+
+    import os
+
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from cartopy.mpl.ticker import LatitudeFormatter, LongitudeFormatter
+
+    if os.popen("uname").read().strip() == "Darwin":
+        mpl.rcParams["font.sans-serif"] = ["Arial Unicode MS"] # MacOS
+    else:
+        mpl.rcParams["font.sans-serif"] = ["SimHei"] # CentOS, Windows
+    mpl.rcParams["axes.unicode_minus"] = False
+
+
+    def main():
+        fig = plt.figure(figsize=(16, 9))
+        proj = ccrs.PlateCarree()
+        ax = fig.add_subplot(111, projection=ccrs.PlateCarree(central_longitude=160.0))
+
+        # 设置经纬度区域
+        map_extent = [-180, 180, -90, 90]
+        ax.set_extent(map_extent, crs=proj) # type: ignore
+
+        # 放置图片, 渲染好看的海洋以及地形
+        ax.stock_img()
+
+        # 隐藏海洋
+        ax.add_feature(cfeature.OCEAN, facecolor="white", zorder=20) # type: ignore
+
+        # 添加经纬度坐标
+        lon_min, lon_max, lat_min, lat_max = 0, 1, 2, 3
+        ax.set_yticks(np.arange(map_extent[lat_min], map_extent[lat_max]+1, 15), crs=proj)
+        ax.set_xticks(np.arange(map_extent[lon_min], map_extent[lon_max]+1, 15), crs=proj)
+        lon_formatter = LongitudeFormatter(degree_symbol='', dateline_direction_label=True)
+        lat_formatter = LatitudeFormatter(degree_symbol='')
+        ax.yaxis.set_major_formatter(lat_formatter)
+        ax.xaxis.set_major_formatter(lon_formatter)
+
+        ax.set_title("圆柱投影", fontsize="large")
+
+        # 保存图片
+        PNG_NAME = f"platedemo.png"
+        print(PNG_NAME)
+        fig.savefig(PNG_NAME, dpi=200, bbox_inches='tight')
+        plt.cla()
+        plt.close(fig)
+        plt.close("all")
+
+    if __name__ == '__main__':
+        main()
+
+简单读过代码可以知道，我们可以给指定的 feature 涂上任意颜色。
+比如把海洋掩盖掉涂成白色，就像代码中把参数 facecolor 设置成 white 就可以了。
+
+
+.. figure:: /_images/20230226/06.avif
+   :alt: 圆柱投影掩盖海洋
+
+
+那我如果想突出显示某个国家该怎么做？这就需要深入研究一下画图用到的 shapefile 文件的构成，以及代码调用它的方式。
+这里大家可以看一下 `zhajiman`_ 的博客，详细总结了 shapefile 是由各种 shape 和 attribute 来表示地图中的点、线、面等要素。
+
+.. _zhajiman: https://zhajiman.github.io/post/cartopy_shapefile/
+
+ChatGPT 的解释是这样：
+
+
+.. figure:: /_images/20230226/07.avif
+   :alt: ChatGPT 回答 shapefile 内容
+
+
+综合查阅资料后，我们知道可以这样读取 shapefile 中的内容：
+
+.. code-block:: python
+    :linenos:
+
+    import cartopy.io.shapereader as shpreader
+
+    shpfilename = shpreader.natural_earth(resolution='10m',
+                                        category='cultural',
+                                        name='admin_0_countries')
+    reader = shpreader.Reader(shpfilename)
+    countries = reader.records()
+    for country in countries:
+        if country.attributes["NAME_ZH"] == "澳大利亚":
+            ax.add_geometries(
+                country.geometry, ccrs.PlateCarree(),
+                facecolor="red", label=country.attributes['NAME_ZH'])
+    reader.close()
+
+遍历 shapefile 时，每个元素都标注了属性，里面就有我们想要的国家名称和所属大洲名称。
+我们可以通过比对属性字典中的 ``NAME_ZH`` 字段（国家名称简体中文）来筛选国家，或 ``CONTINENT`` 字段（大洲英文）来筛选大洲。
+这里要注意，Natural Earth 提供的文件有三个分辨率，我们选择 ``1:10m`` 的分辨率，才会完整的包含全部国家和地区。
+
+下图就是把澳大利亚标红后的效果：
+
+
+.. figure:: /_images/20230226/08.avif
+   :alt: 将澳大利亚标红
+
+
+我们从 ERA 的官网上随便下载一个气温数据，可以绘制出这样的填色图。
+
+
+.. figure:: /_images/20230226/09.avif
+   :alt: 气温填色图示例
+
+
+使用相同的方法，我们可以将澳大利亚之外的部分涂成白色：
+
+.. code-block:: python
+    :linenos:
+
+    shpfilename = shpreader.natural_earth(resolution='10m',
+                                        category='cultural',
+                                        name='admin_0_countries')
+    reader = shpreader.Reader(shpfilename)
+    countries = reader.records()
+    for country in countries:
+        if country.attributes["NAME_ZH"] != "澳大利亚":
+            ax.add_geometries(
+                country.geometry, ccrs.PlateCarree(),
+                facecolor="white", edgecolor="white", zorder=19)
+    reader.close()
+
+出图图下：
+
+
+.. figure:: /_images/20230226/10.avif
+   :alt: 气温填色图图层掩膜示例
+
+
+但是在气象绘图工作中，不仅需要灵活地画出指定区域，有时还需要对指定区域的数据做计算评估。
+我们使用上面的方法实质上仅仅是在处理图层，数据图层只是被遮起来了而已，并没有做实际的更改。
+
+这个数据是全球的内容，如果我们想只绘制澳大利亚区域的数据，该怎么做呢？
+
+这里就需要根据 shapefile 文件制作掩膜数据，然后将气温数据与掩膜数据不重合的部分抹去。
+这里使用 `zhajiman`_ 开发的 `frykit`_ 这个库，来完成掩膜数据的制作。
+
+
+.. _frykit: https://github.com/ZhaJiMan/frykit
+
+
+.. code-block:: python
+    :linenos:
+
+    # -*- coding: utf-8 -*-
+    import cartopy.io.shapereader as shpreader
+    import numpy as np
+    import xarray as xr
+    from frykit.shp import polygon_to_mask
+
+    # 读取 shapefile
+    shpfilename = shpreader.natural_earth(resolution='10m',
+                                        category='cultural',
+                                        name='admin_0_countries')
+    # 创建 reader 实例
+    reader = shpreader.Reader(shpfilename)
+    countries = reader.records()
+    shapes = []
+    # 遍历筛选出澳大利亚
+    for country in countries:
+        if country.attributes["NAME_ZH"] == "澳大利亚":
+            shapes.append(country.geometry)
+    reader.close()
+    shp = shapes[0]
+    # 包含澳大利亚的经纬度盒子
+    MASK_BOX_EXTENT = (100, 160, -50, 0)
+    NPT = 0.1
+    lonmin, lonmax, latmin, latmax = MASK_BOX_EXTENT
+    x = np.arange(lonmin, lonmax, NPT)
+    y = np.arange(latmin, latmax, NPT)
+    x_g, y_g = np.meshgrid(x, y)
+
+    # !!创建掩膜数据
+    mask_data = polygon_to_mask(shp, x_g, y_g)
+    # 组装成 xr.DataArray
+    mask_dr = xr.DataArray(mask_data, dims=("lat", "lon"), coords={"lon":x, "lat":y} )
+    # 将区域外边的边框部份抹掉
+    mask_dr = xr.where(mask_dr==0, np.nan, mask_dr) # type: xr.DataArray
+    # 插值到全球区域
+    mask_dr = mask_dr.interp(lon=np.arange(-180, 180.1, 0.1), lat=np.arange(-90, 90.1, 0.1))
+    # 将数据导出为 NC
+    xr.Dataset({"mask_dr":mask_dr}).to_netcdf("mask_dr.nc")
+
+为了能更方便地验证我们的数据确实被修改了，可以把数据导出成 NC 数据，使用 Panoply 这个软件来直观地看到数据形状。
+
+
+.. figure:: /_images/20230226/11.avif
+   :alt: Panoply 绘制出的掩膜数据
+
+
+我们用这个掩膜数据，使用 ``xarray.where()`` 方法，将上面填色图的数据掩盖掉，就可以达到只绘制澳大利亚区域的目的了。
+
+.. code-block:: python
+    :linenos:
+
+    # 读取气温数据
+    with xr.open_dataset("tem.nc") as ds:
+        ds = ds.isel(time=0)
+        dr = ds["t"]-273.15 # 开尔文转摄氏度
+    # 读取掩膜数据
+    with xr.open_dataset("mask_dr.nc") as ds_mask:
+        dr_mask = ds_mask["mask_dr"]
+    # 将掩膜数据插值到气温数据上
+    dr_mask = dr_mask.interp(lat=dr.latitude, lon=dr.longitude)
+    # 将两个数据不重合的部分抹掉
+    dr = xr.where(dr_mask==1, dr, np.nan)
+    # 将处理后的数据导出成 NC
+    xr.Dataset({"data":dr}).to_netcdf("masked_tem.nc")
+
+可以再用 Panoply 查看一下处理后的数据：
+
+
+.. figure:: /_images/20230226/12.avif
+   :alt: 掩膜处理后的气温数据
+
+
+使用这个数据，无需对图层做处理，直接绘制填色图，下图的效果就是我们想要的样子。
+
+
+.. figure:: /_images/20230226/13.avif
+   :alt: 气温填色图数据掩膜示例
+
+
+现在就可以对数据做统计计算，比如最大值、最小值、平均值等等。
+
+参考资料
+------------------
+
+1. Natural Earth 官方网站：https://www.naturalearthdata.com/
+2. zhajiman 博客：https://zhajiman.github.io/post/cartopy_shapefile/
+3. cnmaps 官方文档：https://cnmaps-doc.readthedocs.io/zh_CN/latest/index.html
+4. Matplotlib 官方文档：https://matplotlib.org/stable/index.html
+5. Xarray 官方文档：https://docs.xarray.dev/en/stable/index.html
+6. Cartopy 官方文档：https://scitools.org.uk/cartopy/docs/latest/
+7. Panoply 下载页面：https://www.giss.nasa.gov/tools/panoply/download/
+8. ERA 数据下载：https://cds.climate.copernicus.eu/#!/search?text=ERA5&amp;type=dataset
+9. frykit 库 GitHub 仓库：https://github.com/ZhaJiMan/frykit

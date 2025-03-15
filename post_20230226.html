@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<title>使用 Cartopy 绘制地图
+    
+    -首页
+    
+</title>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name='description' content='Cartopy,地理绘图,气象绘图,matplotlib,区域填色,Xarray'>
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=23252803" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=638b7cfd" />
+    
+    <script src="_static/documentation_options.js?v=91bfbbb6"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/custom.js?v=b7a94a21"></script>
+    <script src="_static/js/back_to_top.js?v=a9950e48"></script>
+    
+    <link rel="canonical" href="https://junsircoding.github.io/post_20230226.html" />
+    <link rel="icon" href="_static/favicon.ico"/>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="在 M1 芯片的 Mac 上部署本地 Stable Diffusion" href="post_20230102.html" />
+    <link rel="prev" title="用 QEMU 在 x86 架构的电脑上安装 ARM 系统" href="post_20230318.html" />
+<link rel="stylesheet" href="_static/pydoctheme_dark.css" media="(prefers-color-scheme: dark)" id="pydoctheme_dark_css">
+    <link rel="shortcut icon" type="image/png" href="_static/favicon.ico" />
+            <script type="text/javascript" src="_static/copybutton.js"></script>
+            <script type="text/javascript" src="_static/menu.js"></script>
+            <script type="text/javascript" src="_static/search-focus.js"></script> 
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "kb72rmcxcn");
+    </script>
+
+  </head>
+<body>
+<div class="mobile-nav">
+    <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+    <nav class="nav-content" role="navigation">
+        <label for="menuToggler" class="toggler__label">
+            <span></span>
+        </label>
+        <span class="nav-items-wrapper">
+            <a href="https://junsircoding.github.io" class="nav-logo">
+                <img src="_static/favicon.ico" alt="首页"/>
+            </a>
+            <span class="version_switcher_placeholder"></span>
+            <form role="search" class="search" action="search.html" method="get">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="search-icon">
+                    <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+                <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" />
+                <input type="submit" value="提交"/>
+            </form>
+        </span>
+    </nav>
+    <div class="menu-wrapper">
+        <nav class="menu" role="navigation" aria-label="main navigation">
+            <div class="language_switcher_placeholder"></div>
+            
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="changeTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label>
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">使用 Cartopy 绘制地图</a><ul>
+<li><a class="reference internal" href="#id1">参考资料</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="post_20230318.html"
+                          title="上一章">用 QEMU 在 x86 架构的电脑上安装 ARM 系统</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="post_20230102.html"
+                          title="下一章">在 M1 芯片的 Mac 上部署本地 Stable Diffusion</a></p>
+  </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </nav>
+    </div>
+</div>
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>导航</h3>
+      <ul>
+          
+            <li class="nav-item nav-item-this">
+                <a href="index.html" style="display: inline-flex; align-items: center;">
+                    首页
+                </a>
+            </li>
+          &nbsp;
+            <li class="nav-item nav-item-this">
+                <a href="search.html" style="display: inline-flex; align-items: center;">
+                    搜索
+                </a>
+            </li>
+
+            
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
+          <input type="submit" value="提交" />
+        </form>
+    </div>
+                </li>
+            <li class="right">
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="changeTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label> |</li>
+            
+      </ul>
+    </div>  
+  
+
+<div class="document">
+  <div class="documentwrapper">
+    
+    <div class="bodywrapper">
+            
+            <div class="body" role="main">
+                
+  <section id="cartopy">
+<h1>使用 Cartopy 绘制地图<a class="headerlink" href="#cartopy" title="Link to this heading">¶</a></h1>
+<p>从事气象绘图相关工作的朋友应该知道 Cartopy 这个 Python 库，它可以用来绘制各种投影的地图。</p>
+<figure class="align-default">
+<img alt="Cartopy LOGO" src="_images/001.avif" />
+</figure>
+<p>它默认采用 <a class="reference external" href="https://www.naturalearthdata.com/">Natural Earth</a> 提供的丰富的底图文件，其中包含了地球上的海洋、陆地、河流、湖泊、海岸线、国界等等，绘制地图时所需要的各种特征文件。</p>
+<figure class="align-default">
+<img alt="Natural Earth 官网" src="_images/011.avif" />
+</figure>
+<figure class="align-default">
+<img alt="用 Cartopy 绘制出的各种特征叠加图" src="_images/021.avif" />
+</figure>
+<p>Cartopy 绘图部份依赖 Matplotlib 库，因此配合 Matplotlib 的各种绘图方法，基本上可以画出任何样式的图。</p>
+<figure class="align-default">
+<img alt="Matplotlib LOGO" src="_images/031.avif" />
+</figure>
+<p>下面就简单介绍一下如何用 Cartopy 绘制地图。</p>
+<p>我们可能见过很多种地图，它们显示的形状好像不太一样，这是因为地图有「投影」的区别。
+Cartopy 中常用的投影有圆柱投影、兰伯特投影、罗宾逊投影、墨卡托投影、正射投影等等，我工作中常用的也就圆柱投影和兰伯特投影这两种。</p>
+<p>下图就是一张圆柱投影的图，横坐标是经度，纵坐标是纬度。
+这种投影好比把地球仪上的那层纸揭了下来，强行摊平成了一个长方形。
+所以越靠近 0 度纬线，也就是赤道的部分，越接近真实的大小；
+越靠近两极，相较于真实形状，拉伸程度越高。</p>
+<figure class="align-default">
+<img alt="圆柱投影" src="_images/04.avif" />
+</figure>
+<p>下图是一张兰伯特投影的图，这种投影我觉得看起来更舒服一点。
+感觉上是只把局部的半球面做了拉平处理，所以看起来形变的程度不是很大。</p>
+<figure class="align-default">
+<img alt="兰伯特投影" src="_images/05.avif" />
+</figure>
+<p>运行下面的代码，就可以画出一幅圆柱投影的图。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
+<span class="linenos"> 6</span><span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.feature</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cfeature</span>
+<span class="linenos"> 7</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
+<span class="linenos"> 8</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 9</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="linenos">10</span><span class="kn">from</span><span class="w"> </span><span class="nn">cartopy.mpl.ticker</span><span class="w"> </span><span class="kn">import</span> <span class="n">LatitudeFormatter</span><span class="p">,</span> <span class="n">LongitudeFormatter</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;uname&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>
+<span class="linenos">13</span>    <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.sans-serif&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Arial Unicode MS&quot;</span><span class="p">]</span> <span class="c1"># MacOS</span>
+<span class="linenos">14</span><span class="k">else</span><span class="p">:</span>
+<span class="linenos">15</span>    <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.sans-serif&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SimHei&quot;</span><span class="p">]</span> <span class="c1"># CentOS, Windows</span>
+<span class="linenos">16</span><span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.unicode_minus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">20</span>    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="linenos">21</span>    <span class="n">proj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+<span class="linenos">22</span>    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mf">160.0</span><span class="p">))</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="c1"># 设置经纬度区域</span>
+<span class="linenos">25</span>    <span class="n">map_extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span>
+<span class="linenos">26</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">map_extent</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>    <span class="c1"># 放置图片, 渲染好看的海洋以及地形</span>
+<span class="linenos">29</span>    <span class="n">ax</span><span class="o">.</span><span class="n">stock_img</span><span class="p">()</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>    <span class="c1"># 隐藏海洋</span>
+<span class="linenos">32</span>    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">OCEAN</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>    <span class="c1"># 添加经纬度坐标</span>
+<span class="linenos">35</span>    <span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_max</span><span class="p">,</span> <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+<span class="linenos">36</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">map_extent</span><span class="p">[</span><span class="n">lat_min</span><span class="p">],</span> <span class="n">map_extent</span><span class="p">[</span><span class="n">lat_max</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">crs</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+<span class="linenos">37</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">map_extent</span><span class="p">[</span><span class="n">lon_min</span><span class="p">],</span> <span class="n">map_extent</span><span class="p">[</span><span class="n">lon_max</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">crs</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+<span class="linenos">38</span>    <span class="n">lon_formatter</span> <span class="o">=</span> <span class="n">LongitudeFormatter</span><span class="p">(</span><span class="n">degree_symbol</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dateline_direction_label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">39</span>    <span class="n">lat_formatter</span> <span class="o">=</span> <span class="n">LatitudeFormatter</span><span class="p">(</span><span class="n">degree_symbol</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="linenos">40</span>    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">lat_formatter</span><span class="p">)</span>
+<span class="linenos">41</span>    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">lon_formatter</span><span class="p">)</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;圆柱投影&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">)</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span>    <span class="c1"># 保存图片</span>
+<span class="linenos">46</span>    <span class="n">PNG_NAME</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;platedemo.png&quot;</span>
+<span class="linenos">47</span>    <span class="nb">print</span><span class="p">(</span><span class="n">PNG_NAME</span><span class="p">)</span>
+<span class="linenos">48</span>    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">PNG_NAME</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="linenos">49</span>    <span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
+<span class="linenos">50</span>    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="linenos">51</span>    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="linenos">52</span>
+<span class="linenos">53</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">54</span>    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>简单读过代码可以知道，我们可以给指定的 feature 涂上任意颜色。
+比如把海洋掩盖掉涂成白色，就像代码中把参数 facecolor 设置成 white 就可以了。</p>
+<figure class="align-default">
+<img alt="圆柱投影掩盖海洋" src="_images/06.avif" />
+</figure>
+<p>那我如果想突出显示某个国家该怎么做？这就需要深入研究一下画图用到的 shapefile 文件的构成，以及代码调用它的方式。
+这里大家可以看一下 <a class="reference external" href="https://zhajiman.github.io/post/cartopy_shapefile/">zhajiman</a> 的博客，详细总结了 shapefile 是由各种 shape 和 attribute 来表示地图中的点、线、面等要素。</p>
+<p>ChatGPT 的解释是这样：</p>
+<figure class="align-default">
+<img alt="ChatGPT 回答 shapefile 内容" src="_images/07.avif" />
+</figure>
+<p>综合查阅资料后，我们知道可以这样读取 shapefile 中的内容：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.io.shapereader</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">shpreader</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="n">shpfilename</span> <span class="o">=</span> <span class="n">shpreader</span><span class="o">.</span><span class="n">natural_earth</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;10m&#39;</span><span class="p">,</span>
+<span class="linenos"> 4</span>                                    <span class="n">category</span><span class="o">=</span><span class="s1">&#39;cultural&#39;</span><span class="p">,</span>
+<span class="linenos"> 5</span>                                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;admin_0_countries&#39;</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="n">reader</span> <span class="o">=</span> <span class="n">shpreader</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="n">shpfilename</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="n">countries</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">records</span><span class="p">()</span>
+<span class="linenos"> 8</span><span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">countries</span><span class="p">:</span>
+<span class="linenos"> 9</span>    <span class="k">if</span> <span class="n">country</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;NAME_ZH&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;澳大利亚&quot;</span><span class="p">:</span>
+<span class="linenos">10</span>        <span class="n">ax</span><span class="o">.</span><span class="n">add_geometries</span><span class="p">(</span>
+<span class="linenos">11</span>            <span class="n">country</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+<span class="linenos">12</span>            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">country</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;NAME_ZH&#39;</span><span class="p">])</span>
+<span class="linenos">13</span><span class="n">reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>遍历 shapefile 时，每个元素都标注了属性，里面就有我们想要的国家名称和所属大洲名称。
+我们可以通过比对属性字典中的 <code class="docutils literal notranslate"><span class="pre">NAME_ZH</span></code> 字段（国家名称简体中文）来筛选国家，或 <code class="docutils literal notranslate"><span class="pre">CONTINENT</span></code> 字段（大洲英文）来筛选大洲。
+这里要注意，Natural Earth 提供的文件有三个分辨率，我们选择 <code class="docutils literal notranslate"><span class="pre">1:10m</span></code> 的分辨率，才会完整的包含全部国家和地区。</p>
+<p>下图就是把澳大利亚标红后的效果：</p>
+<figure class="align-default">
+<img alt="将澳大利亚标红" src="_images/08.avif" />
+</figure>
+<p>我们从 ERA 的官网上随便下载一个气温数据，可以绘制出这样的填色图。</p>
+<figure class="align-default">
+<img alt="气温填色图示例" src="_images/09.avif" />
+</figure>
+<p>使用相同的方法，我们可以将澳大利亚之外的部分涂成白色：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">shpfilename</span> <span class="o">=</span> <span class="n">shpreader</span><span class="o">.</span><span class="n">natural_earth</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;10m&#39;</span><span class="p">,</span>
+<span class="linenos"> 2</span>                                    <span class="n">category</span><span class="o">=</span><span class="s1">&#39;cultural&#39;</span><span class="p">,</span>
+<span class="linenos"> 3</span>                                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;admin_0_countries&#39;</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="n">reader</span> <span class="o">=</span> <span class="n">shpreader</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="n">shpfilename</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="n">countries</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">records</span><span class="p">()</span>
+<span class="linenos"> 6</span><span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">countries</span><span class="p">:</span>
+<span class="linenos"> 7</span>    <span class="k">if</span> <span class="n">country</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;NAME_ZH&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;澳大利亚&quot;</span><span class="p">:</span>
+<span class="linenos"> 8</span>        <span class="n">ax</span><span class="o">.</span><span class="n">add_geometries</span><span class="p">(</span>
+<span class="linenos"> 9</span>            <span class="n">country</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+<span class="linenos">10</span>            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">19</span><span class="p">)</span>
+<span class="linenos">11</span><span class="n">reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>出图图下：</p>
+<figure class="align-default">
+<img alt="气温填色图图层掩膜示例" src="_images/10.avif" />
+</figure>
+<p>但是在气象绘图工作中，不仅需要灵活地画出指定区域，有时还需要对指定区域的数据做计算评估。
+我们使用上面的方法实质上仅仅是在处理图层，数据图层只是被遮起来了而已，并没有做实际的更改。</p>
+<p>这个数据是全球的内容，如果我们想只绘制澳大利亚区域的数据，该怎么做呢？</p>
+<p>这里就需要根据 shapefile 文件制作掩膜数据，然后将气温数据与掩膜数据不重合的部分抹去。
+这里使用 <a class="reference external" href="https://zhajiman.github.io/post/cartopy_shapefile/">zhajiman</a> 开发的 <a class="reference external" href="https://github.com/ZhaJiMan/frykit">frykit</a> 这个库，来完成掩膜数据的制作。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.io.shapereader</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">shpreader</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="linenos"> 4</span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="linenos"> 5</span><span class="kn">from</span><span class="w"> </span><span class="nn">frykit.shp</span><span class="w"> </span><span class="kn">import</span> <span class="n">polygon_to_mask</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1"># 读取 shapefile</span>
+<span class="linenos"> 8</span><span class="n">shpfilename</span> <span class="o">=</span> <span class="n">shpreader</span><span class="o">.</span><span class="n">natural_earth</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;10m&#39;</span><span class="p">,</span>
+<span class="linenos"> 9</span>                                    <span class="n">category</span><span class="o">=</span><span class="s1">&#39;cultural&#39;</span><span class="p">,</span>
+<span class="linenos">10</span>                                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;admin_0_countries&#39;</span><span class="p">)</span>
+<span class="linenos">11</span><span class="c1"># 创建 reader 实例</span>
+<span class="linenos">12</span><span class="n">reader</span> <span class="o">=</span> <span class="n">shpreader</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="n">shpfilename</span><span class="p">)</span>
+<span class="linenos">13</span><span class="n">countries</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">records</span><span class="p">()</span>
+<span class="linenos">14</span><span class="n">shapes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">15</span><span class="c1"># 遍历筛选出澳大利亚</span>
+<span class="linenos">16</span><span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">countries</span><span class="p">:</span>
+<span class="linenos">17</span>    <span class="k">if</span> <span class="n">country</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;NAME_ZH&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;澳大利亚&quot;</span><span class="p">:</span>
+<span class="linenos">18</span>        <span class="n">shapes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">country</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
+<span class="linenos">19</span><span class="n">reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">20</span><span class="n">shp</span> <span class="o">=</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">21</span><span class="c1"># 包含澳大利亚的经纬度盒子</span>
+<span class="linenos">22</span><span class="n">MASK_BOX_EXTENT</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="linenos">23</span><span class="n">NPT</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="linenos">24</span><span class="n">lonmin</span><span class="p">,</span> <span class="n">lonmax</span><span class="p">,</span> <span class="n">latmin</span><span class="p">,</span> <span class="n">latmax</span> <span class="o">=</span> <span class="n">MASK_BOX_EXTENT</span>
+<span class="linenos">25</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lonmin</span><span class="p">,</span> <span class="n">lonmax</span><span class="p">,</span> <span class="n">NPT</span><span class="p">)</span>
+<span class="linenos">26</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">latmin</span><span class="p">,</span> <span class="n">latmax</span><span class="p">,</span> <span class="n">NPT</span><span class="p">)</span>
+<span class="linenos">27</span><span class="n">x_g</span><span class="p">,</span> <span class="n">y_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="c1"># !!创建掩膜数据</span>
+<span class="linenos">30</span><span class="n">mask_data</span> <span class="o">=</span> <span class="n">polygon_to_mask</span><span class="p">(</span><span class="n">shp</span><span class="p">,</span> <span class="n">x_g</span><span class="p">,</span> <span class="n">y_g</span><span class="p">)</span>
+<span class="linenos">31</span><span class="c1"># 组装成 xr.DataArray</span>
+<span class="linenos">32</span><span class="n">mask_dr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">mask_data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">),</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lon&quot;</span><span class="p">:</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">:</span><span class="n">y</span><span class="p">}</span> <span class="p">)</span>
+<span class="linenos">33</span><span class="c1"># 将区域外边的边框部份抹掉</span>
+<span class="linenos">34</span><span class="n">mask_dr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask_dr</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">mask_dr</span><span class="p">)</span> <span class="c1"># type: xr.DataArray</span>
+<span class="linenos">35</span><span class="c1"># 插值到全球区域</span>
+<span class="linenos">36</span><span class="n">mask_dr</span> <span class="o">=</span> <span class="n">mask_dr</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mf">180.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">lat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mf">90.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+<span class="linenos">37</span><span class="c1"># 将数据导出为 NC</span>
+<span class="linenos">38</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;mask_dr&quot;</span><span class="p">:</span><span class="n">mask_dr</span><span class="p">})</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;mask_dr.nc&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>为了能更方便地验证我们的数据确实被修改了，可以把数据导出成 NC 数据，使用 Panoply 这个软件来直观地看到数据形状。</p>
+<figure class="align-default">
+<img alt="Panoply 绘制出的掩膜数据" src="_images/11.avif" />
+</figure>
+<p>我们用这个掩膜数据，使用 <code class="docutils literal notranslate"><span class="pre">xarray.where()</span></code> 方法，将上面填色图的数据掩盖掉，就可以达到只绘制澳大利亚区域的目的了。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 读取气温数据</span>
+<span class="linenos"> 2</span><span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;tem.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
+<span class="linenos"> 3</span>    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos"> 4</span>    <span class="n">dr</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">]</span><span class="o">-</span><span class="mf">273.15</span> <span class="c1"># 开尔文转摄氏度</span>
+<span class="linenos"> 5</span><span class="c1"># 读取掩膜数据</span>
+<span class="linenos"> 6</span><span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;mask_dr.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds_mask</span><span class="p">:</span>
+<span class="linenos"> 7</span>    <span class="n">dr_mask</span> <span class="o">=</span> <span class="n">ds_mask</span><span class="p">[</span><span class="s2">&quot;mask_dr&quot;</span><span class="p">]</span>
+<span class="linenos"> 8</span><span class="c1"># 将掩膜数据插值到气温数据上</span>
+<span class="linenos"> 9</span><span class="n">dr_mask</span> <span class="o">=</span> <span class="n">dr_mask</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">dr</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="n">dr</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+<span class="linenos">10</span><span class="c1"># 将两个数据不重合的部分抹掉</span>
+<span class="linenos">11</span><span class="n">dr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dr_mask</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="n">dr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="linenos">12</span><span class="c1"># 将处理后的数据导出成 NC</span>
+<span class="linenos">13</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span><span class="n">dr</span><span class="p">})</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;masked_tem.nc&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>可以再用 Panoply 查看一下处理后的数据：</p>
+<figure class="align-default">
+<img alt="掩膜处理后的气温数据" src="_images/12.avif" />
+</figure>
+<p>使用这个数据，无需对图层做处理，直接绘制填色图，下图的效果就是我们想要的样子。</p>
+<figure class="align-default">
+<img alt="气温填色图数据掩膜示例" src="_images/13.avif" />
+</figure>
+<p>现在就可以对数据做统计计算，比如最大值、最小值、平均值等等。</p>
+<section id="id1">
+<h2>参考资料<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Natural Earth 官方网站：<a class="reference external" href="https://www.naturalearthdata.com/">https://www.naturalearthdata.com/</a></p></li>
+<li><p>zhajiman 博客：<a class="reference external" href="https://zhajiman.github.io/post/cartopy_shapefile/">https://zhajiman.github.io/post/cartopy_shapefile/</a></p></li>
+<li><p>cnmaps 官方文档：<a class="reference external" href="https://cnmaps-doc.readthedocs.io/zh_CN/latest/index.html">https://cnmaps-doc.readthedocs.io/zh_CN/latest/index.html</a></p></li>
+<li><p>Matplotlib 官方文档：<a class="reference external" href="https://matplotlib.org/stable/index.html">https://matplotlib.org/stable/index.html</a></p></li>
+<li><p>Xarray 官方文档：<a class="reference external" href="https://docs.xarray.dev/en/stable/index.html">https://docs.xarray.dev/en/stable/index.html</a></p></li>
+<li><p>Cartopy 官方文档：<a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/">https://scitools.org.uk/cartopy/docs/latest/</a></p></li>
+<li><p>Panoply 下载页面：<a class="reference external" href="https://www.giss.nasa.gov/tools/panoply/download/">https://www.giss.nasa.gov/tools/panoply/download/</a></p></li>
+<li><p>ERA 数据下载：<a class="reference external" href="https://cds.climate.copernicus.eu/#!/search">https://cds.climate.copernicus.eu/#!/search</a>?text=ERA5&amp;amp;type=dataset</p></li>
+<li><p>frykit 库 GitHub 仓库：<a class="reference external" href="https://github.com/ZhaJiMan/frykit">https://github.com/ZhaJiMan/frykit</a></p></li>
+</ol>
+</section>
+</section>
+
+
+
+            <script>
+                function loadUtterances(theme) {
+                    const script = document.createElement('script');
+                    script.src = 'https://utteranc.es/client.js';
+                    script.setAttribute('repo', 'junsircoding/blog_comments');
+                    script.setAttribute('label', 'blog comments');
+                    script.setAttribute('issue-term', 'title');
+                    script.setAttribute('theme', theme === 'dark' ? 'github-dark' : 'github-light');
+                    script.setAttribute('crossorigin', 'anonymous');
+                    script.setAttribute('lang', 'zh-CN');
+                    script.async = true;
+                    const utterancesContainer = document.getElementById('utterances-container');
+                    utterancesContainer.innerHTML = '';
+                    utterancesContainer.appendChild(script);
+                }
+            
+                const pydocthemeDark = document.getElementById('pydoctheme_dark_css')
+                const pygmentsDark = document.getElementById('pygments_dark_css')
+                const themeSelectors = document.getElementsByClassName('theme-selector')
+    
+                function activateTheme(theme) {
+                    localStorage.setItem('currentTheme', theme);
+                    [...themeSelectors].forEach(e => e.value = theme)
+                    switch (theme) {
+                        case 'light':
+                        pydocthemeDark.media = 'not all'
+                        pygmentsDark.media = 'not all'
+                        break;
+                        case 'dark':
+                        pydocthemeDark.media = 'all'
+                        pygmentsDark.media = 'all'
+                        break;
+                        default:
+                        // auto
+                        pydocthemeDark.media = '(prefers-color-scheme: dark)'
+                        pygmentsDark.media = '(prefers-color-scheme: dark)'
+                    }
+                }
+    
+                function changeTheme(value) {
+                    const theme = value === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : value;
+                    document.documentElement.setAttribute('data-theme', theme);
+                    activateTheme(value)
+                    loadUtterances(theme);
+                }
+                
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Initialize theme on page load
+                    const initialTheme = document.documentElement.getAttribute('data-theme') || 'auto';
+                    const currentTheme = initialTheme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
+                    loadUtterances(currentTheme);
+                    activateTheme(initialTheme);
+                });
+            </script>
+
+        
+        <hr/>
+        <!-- Utterances comments section -->
+        <div id="utterances-container"></div>
+        
+
+        <div class="clearer"></div>
+      </div>
+    </div>
+    
+
+  </div>
+  
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">使用 Cartopy 绘制地图</a><ul>
+<li><a class="reference internal" href="#id1">参考资料</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+  
+  
+
+    <div class="clearer"></div>
+</div> 
+<div class="related">
+    <ul>
+        <li class="nav-item nav-item-this">
+            &copy; 
+            版权所有
+             2023-2025, 小骏不抬杠.
+        </li>
+        &nbsp;&nbsp;&nbsp;
+        <li class="nav-item nav-item-this">
+            <a href="mailto:junsircoding@foxmail.com" target="_blank" style="display: inline-flex; align-items: center;">
+                <img 
+                src="_static/mail.svg" 
+                alt="Email"/>
+                Email
+            </a>
+        </li>
+        &nbsp;&nbsp;&nbsp;
+        <li class="nav-item nav-item-this">
+            <a href="https://space.bilibili.com/39994473/video" target="_blank" style="display: inline-flex; align-items: center;">
+                <img 
+                src="_static/bilibili.svg" 
+                alt="Bilibili"/>
+                Bilibili
+            </a>
+        </li>
+    </ul>
+</div>
+
+  </body>
+</html>

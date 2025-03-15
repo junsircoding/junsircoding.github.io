@@ -16,6 +16,7 @@ Allow: post_20230722.html
 Allow: post_20230529.html
 Allow: post_20230527.html
 Allow: post_20230318.html
+Allow: post_20230226.html
 Allow: post_20230102.html
 Sitemap: https://junsircoding.github.io/sitemap.xml
 
