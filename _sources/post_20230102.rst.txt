@@ -64,7 +64,7 @@ AI 绘图的项目有很多，我查到的案例是部署 Stable Diffusion，项
     :linenos:
 
     python scripts/txt2img.py \
-    --prompt &quot;Pretty Young Girl, Lying down, acrylic painting.&quot; \
+    --prompt "Pretty Young Girl, Lying down, acrylic painting." \
     --n_samples 1 --n_iter 1 --plms
 
 注意：
@@ -98,7 +98,7 @@ AI 绘图的项目有很多，我查到的案例是部署 Stable Diffusion，项
     :linenos:
 
     python scripts/txt2img.py \
-    --prompt &quot;Cute Blue Cat, acrylic painting.&quot; \
+    --prompt "Cute Blue Cat, acrylic painting." \
     --n_samples 1 --n_iter 1 --plms
 
 .. figure:: /_images/20230102/03.avif

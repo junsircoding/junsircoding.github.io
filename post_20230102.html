@@ -240,7 +240,7 @@
 <p>「文字转图片」中，关键的参数就是图片的描述语句，即 <code class="docutils literal notranslate"><span class="pre">prompt</span></code> 。
 现在我们就可以开始绘图了，我从网上搜了几条比较简单的 <code class="docutils literal notranslate"><span class="pre">prompt</span></code> 试了一下：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>python<span class="w"> </span>scripts/txt2img.py<span class="w"> </span><span class="se">\</span>
-<span class="linenos">2</span>--prompt<span class="w"> </span><span class="p">&amp;</span>quot<span class="p">;</span>Pretty<span class="w"> </span>Young<span class="w"> </span>Girl,<span class="w"> </span>Lying<span class="w"> </span>down,<span class="w"> </span>acrylic<span class="w"> </span>painting.<span class="p">&amp;</span>quot<span class="p">;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">2</span>--prompt<span class="w"> </span><span class="s2">&quot;Pretty Young Girl, Lying down, acrylic painting.&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="linenos">3</span>--n_samples<span class="w"> </span><span class="m">1</span><span class="w"> </span>--n_iter<span class="w"> </span><span class="m">1</span><span class="w"> </span>--plms
 </pre></div>
 </div>
@@ -261,7 +261,7 @@
 </figure>
 <p>稍微改一下 prompt：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>python<span class="w"> </span>scripts/txt2img.py<span class="w"> </span><span class="se">\</span>
-<span class="linenos">2</span>--prompt<span class="w"> </span><span class="p">&amp;</span>quot<span class="p">;</span>Cute<span class="w"> </span>Blue<span class="w"> </span>Cat,<span class="w"> </span>acrylic<span class="w"> </span>painting.<span class="p">&amp;</span>quot<span class="p">;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">2</span>--prompt<span class="w"> </span><span class="s2">&quot;Cute Blue Cat, acrylic painting.&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="linenos">3</span>--n_samples<span class="w"> </span><span class="m">1</span><span class="w"> </span>--n_iter<span class="w"> </span><span class="m">1</span><span class="w"> </span>--plms
 </pre></div>
 </div>
