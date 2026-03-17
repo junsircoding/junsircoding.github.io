@@ -47,17 +47,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=23252803" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=67a6116b" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=82640b3f" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=638b7cfd" />
     
     <script src="_static/documentation_options.js?v=91bfbbb6"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/translations.js?v=540d3cec"></script>
     <script src="_static/js/custom.js?v=b7a94a21"></script>
     <script src="_static/js/back_to_top.js?v=a9950e48"></script>
     
@@ -84,7 +85,7 @@
 <body>
 <div class="mobile-nav">
     <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
-           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="菜单" />
     <nav class="nav-content" role="navigation">
         <label for="menuToggler" class="toggler__label">
             <span></span>
@@ -99,7 +100,7 @@
                     <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                 </svg>
                 <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" />
-                <input type="submit" value="提交"/>
+                <input type="submit" value="转到"/>
             </form>
         </span>
     </nav>
@@ -108,11 +109,11 @@
             <div class="language_switcher_placeholder"></div>
             
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label>
   <div>
@@ -154,7 +155,7 @@
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="提交" />
+      <input type="submit" value="转到" />
     </form>
     </div>
 </search>
@@ -187,17 +188,17 @@
     <div class="inline-search" role="search">
         <form class="inline-search" action="search.html" method="get">
           <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
-          <input type="submit" value="提交" />
+          <input type="submit" value="转到" />
         </form>
     </div>
                 </li>
             <li class="right">
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label> |</li>
             
@@ -213,7 +214,7 @@
             <div class="body" role="main">
                 
   <section id="awk">
-<h1>常用的几个 AWK 命令<a class="headerlink" href="#awk" title="Link to this heading">¶</a></h1>
+<h1>常用的几个 AWK 命令<a class="headerlink" href="#awk" title="链接到此标题。">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <p>这篇文章非原创，原文为： <a class="reference external" href="https://linuxhandbook.com/awk-command-tutorial/">Getting Started With AWK Command</a> ，本文是我对它的翻译和整理，
@@ -240,7 +241,7 @@
 </pre></div>
 </div>
 <section id="id2">
-<h2>了解 AWK 中的 <strong>预定义变量</strong> 和 <strong>自动变量</strong><a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<h2>了解 AWK 中的 <strong>预定义变量</strong> 和 <strong>自动变量</strong><a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
 <p>在写 AWK 程序的时候，常见的预定义变量和自动变量有：</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">RS</span></code> ： The input record separator, by default a newline，数据分隔符。AWK 一次处理一条 Record ，这个 RS 就是把输入数据流拆分为 Record 的分隔符。默认的 RS 是 <em>换行符</em> ，所以如果不去指定这个 RS，一行就是一条 Record。</p></li>
@@ -251,9 +252,9 @@
 <p>用 <cite>man awk</cite> 查看 AWK 的手册，可以看到官方手册对这几个变量的全称。</p>
 <p>其他还有很多变量，也可以查 <a class="reference external" href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html">在线手册</a> 查看完整的介绍，只是日常使用知道这几个就差不多够了。</p>
 <section id="id4">
-<h3>AWK 基本使用<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<h3>AWK 基本使用<a class="headerlink" href="#id4" title="链接到此标题。">¶</a></h3>
 <section id="record">
-<h4>打印所有 Record<a class="headerlink" href="#record" title="Link to this heading">¶</a></h4>
+<h4>打印所有 Record<a class="headerlink" href="#record" title="链接到此标题。">¶</a></h4>
 <p>这个例子可能没啥用，但是可以很好的介绍 AWK 的基本用法。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;1 { print }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
@@ -299,7 +300,7 @@
 </div>
 </section>
 <section id="id5">
-<h4>移除前几个 Record<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<h4>移除前几个 Record<a class="headerlink" href="#id5" title="链接到此标题。">¶</a></h4>
 <p>可以让 AWK 从第几行开始打印，比如下面这个例子，我们指定行号为大于 1，即 <code class="docutils literal notranslate"><span class="pre">NR&gt;1</span></code> （首行的行号是 1）。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1&#39;</span><span class="w"> </span>file.txt
 <span class="linenos">2</span><span class="c1"># 与这样等效</span>
@@ -321,7 +322,7 @@
 </div>
 </section>
 <section id="id6">
-<h4>Record 切片<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<h4>Record 切片<a class="headerlink" href="#id6" title="链接到此标题。">¶</a></h4>
 <p>有了上个例子，不难推导出对 Record 进行切片的写法：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;NR&gt;1 &amp;&amp; NR&lt;4&#39;</span><span class="w"> </span>file.txt
 </pre></div>
@@ -334,7 +335,7 @@
 <p>可以看到只打印出了第 2、3 行。</p>
 </section>
 <section id="id7">
-<h4>移除仅含空白符的 Record<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<h4>移除仅含空白符的 Record<a class="headerlink" href="#id7" title="链接到此标题。">¶</a></h4>
 <p>这里需要转换一下思路，我们的目的是：把仅含空白符（空格或制表符）的 Record 移除，
 换成 AWK 的处理逻辑应该是：仅打印出非仅含空白符的 Record，有点拗口。</p>
 <p>所以我们的 <code class="docutils literal notranslate"><span class="pre">pattern</span></code> 要能判断出每一个 Record 是不是仅含空白符。
@@ -377,7 +378,7 @@
 </div>
 </section>
 <section id="id8">
-<h4>移除仅含 <em>换行符</em> 的 Record<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<h4>移除仅含 <em>换行符</em> 的 Record<a class="headerlink" href="#id8" title="链接到此标题。">¶</a></h4>
 <p>和上一个例子比起来，这个例子是要把第 8 行保留下来。</p>
 <p>我们同样先用正则来试一下：</p>
 <p>匹配 <em>换行符</em> 是： <code class="docutils literal notranslate"><span class="pre">\n</span></code>
@@ -425,7 +426,7 @@
 这就得到了上面的结果。</p>
 </section>
 <section id="field">
-<h4>提取 Field<a class="headerlink" href="#field" title="Link to this heading">¶</a></h4>
+<h4>提取 Field<a class="headerlink" href="#field" title="链接到此标题。">¶</a></h4>
 <p>这个就比较常用了，我们经常要提取出数据中的一列或几列。
 比如现在我想提取出第一列和第三列，并且输出时指定 Field 用逗号分隔：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;{ print $1, $3 }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w">  </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
@@ -510,7 +511,7 @@
 </div>
 </section>
 <section id="id9">
-<h4>按列执行计算<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<h4>按列执行计算<a class="headerlink" href="#id9" title="链接到此标题。">¶</a></h4>
 <p>AWK 可以编程，从而实现数学运算。现在我们将第一列中的数字求和：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;{ SUM=SUM+$1 } END { print SUM }&#39;</span><span class="w"> </span><span class="nv">FS</span><span class="o">=</span>,<span class="w"> </span><span class="nv">OFS</span><span class="o">=</span>,<span class="w"> </span>file.txt
 <span class="linenos">2</span><span class="c1"># 运算符也可以这样写</span>
@@ -526,7 +527,7 @@
 当然，如果我们是乘法的话就有影响了，他就直接返回 <code class="docutils literal notranslate"><span class="pre">0</span></code> 了。</p>
 </section>
 <section id="id10">
-<h4>计算非空行数<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<h4>计算非空行数<a class="headerlink" href="#id10" title="链接到此标题。">¶</a></h4>
 <p>上面的例子中我们已经使用了 <code class="docutils literal notranslate"><span class="pre">END</span></code> 规则，我们还可以用个这个规则来计算数据中的非空行数。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>awk<span class="w"> </span><span class="s1">&#39;/./ { COUNT+=1 } END { print COUNT }&#39;</span><span class="w"> </span>file.txt
 </pre></div>
@@ -555,7 +556,7 @@
 </section>
 </section>
 <section id="id12">
-<h3>在 AWK 中使用数组<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<h3>在 AWK 中使用数组<a class="headerlink" href="#id12" title="链接到此标题。">¶</a></h3>
 <p>我现在想创建一个姓名和信用分的映射数组。
 同一个人的信用分累加起来。
 如果用 Python 可以这样写：</p>
@@ -726,8 +727,8 @@ Field 分隔符是逗号。
     <ul>
         <li class="nav-item nav-item-this">
             &copy; 
-            版权所有
-             2023-2025, 小骏不抬杠.
+            版权
+             2023-2026, 小骏不抬杠.
         </li>
         &nbsp;&nbsp;&nbsp;
         <li class="nav-item nav-item-this">

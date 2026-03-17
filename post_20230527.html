@@ -47,17 +47,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=23252803" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=67a6116b" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=82640b3f" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=638b7cfd" />
     
     <script src="_static/documentation_options.js?v=91bfbbb6"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/translations.js?v=540d3cec"></script>
     <script src="_static/js/custom.js?v=b7a94a21"></script>
     <script src="_static/js/back_to_top.js?v=a9950e48"></script>
     
@@ -84,7 +85,7 @@
 <body>
 <div class="mobile-nav">
     <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
-           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="菜单" />
     <nav class="nav-content" role="navigation">
         <label for="menuToggler" class="toggler__label">
             <span></span>
@@ -99,7 +100,7 @@
                     <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                 </svg>
                 <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" />
-                <input type="submit" value="提交"/>
+                <input type="submit" value="转到"/>
             </form>
         </span>
     </nav>
@@ -108,11 +109,11 @@
             <div class="language_switcher_placeholder"></div>
             
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label>
   <div>
@@ -141,7 +142,7 @@
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="提交" />
+      <input type="submit" value="转到" />
     </form>
     </div>
 </search>
@@ -174,17 +175,17 @@
     <div class="inline-search" role="search">
         <form class="inline-search" action="search.html" method="get">
           <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
-          <input type="submit" value="提交" />
+          <input type="submit" value="转到" />
         </form>
     </div>
                 </li>
             <li class="right">
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label> |</li>
             
@@ -200,9 +201,9 @@
             <div class="body" role="main">
                 
   <section id="plotly-python-heatmap-colorbar">
-<h1>用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar<a class="headerlink" href="#plotly-python-heatmap-colorbar" title="Link to this heading">¶</a></h1>
+<h1>用 Plotly Python 绘制 Heatmap，自定义不等距 Colorbar<a class="headerlink" href="#plotly-python-heatmap-colorbar" title="链接到此标题。">¶</a></h1>
 <section id="matplotlib-pcolormesh">
-<h2>用 Matplotlib 绘制 pcolormesh 填色图<a class="headerlink" href="#matplotlib-pcolormesh" title="Link to this heading">¶</a></h2>
+<h2>用 Matplotlib 绘制 pcolormesh 填色图<a class="headerlink" href="#matplotlib-pcolormesh" title="链接到此标题。">¶</a></h2>
 <p>Matplotlib 的 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.pcolormesh.html#matplotlib.pyplot.pcolormesh">pcolormesh</a> 可以将二维数据绘制成填色图，可以一目了然地展示数据的分布情况。官方文档的 <a class="reference external" href="https://matplotlib.org/stable/gallery/images_contours_and_fields/pcolormesh_levels.html#sphx-glr-gallery-images-contours-and-fields-pcolormesh-levels-py">Demo</a> 展示了这个函数的简单使用方式。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -425,7 +426,7 @@
 <figure class="align-default" id="id1">
 <img alt="Matplotlib pcolormesh Demo" src="_images/20230527_00.png" />
 <figcaption>
-<p><span class="caption-text">Matplotlib pcolormesh Demo</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+<p><span class="caption-text">Matplotlib pcolormesh Demo</span><a class="headerlink" href="#id1" title="链接到此图片">¶</a></p>
 </figcaption>
 </figure>
 <p>从这张图中，结合右边的 <code class="docutils literal notranslate"><span class="pre">Colorbar</span></code> 我们可以清晰地看到数据的分布情况。</p>
@@ -465,7 +466,7 @@
 由此我们可以很灵活地根据业务需要去调整 <code class="docutils literal notranslate"><span class="pre">Colorbar</span></code> ，画出我们想要的图。</p>
 </section>
 <section id="plotly-heatmap">
-<h2>用 Plotly 绘制 Heatmap 填色图<a class="headerlink" href="#plotly-heatmap" title="Link to this heading">¶</a></h2>
+<h2>用 Plotly 绘制 Heatmap 填色图<a class="headerlink" href="#plotly-heatmap" title="链接到此标题。">¶</a></h2>
 <p>Matplotlib 画出的图都是静态的图片，如果我们想实时看到图中每个方格里的实际值是多少，该怎么做呢？</p>
 <p>有很多库可以绘制交互式的图表，既可以生成 HTML 网页，也可以实时在 Jupyter Notebook 中展示，本文介绍 <a class="reference external" href="https://plotly.com/python/">Plotly</a> 的使用。</p>
 <p>与 pcolormesh 效果对应的就是 Heatmap，上文中的第一个 Demo
@@ -680,8 +681,8 @@
     <ul>
         <li class="nav-item nav-item-this">
             &copy; 
-            版权所有
-             2023-2025, 小骏不抬杠.
+            版权
+             2023-2026, 小骏不抬杠.
         </li>
         &nbsp;&nbsp;&nbsp;
         <li class="nav-item nav-item-this">

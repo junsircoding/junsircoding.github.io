@@ -1,0 +1,57 @@
+用 QGIS 手动修改 Shapefile
+===========================
+
+在绘制地图时，常用的地图边界数据格式有 ``shp`` 、 ``gpkg`` 、 ``geojson`` 等，当把它们用 QGIS 读取时，其实是同一种矢量数据。
+
+用以下步骤加载源文件：
+
+.. code-block::
+    :linenos:
+
+    Layer - Add Layer - Add Vector Layer
+
+这时加载进来的数据会像 PhotoShop 一样有一个图层。右键选择 ``Toggle Editing`` 可以把图层变成可以编辑的模式。
+
+在成功转为可编辑模式之后，菜单上面有一个 ``Vertex Tool`` 就可以点了，选择 ``Vertex Tool (Current Layer)`` 。
+
+我们的需求是把越南的边界手动修改，使他和广西壮族自治区相邻的边界完全一样。
+
+这是用鼠标点一下某个顶点，接着把鼠标移到目标位置再点一下，这个点位置就更新了。按照这样的步骤，通过移动顶点，来改变整个形状。
+
+手动去把边界调整成想要的不规形状比较麻烦，我们的思路是先把越南的部分 “侵入” 广西，然后沿着广西的边界对越南进行裁剪。
+
+这时需要先把修改后的越南导出为新的 Feature，因为现在的图层是不能编辑的。
+步骤是：
+
+.. code-block::
+    :linenos:
+
+    Export - feature
+
+导出成 feature 后，修复一下，以免它本身有自交或者不闭合的环。
+
+.. code-block::
+    :linenos:
+
+    Fix geometry
+
+下面就可以裁剪了，使用 Difference 算法，沿着广西裁剪越南。
+
+裁剪完之后，把新的越南替换到整个数据里。
+
+先用 SQL 从原数据里把越南过滤掉。
+
+
+.. code-block::
+    :linenos:
+
+    SELECT * FROM "province" WHERE "国家" != '越南'
+
+然后把这个 feature 和 越南合并：
+
+.. code-block::
+    :linenos:
+
+    Merge
+
+合并后的图层就是做好的结果了，检查无误之后就可以导出成需要的格式了。

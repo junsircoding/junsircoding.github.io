@@ -47,17 +47,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=23252803" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=67a6116b" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=82640b3f" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=638b7cfd" />
     
     <script src="_static/documentation_options.js?v=91bfbbb6"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/translations.js?v=540d3cec"></script>
     <script src="_static/js/custom.js?v=b7a94a21"></script>
     <script src="_static/js/back_to_top.js?v=a9950e48"></script>
     
@@ -66,7 +67,7 @@
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="2025 年展望" href="post_20250302.html" />
-    <link rel="prev" title="小骏不抬杠" href="index.html" />
+    <link rel="prev" title="用 QGIS 手动修改 Shapefile" href="post_20260317.html" />
 <link rel="stylesheet" href="_static/pydoctheme_dark.css" media="(prefers-color-scheme: dark)" id="pydoctheme_dark_css">
     <link rel="shortcut icon" type="image/png" href="_static/favicon.ico" />
             <script type="text/javascript" src="_static/copybutton.js"></script>
@@ -84,7 +85,7 @@
 <body>
 <div class="mobile-nav">
     <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
-           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="菜单" />
     <nav class="nav-content" role="navigation">
         <label for="menuToggler" class="toggler__label">
             <span></span>
@@ -99,7 +100,7 @@
                     <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                 </svg>
                 <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" />
-                <input type="submit" value="提交"/>
+                <input type="submit" value="转到"/>
             </form>
         </span>
     </nav>
@@ -108,11 +109,11 @@
             <div class="language_switcher_placeholder"></div>
             
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label>
   <div>
@@ -132,8 +133,8 @@
   </div>
   <div>
     <h4>上一主题</h4>
-    <p class="topless"><a href="index.html"
-                          title="上一章">小骏不抬杠</a></p>
+    <p class="topless"><a href="post_20260317.html"
+                          title="上一章">用 QGIS 手动修改 Shapefile</a></p>
   </div>
   <div>
     <h4>下一主题</h4>
@@ -145,7 +146,7 @@
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="提交" />
+      <input type="submit" value="转到" />
     </form>
     </div>
 </search>
@@ -178,17 +179,17 @@
     <div class="inline-search" role="search">
         <form class="inline-search" action="search.html" method="get">
           <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
-          <input type="submit" value="提交" />
+          <input type="submit" value="转到" />
         </form>
     </div>
                 </li>
             <li class="right">
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label> |</li>
             
@@ -204,7 +205,7 @@
             <div class="body" role="main">
                 
   <section id="id1">
-<h1>处理气象数据常用的插值方法<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
+<h1>处理气象数据常用的插值方法<a class="headerlink" href="#id1" title="链接到此标题。">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <p>这篇文章与 <a class="reference external" href="https://junsircoding.github.io/post_20230529.html">气象数据的各种插值问题</a> 内容大致相同，是它的重构版。相比旧版，修改了 IDW 插值的代码，删掉了一些与主题关联不大的段落。
@@ -215,7 +216,7 @@
 </div>
 <p>气象业务当中，比较常见的数据形式有 <strong>站点数据</strong> 和 <strong>网格数据</strong>  。</p>
 <section id="id3">
-<h2>站点数据<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<h2>站点数据<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h2>
 <p><strong>站点数据</strong> 就是个二维数据表，一般是 CSV、TXT、或者 Excel 等格式，这里我们用一个 CSV 数据（ <em>UPA_obs.csv</em> <a class="footnote-reference brackets" href="#id11" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> ）举例。</p>
 <p>用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Pandas</a> 读取：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -324,7 +325,7 @@
 </div>
 </section>
 <section id="id5">
-<h2>网格数据<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
+<h2>网格数据<a class="headerlink" href="#id5" title="链接到此标题。">¶</a></h2>
 <p><strong>网格数据</strong> 通常用 <a class="reference external" href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html">Xarray</a> 库读取，这里我们使用 <em>GFS_test.nc</em>  <a class="footnote-reference brackets" href="#id12" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;GFS_test.nc&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
 <span class="linenos">2</span>    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="p">((</span><span class="n">ds</span><span class="o">.</span><span class="n">lon</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">180</span><span class="p">))</span> <span class="c1"># 将经度范围从[0, 360]转换为[-180, 180]</span>
@@ -436,7 +437,7 @@
 <p>下面逐一说明。</p>
 </section>
 <section id="id7">
-<h2>将网格数据插值到另一个坐标、分辨率不同的网格坐标上<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
+<h2>将网格数据插值到另一个坐标、分辨率不同的网格坐标上<a class="headerlink" href="#id7" title="链接到此标题。">¶</a></h2>
 <p>我们上面用到的 <em>GFS_test.nc</em> 的经纬度坐标 shape 为 <code class="docutils literal notranslate"><span class="pre">(lon:</span> <span class="pre">101,</span> <span class="pre">lat:</span> <span class="pre">46)</span></code> ，
 lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨率是 1 度。
 现在我们要将这个数据插值到一个分辨率是 0.1 度的网格坐标上，范围不变。</p>
@@ -473,7 +474,7 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 </figure>
 </section>
 <section id="id8">
-<h2>将网格数据插值到站点数据上<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<h2>将网格数据插值到站点数据上<a class="headerlink" href="#id8" title="链接到此标题。">¶</a></h2>
 <p>我们可以用 <a class="reference external" href="https://matplotlib.org/stable/gallery/misc/keyword_plotting.html#sphx-glr-gallery-misc-keyword-plotting-py">Scipy</a> 的插值函数方法一次性得到所有的插值结果：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 <span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -531,7 +532,7 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 <p>可以看到，点的位置和 <code class="docutils literal notranslate"><span class="pre">UPA_obs.csv</span></code> 中的点位置是相同的，但数值是数据 <code class="docutils literal notranslate"><span class="pre">GFS_test.nc</span></code> 中的值。</p>
 </section>
 <section id="id9">
-<h2>将站点数据插值到网格数据上（反距离权重插值）<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
+<h2>将站点数据插值到网格数据上（反距离权重插值）<a class="headerlink" href="#id9" title="链接到此标题。">¶</a></h2>
 <p>还会有一种需求，是将站点数据插值到指定精度的网格上。
 原本为 <code class="docutils literal notranslate"><span class="pre">np.nan</span></code> 的数据要运用反距离权重插值预测出对应的值。
 反距离权重插值的原理，简单讲就是被预测的值由它附近的点决定，与它距离越近的点权重越大，对它的影响就越大。</p>
@@ -672,7 +673,7 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
 </div>
 </section>
 <section id="id10">
-<h2>示例数据下载<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h2>
+<h2>示例数据下载<a class="headerlink" href="#id10" title="链接到此标题。">¶</a></h2>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id11" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">1</a><span class="fn-bracket">]</span></span>
@@ -788,8 +789,8 @@ lat 的数据范围是 [65, 20]，lon 的数据范围是 [-150, -50]， 分辨�
     <ul>
         <li class="nav-item nav-item-this">
             &copy; 
-            版权所有
-             2023-2025, 小骏不抬杠.
+            版权
+             2023-2026, 小骏不抬杠.
         </li>
         &nbsp;&nbsp;&nbsp;
         <li class="nav-item nav-item-this">

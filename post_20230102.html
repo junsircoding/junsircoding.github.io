@@ -47,17 +47,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=23252803" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=67a6116b" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=82640b3f" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=638b7cfd" />
     
     <script src="_static/documentation_options.js?v=91bfbbb6"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/translations.js?v=540d3cec"></script>
     <script src="_static/js/custom.js?v=b7a94a21"></script>
     <script src="_static/js/back_to_top.js?v=a9950e48"></script>
     
@@ -83,7 +84,7 @@
 <body>
 <div class="mobile-nav">
     <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
-           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="菜单" />
     <nav class="nav-content" role="navigation">
         <label for="menuToggler" class="toggler__label">
             <span></span>
@@ -98,7 +99,7 @@
                     <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                 </svg>
                 <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" />
-                <input type="submit" value="提交"/>
+                <input type="submit" value="转到"/>
             </form>
         </span>
     </nav>
@@ -107,11 +108,11 @@
             <div class="language_switcher_placeholder"></div>
             
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label>
   <div>
@@ -136,7 +137,7 @@
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="提交" />
+      <input type="submit" value="转到" />
     </form>
     </div>
 </search>
@@ -169,17 +170,17 @@
     <div class="inline-search" role="search">
         <form class="inline-search" action="search.html" method="get">
           <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
-          <input type="submit" value="提交" />
+          <input type="submit" value="转到" />
         </form>
     </div>
                 </li>
             <li class="right">
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label> |</li>
             
@@ -195,7 +196,7 @@
             <div class="body" role="main">
                 
   <section id="m1-mac-stable-diffusion">
-<h1>在 M1 芯片的 Mac 上部署本地 Stable Diffusion<a class="headerlink" href="#m1-mac-stable-diffusion" title="Link to this heading">¶</a></h1>
+<h1>在 M1 芯片的 Mac 上部署本地 Stable Diffusion<a class="headerlink" href="#m1-mac-stable-diffusion" title="链接到此标题。">¶</a></h1>
 <p>最近这几个月，互联网上有关 AI 的消息非常热门，不管是 AI 绘图还是 ChatGPT AI 问答机器人都非常有意思。
 但是好像涉及这种人工智能的项目都需要比较好的显卡来进行模型的运算，我们普通的 PC 一般只有内置的显卡，性能比较拉跨，大概是支持不了这样的项目。</p>
 <p>但是 Mac 的 M1/M2 系列芯片性能提升了那么多，能不能运行这样的 AI 绘图项目呢？
@@ -203,7 +204,7 @@
 我的电脑是 M1 芯片的 MacBook Air 8GB 版本，如果你的电脑是 Apple 芯片的 Mac，那么这个教程对于你应该是适用的。
 内存 16 GB 比较好，8 GB 也勉强能运行，只是绘图的时候电脑会有点卡，没法运行别的程序。</p>
 <section id="id1">
-<h2>部署步骤<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<h2>部署步骤<a class="headerlink" href="#id1" title="链接到此标题。">¶</a></h2>
 <p>AI 绘图的项目有很多，我查到的案例是部署 Stable Diffusion，项目的 Github 仓库地址是：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>https://github.com/bfirsh/stable-diffusion.git
 </pre></div>
@@ -270,7 +271,7 @@
 如果你的英文不错，还有一些艺术鉴赏相关的知识，可能会画出意想不到的作品，快来试试吧。</p>
 </section>
 <section id="id2">
-<h2>参考资料<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<h2>参考资料<a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Stable Diffusion Github 仓库：<a class="reference external" href="https://github.com/bfirsh/stable-diffusion">https://github.com/bfirsh/stable-diffusion</a></p></li>
 <li><p>英文版参考博客：<a class="reference external" href="https://replicate.com/blog/run-stable-diffusion-on-m1-mac">https://replicate.com/blog/run-stable-diffusion-on-m1-mac</a></p></li>
@@ -278,7 +279,7 @@
 </ol>
 </section>
 <section id="id3">
-<h2>视频讲解<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<h2>视频讲解<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h2>
 <p><a class="reference external" href="https://www.bilibili.com/video/BV1qP4y1i7BQ/">在 M1 芯片的 Mac 上部署 Stable Diffusion AI 绘图</a></p>
 </section>
 </section>
@@ -382,8 +383,8 @@
     <ul>
         <li class="nav-item nav-item-this">
             &copy; 
-            版权所有
-             2023-2025, 小骏不抬杠.
+            版权
+             2023-2026, 小骏不抬杠.
         </li>
         &nbsp;&nbsp;&nbsp;
         <li class="nav-item nav-item-this">

@@ -47,17 +47,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=23252803" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=67a6116b" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=82640b3f" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=638b7cfd" />
     
     <script src="_static/documentation_options.js?v=91bfbbb6"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/translations.js?v=540d3cec"></script>
     <script src="_static/js/custom.js?v=b7a94a21"></script>
     <script src="_static/js/back_to_top.js?v=a9950e48"></script>
     
@@ -84,7 +85,7 @@
 <body>
 <div class="mobile-nav">
     <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
-           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="菜单" />
     <nav class="nav-content" role="navigation">
         <label for="menuToggler" class="toggler__label">
             <span></span>
@@ -99,7 +100,7 @@
                     <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                 </svg>
                 <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" />
-                <input type="submit" value="提交"/>
+                <input type="submit" value="转到"/>
             </form>
         </span>
     </nav>
@@ -108,11 +109,11 @@
             <div class="language_switcher_placeholder"></div>
             
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label>
   <div>
@@ -151,7 +152,7 @@
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="提交" />
+      <input type="submit" value="转到" />
     </form>
     </div>
 </search>
@@ -184,17 +185,17 @@
     <div class="inline-search" role="search">
         <form class="inline-search" action="search.html" method="get">
           <input placeholder="快速搜索" aria-label="快速搜索" type="search" name="q" id="search-box" />
-          <input type="submit" value="提交" />
+          <input type="submit" value="转到" />
         </form>
     </div>
                 </li>
             <li class="right">
 <label class="theme-selector-label">
-    Theme
+    主题
     <select class="theme-selector" oninput="changeTheme(this.value)">
-        <option value="auto" selected>Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="auto" selected>自动</option>
+        <option value="light">明亮</option>
+        <option value="dark">黑暗</option>
     </select>
 </label> |</li>
             
@@ -210,15 +211,15 @@
             <div class="body" role="main">
                 
   <section id="vim-ide">
-<h1>将 Vim 打造成轻量级的 IDE<a class="headerlink" href="#vim-ide" title="Link to this heading">¶</a></h1>
+<h1>将 Vim 打造成轻量级的 IDE<a class="headerlink" href="#vim-ide" title="链接到此标题。">¶</a></h1>
 <section id="id1">
-<h2>介绍<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<h2>介绍<a class="headerlink" href="#id1" title="链接到此标题。">¶</a></h2>
 <p>在 Linux 系统中， <a class="reference external" href="https://www.vim.org/">Vim</a> 是我们最常用的编辑器。Vim 可以提供缓冲区(buffers)、宏(macros) 和书签(bookmarking)的功能。Vim 还内置了一种自己的脚本语言，以便开发人员编写插件增强它的功能。下面我们就通过 <strong>安装插件</strong> 和 <strong>增加配置</strong> 的方式，来把基础的 Vim 变成一个轻量级的 IDE。</p>
 </section>
 <section id="id2">
-<h2>步骤<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<h2>步骤<a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
 <section id="vundle">
-<h3>安装 Vundle 插件，用来管理插件<a class="headerlink" href="#vundle" title="Link to this heading">¶</a></h3>
+<h3>安装 Vundle 插件，用来管理插件<a class="headerlink" href="#vundle" title="链接到此标题。">¶</a></h3>
 <p>我们下面要安装很多插件，而这些插件可以用别的插件来管理，这个管理插件的插件就是 <a class="reference external" href="https://github.com/VundleVim/Vundle.vim">Vundle</a> ，以下是命令步骤。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.vim/bundle
 $<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/.vim/bundle
@@ -261,7 +262,7 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 <p>当开启语法高亮后，vim 会从 <code class="docutils literal notranslate"><span class="pre">syntax/&lt;language&gt;.vim</span></code> 中寻找对应后缀文件的高亮文件。比如打开了 main.cpp，vim 会自动寻找 syntax.cpp 文件，并按照里面的规则进行代码文件的渲染。</p>
 </section>
 <section id="tab">
-<h3>配置 TAB 键、搜索、内置终端<a class="headerlink" href="#tab" title="Link to this heading">¶</a></h3>
+<h3>配置 TAB 键、搜索、内置终端<a class="headerlink" href="#tab" title="链接到此标题。">¶</a></h3>
 <p>下面添加几个和 Tab 键有关的配置：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 输入 \t 制表符后空 4 个空格</span>
 <span class="k">set</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">4</span> <span class="c">&quot; 按下 Tab 后空 4 个空格</span>
@@ -282,7 +283,7 @@ Plugin <span class="s1">&#39;VundleVim/Vundle.vim&#39;</span>
 </div>
 </section>
 <section id="vim-polyglot">
-<h3>增加各种编程语言语法包和缩进，vim-polyglot 插件<a class="headerlink" href="#vim-polyglot" title="Link to this heading">¶</a></h3>
+<h3>增加各种编程语言语法包和缩进，vim-polyglot 插件<a class="headerlink" href="#vim-polyglot" title="链接到此标题。">¶</a></h3>
 <p><a class="reference external" href="https://github.com/sheerun/vim-polyglot">vim-polyglot</a>  插件可以对 50 多种编程语言进行语法高亮。通过下面的命令安装这个插件：</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 在 .vimrc 中添加这行配置</span>
 Plugin<span class="w"> </span><span class="s1">&#39;sheerun/vim-polyglot&#39;</span>
@@ -300,7 +301,7 @@ $<span class="w"> </span>vim<span class="w"> </span>+PluginInstall<span class="w
 </div>
 </section>
 <section id="id5">
-<h3>安装配色主题<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<h3>安装配色主题<a class="headerlink" href="#id5" title="链接到此标题。">¶</a></h3>
 <p>虽然 Vim 的默认主题已经够用了，但我们也可以自己另外安装主题。输入 <code class="docutils literal notranslate"><span class="pre">:color&lt;space&gt;</span></code> ，然后按 <code class="docutils literal notranslate"><span class="pre">&lt;TAB&gt;</span></code> 键自动按顺序遍历出所有主题名称。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
@@ -324,7 +325,7 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 </div>
 </section>
 <section id="auto-pairs">
-<h3>方括号、圆括号和引号的自动成对补全，auto-pairs 插件<a class="headerlink" href="#auto-pairs" title="Link to this heading">¶</a></h3>
+<h3>方括号、圆括号和引号的自动成对补全，auto-pairs 插件<a class="headerlink" href="#auto-pairs" title="链接到此标题。">¶</a></h3>
 <p>在输入括号、反引号、单双引号时可以让编辑器自动成对输入，通过安装 <a class="reference external" href="https://github.com/jiangmiao/auto-pairs">auto-pairs</a> 插件可以实现：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;jiangmiao/auto-pairs&#39;</span>
   # Install <span class="k">on</span> command line
@@ -338,7 +339,7 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 <p>添加这条配置后，按 <cite>CTRL P</cite> 可以临时调节，编辑器是否自动成对输入那些字符。</p>
 </section>
 <section id="nerdtree">
-<h3>文件管理器，NERDTree 插件<a class="headerlink" href="#nerdtree" title="Link to this heading">¶</a></h3>
+<h3>文件管理器，NERDTree 插件<a class="headerlink" href="#nerdtree" title="链接到此标题。">¶</a></h3>
 <p><a class="reference external" href="https://github.com/preservim/nerdtree">NERDTree</a> 插件是一个文件资源管理器，可以在左侧打开一个边栏，以选择、浏览、重命名等等的当时管理文件。</p>
 <p>安装配置如下：</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;preservim/nerdtree&#39;</span>
@@ -359,7 +360,7 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 </div>
 </section>
 <section id="tagbar">
-<h3>增加一个面板条，在里面展示源文件的标签，tagbar 插件<a class="headerlink" href="#tagbar" title="Link to this heading">¶</a></h3>
+<h3>增加一个面板条，在里面展示源文件的标签，tagbar 插件<a class="headerlink" href="#tagbar" title="链接到此标题。">¶</a></h3>
 <p><a class="reference external" href="https://github.com/preservim/tagbar">tagbar</a> 这个插件可以在文件管理器里面的当前打开的文件下面显示一横条，方便我们查看。</p>
 <div class="highlight-vim notranslate"><div class="highlight"><pre><span></span>Plugin <span class="s1">&#39;preservim/tagbar&#39;</span>
   # Install <span class="k">on</span> command line
@@ -369,7 +370,7 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
 </section>
 </section>
 <section id="id9">
-<h2>参考文章<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
+<h2>参考文章<a class="headerlink" href="#id9" title="链接到此标题。">¶</a></h2>
 <p><a class="reference external" href="https://dane-bulat.medium.com/how-to-turn-vim-into-a-lightweight-ide-6185e0f47b79">How to Turn Vim Into a Lightweight IDE</a></p>
 </section>
 </section>
@@ -482,8 +483,8 @@ $ <span class="k">vim</span> <span class="p">+</span>PluginInstall <span class="
     <ul>
         <li class="nav-item nav-item-this">
             &copy; 
-            版权所有
-             2023-2025, 小骏不抬杠.
+            版权
+             2023-2026, 小骏不抬杠.
         </li>
         &nbsp;&nbsp;&nbsp;
         <li class="nav-item nav-item-this">
