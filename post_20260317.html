@@ -115,6 +115,18 @@
     </select>
 </label>
   <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">用 QGIS 手动修改 Shapefile</a><ul>
+<li><a class="reference internal" href="#id1">读取矢量数据</a></li>
+<li><a class="reference internal" href="#id2">手动修复问题图层</a></li>
+<li><a class="reference internal" href="#id3">替换问题图层</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
     <h4>上一主题</h4>
     <p class="topless"><a href="index.html"
                           title="上一章">小骏不抬杠</a></p>
@@ -189,36 +201,86 @@
                 
   <section id="qgis-shapefile">
 <h1>用 QGIS 手动修改 Shapefile<a class="headerlink" href="#qgis-shapefile" title="链接到此标题。">¶</a></h1>
+<section id="id1">
+<h2>读取矢量数据<a class="headerlink" href="#id1" title="链接到此标题。">¶</a></h2>
 <p>在绘制地图时，常用的地图边界数据格式有 <code class="docutils literal notranslate"><span class="pre">shp</span></code> 、 <code class="docutils literal notranslate"><span class="pre">gpkg</span></code> 、 <code class="docutils literal notranslate"><span class="pre">geojson</span></code> 等，当把它们用 QGIS 读取时，其实是同一种矢量数据。</p>
 <p>用以下步骤加载源文件：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Layer</span> <span class="o">-</span> <span class="n">Add</span> <span class="n">Layer</span> <span class="o">-</span> <span class="n">Add</span> <span class="n">Vector</span> <span class="n">Layer</span>
 </pre></div>
 </div>
-<p>这时加载进来的数据会像 PhotoShop 一样有一个图层。右键选择 <code class="docutils literal notranslate"><span class="pre">Toggle</span> <span class="pre">Editing</span></code> 可以把图层变成可以编辑的模式。</p>
-<p>在成功转为可编辑模式之后，菜单上面有一个 <code class="docutils literal notranslate"><span class="pre">Vertex</span> <span class="pre">Tool</span></code> 就可以点了，选择 <code class="docutils literal notranslate"><span class="pre">Vertex</span> <span class="pre">Tool</span> <span class="pre">(Current</span> <span class="pre">Layer)</span></code> 。</p>
-<p>我们的需求是把越南的边界手动修改，使他和广西壮族自治区相邻的边界完全一样。</p>
-<p>这是用鼠标点一下某个顶点，接着把鼠标移到目标位置再点一下，这个点位置就更新了。按照这样的步骤，通过移动顶点，来改变整个形状。</p>
-<p>手动去把边界调整成想要的不规形状比较麻烦，我们的思路是先把越南的部分 “侵入” 广西，然后沿着广西的边界对越南进行裁剪。</p>
-<p>这时需要先把修改后的越南导出为新的 Feature，因为现在的图层是不能编辑的。
+<p>这时加载进来的数据会像 PhotoShop 一样有一个图层。</p>
+<p>我们现在的这个地图数据有一点问题，在越南和广西的交界处有一点空隙：</p>
+<figure class="align-default">
+<img alt="相邻边界有一个缺口" src="_images/%E7%9B%B8%E9%82%BB%E8%BE%B9%E7%95%8C%E6%9C%89%E4%B8%80%E4%B8%AA%E7%BC%BA%E5%8F%A3.png" />
+</figure>
+<p>现在我们想要把这个缺口手动处理掉，让这个边界看起来更自然。</p>
+</section>
+<section id="id2">
+<h2>手动修复问题图层<a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
+<p>右键这个图层，选择 <code class="docutils literal notranslate"><span class="pre">Toggle</span> <span class="pre">Editing</span></code> 可以把图层变成可以编辑的模式。</p>
+<p>在成功转为可编辑模式之后，菜单上面有一个 <code class="docutils literal notranslate"><span class="pre">Vertex</span> <span class="pre">Tool</span></code> 就从原来的不可用（灰色）变成可以使用（彩色），选择 <code class="docutils literal notranslate"><span class="pre">Vertex</span> <span class="pre">Tool</span> <span class="pre">(Current</span> <span class="pre">Layer)</span></code> 。</p>
+<figure class="align-default">
+<img alt="VertexTool图标" src="_images/VertexTool%E5%9B%BE%E6%A0%87.png" />
+</figure>
+<p>在目前读入的这个地图中，越南是其中的一个 Feature。
+这时用鼠标点一下越南这个 Feature ，就会显示出这个多边形的每个顶点。</p>
+<figure class="align-default">
+<img alt="编辑模式" src="_images/%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F.png" />
+</figure>
+<p>用鼠标点某个顶点，接着把鼠标移到新位置再点一下，这个点位置就更新了。按照这样的步骤，通过移动顶点，来改变整个形状。</p>
+<p>手动去把边界调整成想要的不规则形状比较麻烦，我们的思路是先把越南的部分“侵入”广西，然后沿着广西的边界对越南进行裁剪。</p>
+<figure class="align-default">
+<img alt="将越南稍微侵入广西一点" src="_images/%E5%B0%86%E8%B6%8A%E5%8D%97%E7%A8%8D%E5%BE%AE%E4%BE%B5%E5%85%A5%E5%B9%BF%E8%A5%BF%E4%B8%80%E7%82%B9.png" />
+</figure>
+<p>把扩大后的越南用 SQL 单独筛选出来：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="s2">&quot;province.v0&quot;</span> <span class="n">WHERE</span> <span class="s2">&quot;国家&quot;</span> <span class="o">=</span> <span class="s1">&#39;越南&#39;</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1"># 表名就是图层名字, 字段名加双引号</span>
+</pre></div>
+</div>
+<p>我们把它命名为“越南侵入”。</p>
+<p>这时需要先把修改后的越南导出另存为为新的 Feature，因为现在的图层是不能编辑的。
 步骤是：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Export</span> <span class="o">-</span> <span class="n">feature</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Export</span> <span class="o">-</span> <span class="n">Save</span> <span class="n">Features</span> <span class="n">As</span>
 </pre></div>
 </div>
-<p>导出成 feature 后，修复一下，以免它本身有自交或者不闭合的环。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Fix</span> <span class="n">geometry</span>
-</pre></div>
-</div>
+<p>导出之后，他会加载一个新图层，我们将其命名为“越南侵入Feature”。</p>
+<p>用同样的方法，把广西也导出来，命名为“广西壮族自治区”。</p>
+<p>这时的“越南侵入Feature”，它本身有自交或者不闭合的环，进行后面的裁剪操作会报错。所以需要修复一下。</p>
+<p>在左下角的快捷搜索框中搜索 <code class="docutils literal notranslate"><span class="pre">Fix</span></code> ，选择 <code class="docutils literal notranslate"><span class="pre">Fix</span> <span class="pre">geometries</span></code> 。</p>
+<figure class="align-default">
+<img alt="修复gemo" src="_images/%E4%BF%AE%E5%A4%8Dgemo.png" />
+</figure>
 <p>下面就可以裁剪了，使用 Difference 算法，沿着广西裁剪越南。</p>
-<p>裁剪完之后，把新的越南替换到整个数据里。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Vector</span> <span class="o">-</span> <span class="n">Geoprocessing</span> <span class="n">Tools</span> <span class="o">-</span> <span class="n">Difference</span>
+</pre></div>
+</div>
+<p>Input 图层选择“越南侵入Feature”，Overlay 图层选择“广西壮族自治区”。</p>
+<p>裁剪完之后，两块区域的边界就没有重合了，将裁剪后的结果命名成“越南修正”。</p>
+<figure class="align-default">
+<img alt="越南修正" src="_images/%E8%B6%8A%E5%8D%97%E4%BF%AE%E6%AD%A3.png" />
+</figure>
+</section>
+<section id="id3">
+<h2>替换问题图层<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h2>
+<p>下面把新的越南替换到整个数据里，我们的思路是把新的越南和原数据提出越南的剩余部分合并。</p>
 <p>先用 SQL 从原数据里把越南过滤掉。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="s2">&quot;province&quot;</span> <span class="n">WHERE</span> <span class="s2">&quot;国家&quot;</span> <span class="o">!=</span> <span class="s1">&#39;越南&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">SELECT</span> <span class="o">*</span>
+<span class="linenos">2</span><span class="n">FROM</span> <span class="s2">&quot;province.v0&quot;</span>
+<span class="linenos">3</span><span class="n">WHERE</span> <span class="s2">&quot;国家&quot;</span> <span class="o">!=</span> <span class="s1">&#39;越南&#39;</span> <span class="n">OR</span> <span class="s2">&quot;国家&quot;</span> <span class="n">IS</span> <span class="n">NULL</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span><span class="c1"># 如果其他feature的被查询字段是NULL,需要手动保留</span>
+<span class="linenos">6</span><span class="c1"># 任何值和 NULL 做比较（=、!=、&lt;&gt;）结果都是 UNKNOWN，而不是 TRUE</span>
 </pre></div>
 </div>
-<p>然后把这个 feature 和 越南合并：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Merge</span>
+<p>得到的图层命名为“原数据去掉越南”。</p>
+<p>然后把“原数据去掉越南”和“越南修正”合并：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>
 </pre></div>
 </div>
+<p>在左下角快捷搜索栏中搜索 <code class="docutils literal notranslate"><span class="pre">Merge</span> <span class="pre">vector</span> <span class="pre">layers</span></code> ，选择要合并的两个图层。</p>
 <p>合并后的图层就是做好的结果了，检查无误之后就可以导出成需要的格式了。</p>
+</section>
 </section>
 
 
@@ -297,6 +359,18 @@
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/logo.png" alt="Logo"/>
             </a></p>
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">用 QGIS 手动修改 Shapefile</a><ul>
+<li><a class="reference internal" href="#id1">读取矢量数据</a></li>
+<li><a class="reference internal" href="#id2">手动修复问题图层</a></li>
+<li><a class="reference internal" href="#id3">替换问题图层</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
         </div>
       </div>
   
